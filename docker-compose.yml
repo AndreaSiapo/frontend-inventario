@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  frontend:
+    image: node:20
+    container_name: inventario_frontend
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+    #  - /app/node_modules
+    command: tail -f /dev/null #esta linea si funcionaba al correr el contenedor
+    #command: npm run dev -- --host
