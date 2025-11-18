@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 
-export default function Nav({ toggleSidebar, appName }) {
+export default function Nav({ toggleSidebar }) {
 
   const appLink = import.meta.env.VITE_APP_URL || 'http://localhost:5173';
+  const appName = import.meta.env.VITE_APP_NAME || 'App'
   
   return (
     <nav>
@@ -44,15 +45,15 @@ export default function Nav({ toggleSidebar, appName }) {
 
           <div className="flex items-center">
             <div className="flex items-center ms-3">
-              <Link className="nav-link" to="/">
+              <a className="nav-link" href="/">
                 Home
-              </Link>
-              <Link className="nav-link" to="/about">
+              </a>
+              <a className="nav-link" href="/about">
                 About
-              </Link>
-              <Link className="nav-link" to="/posts/create">
+              </a>
+              <a className="nav-link" href="/posts/create">
                 Create
-              </Link>
+              </a>
             </div>
 
             <div>

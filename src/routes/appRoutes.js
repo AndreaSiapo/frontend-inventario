@@ -1,16 +1,16 @@
 export const appRoutes = {
-  bodega: "/bodegas",
-  categoría: "/categorías",
-  destinatario: "/destinatarios",
-  existencia: "/existencias",
-  marca: "/marcas",
-  presentacion: "/presentaciones",
-  producto: "/productos",
-  proveedor: "/proveedores",
-  movimiento: "/movimientos",
-  detalle_movimiento: "/detalle_movimientos",
-  tipo_documento: "/tipo_documentos",
-  u_medida: "/unidad_medidas",
+  bodega: "/tablas/bodegas",
+  categoría: "/tablas/categorías",
+  destinatario: "/tablas/destinatarios",
+  existencia: "/tablas/existencias",
+  marca: "/tablas/marcas",
+  presentacion: "/tablas/presentaciones",
+  producto: "/tablas/productos",
+  proveedor: "/tablas/proveedores",
+  movimiento: "/tablas/movimientos",
+  detalle_movimiento: "/tablas/detalle_movimientos",
+  tipo_documento: "/tablas/tipo_documentos",
+  u_medida: "/tablas/unidad_medidas",
 };
 
 

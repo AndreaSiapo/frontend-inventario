@@ -2,16 +2,16 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 // Iconos
-import Book from "../../components/icons/menu/book";
-import Dashboard from "../../components/icons/menu/dashboard";
-import Inbox from "../../components/icons/menu/inbox";
-import Kanban from "../../components/icons/menu/kanban";
-import User from "../../components/icons/menu/user";
-import Products from "../../components/icons/menu/products";
-import SignIn from "../../components/icons/menu/sign-in";
-import SignUp from "../../components/icons/menu/sign-up";
-import IconVDown from "../../components/icons/actions/v-down";
-import IconVUp from "../../components/icons/actions/v-up";
+import Book from "../icons/menu/book";
+import Dashboard from "../icons/menu/dashboard";
+import Inbox from "../icons/menu/inbox";
+import Kanban from "../icons/menu/kanban";
+import User from "../icons/menu/user";
+import Products from "../icons/menu/products";
+import SignIn from "../icons/menu/sign-in";
+import SignUp from "../icons/menu/sign-up";
+import IconVDown from "../icons/actions/v-down";
+import IconVUp from "../icons/actions/v-up";
 
 // Rutas reemplazando Ziggy
 import { appRoutes } from "../../routes/appRoutes";
