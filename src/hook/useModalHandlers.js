@@ -5,7 +5,8 @@ export default function useModalHandlers({ Module, modules, route, currentFilter
   fetchItem,       // (id) => Promise
   createItem,      // (data) => Promise
   updateItem,      // (id, data) => Promise,
-  onSuccess = null
+  onSuccess = null,
+  notify
 }) {
 
   const handleCreateSubmit = async (data) => {
@@ -15,6 +16,7 @@ export default function useModalHandlers({ Module, modules, route, currentFilter
       handleFalse("isCreateModalOpen");
     } catch (e) {
       console.error("Error create:", e);
+      notify?.("Error al crear "+Module, "error");
     }
   };
 
@@ -25,6 +27,7 @@ export default function useModalHandlers({ Module, modules, route, currentFilter
       handleFalse("isEditModalOpen");
     } catch (e) {
       console.error("Error edit:", e);
+      notify?.("Error al editar "+Module, "error");
     }
   };
 
@@ -48,6 +51,7 @@ export default function useModalHandlers({ Module, modules, route, currentFilter
       return item;
     } catch (e) {
       console.error("Error editClick:", e);
+      notify?.("Error al abrir para editar "+Module, "error");
     }
   };
 
@@ -63,6 +67,7 @@ export default function useModalHandlers({ Module, modules, route, currentFilter
       }));
     } catch (e) {
       console.error("Error show:", e);
+      notify?.("Error al mostrar "+Module, "error");
     }
   };
 

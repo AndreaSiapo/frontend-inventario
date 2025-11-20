@@ -3,12 +3,10 @@ import React, { useState, useEffect } from "react";
 //import { appRoutes } from "../../../routes/appRoutes";
 
 // Componentes
-//import AppNotification, { useFlash } from "./../../../components/html/notification";
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
 import AppBtnActions        from "./../../../components/html/btnActions";
 import AppBtnInfoCount      from "./../../../components/html/btnInfoCount";
 import AppBtnTableSetting   from "./../../../components/html/btnTableSetting";
-//import AppPagination        from "./../../../components/html/pagination";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
 import AppBtnCreate         from "./../../../components/form/btncreate";
 import AppBtnShowM          from "./../../../components/form/btnshow_m";
@@ -16,82 +14,95 @@ import AppBtnEdit           from "./../../../components/form/btnedit";
 import AppBtnDelete         from "./../../../components/form/btndelete";
 import AppBtnX              from "./../../../components/form/btnX";
 import Checkbox             from './../../../components/form/check';
-//import AppSearchIndex       from "./../../../components/form/search_index";
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-//import Layout               from "./../../../components/app/layout";
 import useIndexTable        from "./../../../hook/useIndexTable";
 import useModuleNames       from "./../../../hook/UseModuleName";
 import useModalHandlers       from "./../../../hook/useModalHandlers";
+import AppNotification, { useFlash } from "./../../../components/html/notification";
+import AppPagination        from "./../../../components/html/pagination";
+//import AppSearchIndex       from "./../../../components/form/search_index";
+//import Layout               from "./../../../components/app/layout";
 
 import { appRoutes } from "../../../routes/appRoutes";
 import { getUnidadesMedida, getUnidadMedida, createUnidadMedida, updateUnidadMedida, getColumns, getDefaultVisibility } from "../../../api/umedidas";
 
 const Index = () => {
-    const columns = getColumns();
-    const defaultVisibility = getDefaultVisibility();
+  const columns = getColumns();
+  const defaultVisibility = getDefaultVisibility();
+  const [flash, notify] = useFlash();
 
-    const [data, setData] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [showUnidadMedida, setShowUnidadMedida] = useState(null);
-    const [editUnidadMedida, setEditUnidadMedida] = useState(null);
+  const [data, setData] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [showUnidadMedida, setShowUnidadMedida] = useState(null);
+  const [editUnidadMedida, setEditUnidadMedida] = useState(null);
+  const [unidades, setUnidades] = useState({
+    data: [],
+    total: 0,
+    from: 0,
+    to: 0,
+    links: [],
+    filters: { search: '', perPage: 10, page: 1, orderBy: 'id', orderDir: 'asc' },
+    columns: getColumns(),
+    defaultVisibility: getDefaultVisibility()
+  });
 
-    const fetchUnidades = async () => {
-      try {
-        const json = await getUnidadesMedida();
-        const total = json.data ?? json;
+  const fetchUnidades = async (filters = {}) => {
+    try {
+      const json = await getUnidadesMedida({ ...unidades.filters, ...filters });
+      setUnidades(json);
+      const total = json.data ?? json;
 
-        setData(json.data ?? json); // soporta ambas estructuras
-        setTotal(total.length); // ← AQUÍ guardas la cantidad de registros
-      } catch (error) {
-        console.error("Error al obtener unidades:", error);
-      }
-    };
+      setData(json.data ?? json); // soporta ambas estructuras
+      setTotal(total.length); // ← AQUÍ guardas la cantidad de registros
+    } catch (error) {
+      console.error("Error al obtener unidades:", error);
+    }
+  };
 
-    useEffect(() => {
-      fetchUnidades();
-    }, []);
+  useEffect(() => {
+    fetchUnidades();
+  }, []);
 
-    const currentFilters = {
-      search: data.search,
-      perPage: data.perPage,
-      page: data.page,
-      orderBy: data.orderBy,
-      orderDir: data.orderDir
-    };
+  const currentFilters = {
+    search: data.search,
+    perPage: data.perPage,
+    page: data.page,
+    orderBy: data.orderBy,
+    orderDir: data.orderDir
+  };
     
-    // Hooks factorizaos
-    const { module, modules, Module, Modules } = useModuleNames("unidad de medida", "unidades de medida");
+  // Hooks factorizaos
+  const { module, modules, Module, Modules } = useModuleNames("unidad de medida", "unidades de medida");
+  const { visibility, handleToggle, setVisibility, handleFalse,
+  checkedItems, handleToggleAll, handleToggleItem, handleSort, handleDate 
+  } = useIndexTable({
+      items: data,
+      modules,
+      //route,
+      //filters,
+      columns: columns,
+      defaultVisibility: defaultVisibility  });
+       
+  const {handleEditClick, handleShowClick, handleEditSubmit, handleCreateClick, handleCreateSubmit, handleCloseModal} = useModalHandlers({Module, modules, currentFilters, handleFalse, notify,
+    fetchItem: getUnidadMedida,         // GET /umedidas/:id
+    createItem: createUnidadMedida,     // POST /umedidas
+    updateItem: updateUnidadMedida,     // PUT /umedidas/:id
+    onSuccess: fetchUnidades
+  });
+  const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
 
-    const { visibility, handleToggle, setVisibility, handleFalse,
-    checkedItems, handleToggleAll, handleToggleItem, handleSort, handleDate 
-    } = useIndexTable({
-        items: data,
-        modules,
-        //route,
-        //filters,
-        columns: columns,
-        defaultVisibility: defaultVisibility  });
-        
-    const {handleEditClick, handleShowClick, handleEditSubmit, handleCreateClick, handleCreateSubmit, handleCloseModal} = useModalHandlers({Module, modules, currentFilters, handleFalse,
-      fetchItem: getUnidadMedida,         // GET /umedidas/:id
-      createItem: createUnidadMedida,     // POST /umedidas
-      updateItem: updateUnidadMedida,     // PUT /umedidas/:id
-      onSuccess: fetchUnidades
-    });
-    const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
+  return (
+    <>
+      <AppBreadcrumb
+        title={Modules}
+        sites={["Tablas",Modules]}
+        links={["/tablas", appRoutes.u_medida]}
+      />
 
-    return (
-      <>
-        <AppBreadcrumb
-          title={Modules}
-          sites={["Tablas",Modules]}
-          links={["/tablas", appRoutes.u_medida]}
-        />
-
-        {//flash && <AppNotification type={flash.type} message={flash.message} />
-        }
+      {//flash && <AppNotification type={flash.type} message={flash.message} />
+    }
 
         <div className="div-uno">
           <div className="div-dos">
@@ -99,9 +110,9 @@ const Index = () => {
               <div className="flex-1 flex items-center space-x-2 relative">
                 <h5>
                   <p className="text-gray-500">Total de {modules}:</p>
-                  <p className="dark:text-white"> {total} </p>
+                  <p className="dark:text-white"> {unidades.total} </p>
                 </h5>
-                <AppBtnInfoCount from="#000#" to="#000#" total={total}  />
+                <AppBtnInfoCount from={unidades.from} to={unidades.to} total={unidades.total}  />
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
             </div>
@@ -185,9 +196,21 @@ const Index = () => {
               </tbody>
             </table>
           </div>
-          
-          </div>
+
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+              Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+unidades.from+" - "+unidades.to+" "}</span>
+              of <span className="font-semibold text-gray-900 dark:text-white">{" "+unidades.total+" "}</span>
+            </span>
+            <AppPagination
+              page_links={unidades.links}
+              search={unidades.filters.search}
+              perPage={unidades.filters.perPage}
+              onPageChange={(page) => fetchUnidades({ page })}
+            />
+          </div>              
         </div>
+      </div>
         
         {visibility.isEditModalOpen && editUnidadMedida && (
         <ModalEdit

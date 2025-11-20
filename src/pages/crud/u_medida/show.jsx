@@ -16,7 +16,7 @@ export default function ModalShow({
           <div className="modal-content">
           {/* Modal header */}
            <div className="modal-header">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Show {title}: </h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Ver {title}: </h3>
             <AppBtnX $route={modules+'.index'} handleClose={handleClose} />
           </div>
           {/* Modal body */}

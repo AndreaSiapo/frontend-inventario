@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import IconStar from "../icons/extra/star.jsx";
 
 export default function Nav({ toggleSidebar }) {
 
@@ -34,7 +35,7 @@ export default function Nav({ toggleSidebar }) {
             </button>
 
             <a href={appLink} className="flex ms-2 md:me-24">
-              <img src="/assets/react.svg" className="h-8 me-3" alt="Logo" />
+              <IconStar className="h-8 w-8 me-3 text-yellow-400" />
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                 {appName}
               </span>
