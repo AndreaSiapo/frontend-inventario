@@ -1,55 +1,65 @@
-//import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 //import { appRoutes } from "../../../routes/appRoutes";
 
 // Componentes
 //import AppNotification, { useFlash } from "./../../../components/html/notification";
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
-//import AppBtnActions        from "./../../../components/html/btnActions";
+import AppBtnActions        from "./../../../components/html/btnActions";
 import AppBtnInfoCount      from "./../../../components/html/btnInfoCount";
 import AppBtnTableSetting   from "./../../../components/html/btnTableSetting";
 //import AppPagination        from "./../../../components/html/pagination";
-//import AppThTableOrder      from "./../../../components/html/thTableOrder";
+import AppThTableOrder      from "./../../../components/html/thTableOrder";
 import AppBtnCreate         from "./../../../components/form/btncreate";
-//import AppBtnShowM          from "./../../../components/form/btnshow_m";
-//import AppBtnEdit           from "./../../../components/form/btnedit";
-//import AppBtnDelete         from "./../../../components/form/btndelete";
+import AppBtnShowM          from "./../../../components/form/btnshow_m";
+import AppBtnEdit           from "./../../../components/form/btnedit";
+import AppBtnDelete         from "./../../../components/form/btndelete";
 import AppBtnX              from "./../../../components/form/btnX";
 import Checkbox             from './../../../components/form/check';
 //import AppSearchIndex       from "./../../../components/form/search_index";
-//import ModalEdit            from "./edit";
-//import ModalShow            from "./show";
-//import ModalCreate          from "./create";
+import ModalEdit            from "./edit";
+import ModalShow            from "./show";
+import ModalCreate          from "./create";
 //import Layout               from "./../../../components/app/layout";
 import useIndexTable        from "./../../../hook/useIndexTable";
 import useModuleNames       from "./../../../hook/UseModuleName";
 import useModalHandlers       from "./../../../hook/useModalHandlers";
 
 import { appRoutes } from "../../../routes/appRoutes";
+import { getUnidadesMedida, getUnidadMedida, createUnidadMedida, updateUnidadMedida, getColumns, getDefaultVisibility } from "../../../api/umedidas";
 
 const Index = () => {
-////////////// Esta parte debería venir del backend o de una configuración global /////////////
-
-    const getColumns = () => [
-        { key: 'id',         label: 'ID' },
-        { key: 'nombre',       label: 'Nombre' },
-        { key: 'abreviado',  label: 'Abreviado' },
-        { key: 'updated_at', label: 'Actualizado' },
-        { key: 'created_at', label: 'Creado' },
-    ];
     const columns = getColumns();
-
-    const getDefaultVisibility = () => ({
-        id: false,
-        nombre: true,
-        abreviado: false,
-        updated_at: false,
-        created_at: false,
-    });
     const defaultVisibility = getDefaultVisibility();
-///////////////////////////
 
-    //const route = appRoutes();
+    const [data, setData] = useState([]);
+    const [total, setTotal] = useState(0);
+    const [showUnidadMedida, setShowUnidadMedida] = useState(null);
+    const [editUnidadMedida, setEditUnidadMedida] = useState(null);
+
+    const fetchUnidades = async () => {
+      try {
+        const json = await getUnidadesMedida();
+        const total = json.data ?? json;
+
+        setData(json.data ?? json); // soporta ambas estructuras
+        setTotal(total.length); // ← AQUÍ guardas la cantidad de registros
+      } catch (error) {
+        console.error("Error al obtener unidades:", error);
+      }
+    };
+
+    useEffect(() => {
+      fetchUnidades();
+    }, []);
+
+    const currentFilters = {
+      search: data.search,
+      perPage: data.perPage,
+      page: data.page,
+      orderBy: data.orderBy,
+      orderDir: data.orderDir
+    };
     
     // Hooks factorizaos
     const { module, modules, Module, Modules } = useModuleNames("unidad de medida", "unidades de medida");
@@ -57,14 +67,20 @@ const Index = () => {
     const { visibility, handleToggle, setVisibility, handleFalse,
     checkedItems, handleToggleAll, handleToggleItem, handleSort, handleDate 
     } = useIndexTable({
-        items: ["Kg"], //unidades_de_medida.data,
+        items: data,
         modules,
         //route,
         //filters,
         columns: columns,
         defaultVisibility: defaultVisibility  });
-
-    const {handleCreateClick} = useModalHandlers(Module, modules, handleFalse);
+        
+    const {handleEditClick, handleShowClick, handleEditSubmit, handleCreateClick, handleCreateSubmit, handleCloseModal} = useModalHandlers({Module, modules, currentFilters, handleFalse,
+      fetchItem: getUnidadMedida,         // GET /umedidas/:id
+      createItem: createUnidadMedida,     // POST /umedidas
+      updateItem: updateUnidadMedida,     // PUT /umedidas/:id
+      onSuccess: fetchUnidades
+    });
+    const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
 
     return (
       <>
@@ -83,16 +99,16 @@ const Index = () => {
               <div className="flex-1 flex items-center space-x-2 relative">
                 <h5>
                   <p className="text-gray-500">Total de {modules}:</p>
-                  <p className="dark:text-white"> #000# </p>
+                  <p className="dark:text-white"> {total} </p>
                 </h5>
-                <AppBtnInfoCount from="#000#" to="#000#" total="#000#"  />
+                <AppBtnInfoCount from="#000#" to="#000#" total={total}  />
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
             </div>
 
           {visibility.isCreateModalOpen && (
             <div className="flex w-full items-center align-middle">
-              {/* <ModalCreate onSuccess={() => {fetchUnidades();}} /> */}
+              <ModalCreate onSuccess={() => {fetchUnidades();}} /> 
               <AppBtnX $route={modules+'.index'} handleClose={() => handleCreateClick(setVisibility)} />
             </div>
           )}
@@ -100,6 +116,7 @@ const Index = () => {
             <div className="div-cuatro">
               <div className="relative w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
                 <AppBtnCreate onCreate={() => handleCreateClick(setVisibility)} />
+                <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/umedidas/massDestroy", truncate: "/umedidas/truncate" }} onSuccess={fetchUnidades}/>
               </div>
             </div>
             
@@ -114,8 +131,7 @@ const Index = () => {
                       <label htmlFor="checkbox-all" className="sr-only">checkbox</label>
                     </div>
                   </th>
-                  { /* Aqui falta crear el currentFilters antes de continuar
-                  visibility.id &&
+                  {visibility.id &&
                   <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
                   {visibility.nombre &&
                   <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
@@ -124,35 +140,80 @@ const Index = () => {
                   {visibility.updated_at &&
                   <AppThTableOrder handleSort={() => handleSort('updated_at', currentFilters)}label="updated_at" />}
                   {visibility.created_at &&
-                  <AppThTableOrder handleSort={() => handleSort('created_at', currentFilters)}label="created_at" /> */}
+                  <AppThTableOrder handleSort={() => handleSort('created_at', currentFilters)}label="created_at" />}
                   <th scope="col" className="p-4">ACTION </th>
                 </tr>
               </thead>
               <tbody>
-                {/*u_medida.data.map((unidades) => ( */}
-                <tr className="tbody-tr border-b dark:border-gray-700" key={1}> {/* unidades.id */}
+                {data.map((unidades) => ( 
+                <tr className="tbody-tr border-b dark:border-gray-700" key={unidades.id}>
                   <td className="px-4 py-3 w-4">
-                    { /* Este era antes
-                    <Checkbox id={"chk_"+tabla.id} name={"chk_"+tabla.id} className="chk-td" checked={checkedItems[tabla.id] || false} onChange={() => handleToggleItem(tabla.id)} />
-                    */}
-                    <Checkbox id={"chk_1"} name={"chk_1" /*+tabla.id*/} className="chk-td" checked={false} onChange={() => handleToggleItem(1)} />
+                    <Checkbox id={"chk_"+unidades.id} name={"chk_"+unidades.id} className="chk-td" checked={checkedItems[unidades.id] || false} onChange={() => handleToggleItem(unidades.id)} />
                   </td>
+                  {visibility.id &&
+                  <td className="px-4 py-3 w-4">
+                   {unidades.id}
+                  </td>}
+                  {visibility.nombre &&
+                  <td className="px-4 py-3 w-4">
+                   {unidades.nombre}
+                  </td>}
+                  {visibility.abreviado &&
+                  <td className="px-4 py-3 w-4">
+                   {unidades.abreviado}
+                  </td>}
+                  {visibility.created_at &&
+                  <td className="px-4 py-3 w-4">
+                   {unidades.created_at}
+                  </td>}
+                  {visibility.updated_at &&
+                  <td className="px-4 py-3 w-4">
+                   {unidades.updated_at}
+                  </td>}
                   <td className="px-4 py-3 w-48">
                     <div className="flex items-center space-x-4">
-                      {/* Aqui remplazar el 1 por tabla.id 
-                      <AppBtnEdit   modulo={modules} id={tabla.id} onEdit={() => handleEditClick(tabla.id, setVisibility)} />
-                      <AppBtnShowM  modulo={modules} id={tabla.id} onShow={() => handleShowClick(tabla.id, setVisibility) }/>
-                      <AppBtnDelete modulo={modules} id={tabla.id} currentFilters={currentFilters} /> */}
+                      <AppBtnEdit   modulo={modules} id={unidades.id} onEdit={async () => {
+                          const item = await handleEditClick(unidades.id, setVisibility);
+                          setEditUnidadMedida(item);
+                      }} />
+                      <AppBtnShowM  modulo={modules} id={unidades.id} onShow={async () => {    await handleShowClick(unidades.id, setVisibility, setShowUnidadMedida);}}/>
+                      <AppBtnDelete id={unidades.id} modulo="umedidas" currentFilters={currentFilters} onSuccess={() => fetchUnidades()} />
+
+                      {/* Aqui remplazar el 1 por tabla.id */}
                     </div>
                   </td>
                 </tr>
-                {/*))*/}
+                ))}
               </tbody>
             </table>
           </div>
           
           </div>
         </div>
+        
+        {visibility.isEditModalOpen && editUnidadMedida && (
+        <ModalEdit
+          title={Module}
+          modules={modules}
+          handleClose={() => {
+            handleCloseModal();
+            setEditUnidadMedida(null);
+          }}
+          value={editUnidadMedida}
+          handleEdit={handleEditSubmit}
+          inert={inertValue}
+        />
+        )}
+
+        {visibility.isShowModalOpen && showUnidadMedida && (
+        <ModalShow
+          title={Module}
+          modules={modules}
+          handleClose={handleCloseModal}
+          value={showUnidadMedida}
+        />
+        )}
+        
       </>
     );
 

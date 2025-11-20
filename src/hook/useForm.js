@@ -16,11 +16,14 @@ export default function useForm(initialValues = {}) {
 
     try {
       const response = await axios.post(url, data);
-      return response;
+      return response.data;
     } catch (error) {
-      if (error.response?.data?.errors) {
-        setErrors(error.response.data.errors);
-      }
+      const apiErrors =
+        error.response?.data?.errors ||
+        error.response?.data?.error ||
+        error.response?.data?.message;
+
+      if (apiErrors) setErrors(apiErrors);
       throw error;
     } finally {
       setProcessing(false);

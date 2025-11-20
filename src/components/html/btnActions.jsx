@@ -1,97 +1,108 @@
 //btnActions.jsx
-import { Inertia } from "@inertiajs/inertia";
 import { useState, useEffect, useRef } from "react";
-import IconVUp      from "../icons/actions/v-up";
-import IconVDown    from "../icons/actions/v-down";
+import IconVUp   from "../icons/actions/v-up";
+import IconVDown from "../icons/actions/v-down";
+import { apiDelete } from "../../api/http"; // tu cliente genérico
 
 export default function AppBtnActions({
     modules,
-    checkedItems,
-    currentFilters,
-    labelDel="Delete all",
-    labelDes="Destroy all",
-    labelEdit="Mass Edit"
-  }) {
-  const [btnvisibility, setVisibility] = useState({ actions: false });
-  const dropdownRef = useRef(null);
+    checkedItems = {},
+    currentFilters = {},
+    endpoints = {}, // { massDestroy: '/ruta/massDestroy', truncate: '/ruta/truncate' }
+    labelDel = "Delete all",
+    labelDes = "Destroy all",
+    labelEdit = "Mass Edit",
+    onSuccess = () => {}
+}) {
+    const [btnVisibility, setVisibility] = useState({ actions: false });
+    const dropdownRef = useRef(null);
 
-  const handleToggle = (field) => {
-    setVisibility((prev) => ({
-      ...prev,
-      [field]: !prev[field],
-    }));
-  };
+    const handleToggle = (field) => {
+      setVisibility((prev) => ({ ...prev, [field]: !prev[field] }));
+    };
 
-  const deleteSelected = () => {
-    const selectedIds = Object.keys(checkedItems).filter((id) => checkedItems[id]);
-    if (selectedIds.length === 0) {
-      alert("No has seleccionado ningún autor para eliminar.");
-      return;
-    }
-    if (confirm("¿Estás seguro de que quieres eliminar los autores seleccionados?")) {
-      Inertia.post(route(modules + ".massDestroy"), { ids: selectedIds,
-        ...currentFilters }, {
-        onSuccess: () => handleToggle("actions")
-      });
-    }
-  };
+    const deleteSelected = async () => {
+      const selectedIds = Object.keys(checkedItems).filter((id) => checkedItems[id]);
+      if (!selectedIds.length) {
+        alert("No has seleccionado ningún registro para eliminar.");
+        return;
+      }
+      if (!confirm("¿Estás seguro de que quieres eliminar los seleccionados?")) return;
 
-  const destroyAll = () => {
-    if (confirm("¿Estás seguro de que quieres eliminar todos los autores?")) {
-      Inertia.delete(route(modules + ".truncate"), {
-        onSuccess: () => handleToggle("actions")
-      });
-    }
-  };
-
-  const editMass = () => {
-    alert("Función de edición masiva aún no implementada");
-    handleToggle("actions");
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
-        setVisibility((prev) => ({ ...prev, actions: false }));
+      try {
+        await apiDelete(endpoints.massDestroy, { ids: selectedIds, ...currentFilters });
+          onSuccess(); // refresca la tabla
+          handleToggle("actions");
+      } catch (e) {
+        console.error("Error al eliminar seleccionados:", e);
       }
     };
 
-    if (btnvisibility.actions) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside); }
+    const destroyAll = async () => {
+      if (!confirm("¿Estás seguro de que quieres eliminar todos los registros?")) return;
 
-    // Limpieza al desmontar o cuando cambia btnvisibility.actions
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside); };
-  }, [btnvisibility.actions]);
+      try {
+        await apiDelete(endpoints.truncate, currentFilters);
+          onSuccess();
+          handleToggle("actions");
+      } catch (e) {
+        console.error("Error al eliminar todos:", e);
+      }
+    };
 
+    const editMass = () => {
+      alert("Función de edición masiva aún no implementada");
+      handleToggle("actions");
+    };
 
-  return (
-    <>
-      <div  ref={dropdownRef} className="flex items-center space-x-3 w-full md:w-auto relative">
-        <button id="actionsDropdownButton" onClick={() => handleToggle('actions')}data-dropdown-toggle="actionsDropdown" className="btn-actions" type="button">
-          Actions
-          {btnvisibility.actions ? <IconVUp className="w-5 h-5" />:<IconVDown className="w-5 h-5 shrink-0" />}
+    useEffect(() => {
+     const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setVisibility((prev) => ({ ...prev, actions: false }));
+        }
+      };
+
+      if (btnVisibility.actions) {
+        document.addEventListener("mousedown", handleClickOutside);
+      } else {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [btnVisibility.actions]);
+
+    return (
+      <div ref={dropdownRef} className="flex items-center space-x-3 w-full md:w-auto relative">
+        <button
+          id="actionsDropdownButton"
+          onClick={() => handleToggle("actions")}
+          className="btn-actions"
+          type="button"
+        >
+          Actions {btnVisibility.actions ? <IconVUp className="w-5 h-5" /> : <IconVDown className="w-5 h-5 shrink-0" />}
         </button>
-        {btnvisibility.actions && (
-        <div id="actionsDropdown" className="absolute z-10 w-44 top-10 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+
+        {btnVisibility.actions && (
+        <div className="absolute z-10 w-44 top-10 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
           <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
             <li>
-              <button type="button" onClick={editMass} className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-left">{labelEdit}</button>
+              <button type="button" onClick={editMass} className="block py-2 px-4 w-full text-left text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" >
+                {labelEdit}
+              </button>
             </li>
             <li>
-              <button type="button" onClick={deleteSelected} className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-left">{labelDel}</button>
+              <button type="button" onClick={deleteSelected} className="block py-2 px-4 w-full text-left text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" >
+                  {labelDel}
+              </button>
             </li>
           </ul>
           <div className="py-1">
-            <button type="button" onClick={destroyAll} className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white w-full text-left">{labelDes}</button>
+            <button type="button" onClick={destroyAll} className="block py-2 px-4 w-full text-left text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" >
+                {labelDes}
+            </button>
           </div>
         </div>
         )}
       </div>
-    </>
-)}
+    );
+}

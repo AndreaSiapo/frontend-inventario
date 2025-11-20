@@ -1,3 +1,4 @@
+//src/routes/appRoutes.js
 export const appRoutes = {
   bodega: "/tablas/bodegas",
   categoría: "/tablas/categorías",
