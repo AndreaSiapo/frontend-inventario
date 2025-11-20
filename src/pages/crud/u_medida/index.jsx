@@ -145,41 +145,39 @@ const Index = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((unidades) => ( 
-                <tr className="tbody-tr border-b dark:border-gray-700" key={unidades.id}>
+                {data.map((unidad) => ( 
+                <tr className="tbody-tr border-b dark:border-gray-700" key={unidad.id}>
                   <td className="px-4 py-3 w-4">
-                    <Checkbox id={"chk_"+unidades.id} name={"chk_"+unidades.id} className="chk-td" checked={checkedItems[unidades.id] || false} onChange={() => handleToggleItem(unidades.id)} />
+                    <Checkbox id={"chk_"+unidad.id} name={"chk_"+unidad.id} className="chk-td" checked={checkedItems[unidad.id] || false} onChange={() => handleToggleItem(unidad.id)} />
                   </td>
                   {visibility.id &&
                   <td className="px-4 py-3 w-4">
-                   {unidades.id}
+                   {unidad.id}
                   </td>}
                   {visibility.nombre &&
                   <td className="px-4 py-3 w-4">
-                   {unidades.nombre}
+                   {unidad.nombre}
                   </td>}
                   {visibility.abreviado &&
                   <td className="px-4 py-3 w-4">
-                   {unidades.abreviado}
+                   {unidad.abreviado}
                   </td>}
                   {visibility.created_at &&
                   <td className="px-4 py-3 w-4">
-                   {unidades.created_at}
+                   {unidad.created_at}
                   </td>}
                   {visibility.updated_at &&
                   <td className="px-4 py-3 w-4">
-                   {unidades.updated_at}
+                   {unidad.updated_at}
                   </td>}
                   <td className="px-4 py-3 w-48">
                     <div className="flex items-center space-x-4">
-                      <AppBtnEdit   modulo={modules} id={unidades.id} onEdit={async () => {
-                          const item = await handleEditClick(unidades.id, setVisibility);
+                      <AppBtnEdit   modulo={modules} id={unidad.id} onEdit={async () => {
+                          const item = await handleEditClick(unidad.id, setVisibility);
                           setEditUnidadMedida(item);
                       }} />
-                      <AppBtnShowM  modulo={modules} id={unidades.id} onShow={async () => {    await handleShowClick(unidades.id, setVisibility, setShowUnidadMedida);}}/>
-                      <AppBtnDelete id={unidades.id} modulo="umedidas" currentFilters={currentFilters} onSuccess={() => fetchUnidades()} />
-
-                      {/* Aqui remplazar el 1 por tabla.id */}
+                      <AppBtnShowM  modulo={modules} id={unidad.id} onShow={async () => {    await handleShowClick(unidad.id, setVisibility, setShowUnidadMedida);}}/>
+                      <AppBtnDelete id={unidad.id} modulo="umedidas" currentFilters={currentFilters} onSuccess={() => fetchUnidades()} />
                     </div>
                   </td>
                 </tr>
