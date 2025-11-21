@@ -6,7 +6,7 @@ export default function ModalCreate( {
   classInput="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
   onSuccess
   }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, reset} = useForm({
         nombre: "",
         abreviado: "",
     });
@@ -16,6 +16,7 @@ export default function ModalCreate( {
 
       try {
         await createUnidadMedida(data);
+        reset();
         if (onSuccess) onSuccess();
       } catch (error) {
         // los errores se manejan en el hook
@@ -30,7 +31,7 @@ export default function ModalCreate( {
             type="text"
             placeholder="Nombre de la Unidad de Medida"
             value={data.nombre}
-            autoComplete="name"
+            autoComplete="nombre"
             onChange={(e) => setData("nombre", e.target.value)}
             className={classInput+`${errors.nombre && ' ring-red-500 border-red-200'}`}
           />

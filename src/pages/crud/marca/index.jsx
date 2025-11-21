@@ -26,7 +26,7 @@ import AppPagination        from "./../../../components/html/pagination";
 //import Layout               from "./../../../components/app/layout";
 
 import { appRoutes } from "../../../routes/appRoutes";
-import { getUnidadesMedida, getUnidadMedida, createUnidadMedida, updateUnidadMedida, getColumns, getDefaultVisibility } from "../../../api/umedidas";
+import { getMarcas, getMarca, createMarca, updateMarca, getColumns, getDefaultVisibility } from "../../../api/marcas";
 
 const Index = () => {
   const columns = getColumns();
@@ -34,9 +34,10 @@ const Index = () => {
   const [flash, notify] = useFlash();
 
   const [data, setData] = useState([]);
-  const [showUnidadMedida, setShowUnidadMedida] = useState(null);
-  const [editUnidadMedida, setEditUnidadMedida] = useState(null);
-  const [unidades, setUnidades] = useState({
+  const [total, setTotal] = useState(0);
+  const [showMarca, setShowMarca] = useState(null);
+  const [editMarca, setEditMarca] = useState(null);
+  const [marcas, setMarcas] = useState({
     data: [],
     total: 0,
     from: 0,
@@ -47,27 +48,29 @@ const Index = () => {
     defaultVisibility: getDefaultVisibility()
   });
 
-  const fetchUnidades = async (filters = {}) => {
+  const fetchMarcas = async (filters = {}) => {
     try {
-      const json = await getUnidadesMedida({ ...unidades.filters, ...filters });
-      setUnidades(json);
+      const json = await getMarcas({ ...marcas.filters, ...filters });
+      setMarcas(json);
+      const total = json.data ?? json;
 
       setData(json.data ?? json); // soporta ambas estructuras
+      setTotal(total.length); // ← AQUÍ guardas la cantidad de registros
     } catch (error) {
-      console.error("Error al obtener unidades:", error);
+      console.error("Error al obtener marcas:", error);
     }
   };
 
   useEffect(() => {
-    fetchUnidades();
+    fetchMarcas();
   }, []);
 
   async function handEdit(id) {
     const item = await handleEditClick(id, setVisibility);
-    setEditUnidadMedida(item); }
+    setEditMarca(item); }
 
   async function handShow(id) {
-    const item = await handleShowClick(id, setVisibility, setShowUnidadMedida); }
+    const item = await handleShowClick(id, setVisibility, setShowMarca); }
 
   const currentFilters = {
     search: data.search,
@@ -78,7 +81,7 @@ const Index = () => {
   };
     
   // Hooks factorizaos
-  const { module, modules, Module, Modules } = useModuleNames("unidad de medida", "unidades de medida");
+  const { module, modules, Module, Modules } = useModuleNames("marca", "marcas");
   const { visibility, handleToggle, setVisibility, handleFalse,
   checkedItems, handleToggleAll, handleToggleItem, handleSort, handleDate 
   } = useIndexTable({
@@ -90,10 +93,10 @@ const Index = () => {
       defaultVisibility: defaultVisibility  });
        
   const {handleEditClick, handleShowClick, handleEditSubmit, handleCreateClick, handleCreateSubmit, handleCloseModal} = useModalHandlers({Module, modules, currentFilters, handleFalse, notify,
-    fetchItem: getUnidadMedida,         // GET /umedidas/:id
-    createItem: createUnidadMedida,     // POST /umedidas
-    updateItem: updateUnidadMedida,     // PUT /umedidas/:id
-    onSuccess: fetchUnidades
+    fetchItem: getMarca,         // GET /marcas/:id
+    createItem: createMarca,     // POST /marcas
+    updateItem: updateMarca,     // PUT /marcas/:id
+    onSuccess: fetchMarcas
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
 
@@ -102,10 +105,10 @@ const Index = () => {
       <AppBreadcrumb
         title={Modules}
         sites={["Tablas",Modules]}
-        links={["/tablas", appRoutes.u_medida]}
+        links={["/tablas", appRoutes.marca]}
       />
 
-      {flash && <AppNotification type={flash.type} message={flash.message} />
+      {//flash && <AppNotification type={flash.type} message={flash.message} />
     }
 
         <div className="div-uno">
@@ -114,24 +117,23 @@ const Index = () => {
               <div className="flex-1 flex items-center space-x-2 relative">
                 <h5>
                   <p className="text-gray-500">Total de {modules}:</p>
-                  <p className="dark:text-white"> {unidades.total} </p>
+                  <p className="dark:text-white"> {marcas.total} </p>
                 </h5>
-                <AppBtnInfoCount from={unidades.from} to={unidades.to} total={unidades.total}  />
+                <AppBtnInfoCount from={marcas.from} to={marcas.to} total={marcas.total}  />
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
             </div>
 
           {visibility.isCreateModalOpen && (
             <div className="flex w-full items-center align-middle">
-              <ModalCreate onSuccess={() => {fetchUnidades();}} /> 
-              <AppBtnX $route={modules+'.index'} handleClose={() => handleCreateClick(setVisibility)} />
+              <ModalCreate onSuccess={() => {fetchMarcas();}} title={Module} handleClose={() => handleCreateClick(setVisibility)} />
             </div>
           )}
 
             <div className="div-cuatro">
               <div className="relative w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
                 <AppBtnCreate onCreate={() => handleCreateClick(setVisibility)} />
-                <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/umedidas/massDestroy", truncate: "/umedidas/truncate" }} onSuccess={fetchUnidades}/>
+                <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/marcas/massDestroy", truncate: "/marcas/truncate" }} onSuccess={fetchMarcas}/>
               </div>
             </div>
             
@@ -152,6 +154,12 @@ const Index = () => {
                   <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
                   {visibility.abreviado &&
                   <AppThTableOrder handleSort={() => handleSort('abreviado', currentFilters)} label="ABREVIADO" />}
+                  {visibility.ruc &&
+                  <AppThTableOrder handleSort={() => handleSort('ruc', currentFilters)} label="RUC" />}
+                  {visibility.descripcion &&
+                  <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCIÓN" />}
+                  {visibility.tipo &&
+                  <AppThTableOrder handleSort={() => handleSort('tipo', currentFilters)} label="TIPO" />}
                   {visibility.updated_at &&
                   <AppThTableOrder handleSort={() => handleSort('updated_at', currentFilters)}label="updated_at" />}
                   {visibility.created_at &&
@@ -160,36 +168,48 @@ const Index = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((unidad) => ( 
-                <tr className="tbody-tr border-b dark:border-gray-700" key={unidad.id}>
+                {data.map((marca) => ( 
+                <tr className="tbody-tr border-b dark:border-gray-700" key={marca.id}>
                   <td className="px-4 py-3 w-4">
-                    <Checkbox id={"chk_"+unidad.id} name={"chk_"+unidad.id} className="chk-td" checked={checkedItems[unidad.id] || false} onChange={() => handleToggleItem(unidad.id)} />
+                    <Checkbox id={"chk_"+marca.id} name={"chk_"+marca.id} className="chk-td" checked={checkedItems[marca.id] || false} onChange={() => handleToggleItem(marca.id)} />
                   </td>
                   {visibility.id &&
                   <td className="px-4 py-3 w-4">
-                   {unidad.id}
+                   {marca.id}
                   </td>}
                   {visibility.nombre &&
                   <td className="px-4 py-3 w-4">
-                   {unidad.nombre}
+                   {marca.nombre}
                   </td>}
                   {visibility.abreviado &&
                   <td className="px-4 py-3 w-4">
-                   {unidad.abreviado}
+                   {marca.abreviado}
+                  </td>}
+                  {visibility.ruc &&
+                  <td className="px-4 py-3 w-4">
+                   {marca.ruc}
+                  </td>}
+                  {visibility.descripcion &&
+                  <td className="px-4 py-3 w-4">
+                   {marca.descripcion}
+                  </td>}
+                  {visibility.tipo &&
+                  <td className="px-4 py-3 w-4">
+                   {marca.tipo}
                   </td>}
                   {visibility.created_at &&
                   <td className="px-4 py-3 w-4">
-                   {unidad.created_at}
+                   {marca.created_at}
                   </td>}
                   {visibility.updated_at &&
                   <td className="px-4 py-3 w-4">
-                   {unidad.updated_at}
+                   {marca.updated_at}
                   </td>}
                   <td className="px-4 py-3 w-48">
                     <div className="flex items-center space-x-4">
-                      <AppBtnEdit   modulo={modules} id={unidad.id} onEdit={() => handEdit(unidad.id)} />
-                      <AppBtnShowM  modulo={modules} id={unidad.id} onShow={() => handShow(unidad.id)}/>
-                      <AppBtnDelete id={unidad.id} modulo="umedidas" currentFilters={currentFilters} onSuccess={() => fetchUnidades()} />
+                      <AppBtnEdit   modulo={modules} id={marca.id} onEdit={() => handEdit(marca.id)} />
+                      <AppBtnShowM  modulo={modules} id={marca.id} onShow={() => handShow(marca.id)}/>
+                      <AppBtnDelete id={marca.id} modulo="marcas" currentFilters={currentFilters} onSuccess={() => fetchMarcas()} />
                     </div>
                   </td>
                 </tr>
@@ -200,39 +220,39 @@ const Index = () => {
 
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+unidades.from+" - "+unidades.to+" "}</span>
-              of <span className="font-semibold text-gray-900 dark:text-white">{" "+unidades.total+" "}</span>
+              Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+marcas.from+" - "+marcas.to+" "}</span>
+              of <span className="font-semibold text-gray-900 dark:text-white">{" "+marcas.total+" "}</span>
             </span>
             <AppPagination
-              page_links={unidades.links}
-              search={unidades.filters.search}
-              perPage={unidades.filters.perPage}
-              onPageChange={(page) => fetchUnidades({ page })}
+              page_links={marcas.links}
+              search={marcas.filters.search}
+              perPage={marcas.filters.perPage}
+              onPageChange={(page) => fetchMarcas({ page })}
             />
           </div>              
         </div>
       </div>
         
-        {visibility.isEditModalOpen && editUnidadMedida && (
+        {visibility.isEditModalOpen && editMarca && (
         <ModalEdit
           title={Module}
           modules={modules}
           handleClose={() => {
             handleCloseModal();
-            setEditUnidadMedida(null);
+            setEditMarca(null);
           }}
-          value={editUnidadMedida}
+          value={editMarca}
           handleEdit={handleEditSubmit}
           inert={inertValue}
         />
         )}
 
-        {visibility.isShowModalOpen && showUnidadMedida && (
+        {visibility.isShowModalOpen && showMarca && (
         <ModalShow
           title={Module}
           modules={modules}
           handleClose={handleCloseModal}
-          value={showUnidadMedida}
+          value={showMarca}
         />
         )}
         
