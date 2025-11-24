@@ -1,6 +1,5 @@
 //Create.jsx
 import useForm from "../../../hook/useForm";
-import { createMarca } from "../../../api/marcas";
 import AppBtnX from "../../../components/form/btnX";
 
 export default function ModalCreate( {

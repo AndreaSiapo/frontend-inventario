@@ -33,8 +33,6 @@ const Index = () => {
   const defaultVisibility = getDefaultVisibility();
   const [flash, notify] = useFlash();
 
-  const [data, setData] = useState([]);
-  const [total, setTotal] = useState(0);
   const [showMarca, setShowMarca] = useState(null);
   const [editMarca, setEditMarca] = useState(null);
   const [marcas, setMarcas] = useState({
@@ -54,7 +52,6 @@ const Index = () => {
       const json = await getMarcas(newFilters);
       setMarcas({...json, filters: newFilters});
 
-      setData(json.data ?? json);
     } catch (error) {
       console.error("Error al obtener marcas:", error);
     }
@@ -72,11 +69,11 @@ const Index = () => {
     const item = await handleShowClick(id, setVisibility, setShowMarca); }
 
   const currentFilters = {
-    search: data.search,
-    perPage: data.perPage,
-    page: data.page,
-    orderBy: data.orderBy,
-    orderDir: data.orderDir
+    search: marcas.filters.search,
+    perPage: marcas.filters.perPage,
+    page: marcas.filters.page,
+    orderBy: marcas.filters.orderBy,
+    orderDir: marcas.filters.orderDir
   };
     
   // Hooks factorizaos
@@ -84,7 +81,7 @@ const Index = () => {
   const { visibility, handleToggle, setVisibility, handleFalse,
   checkedItems, handleToggleAll, handleToggleItem, handleSort, handleDate 
   } = useIndexTable({
-      items: data,
+      items: marcas.data,
       modules,
       //route,
       //filters,
@@ -125,7 +122,7 @@ const Index = () => {
 
           {visibility.isCreateModalOpen && (
             <div className="flex w-full items-center align-middle">
-              <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} />
+              <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules}/>
             </div>
           )}
 
@@ -167,7 +164,7 @@ const Index = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((marca) => ( 
+                {marcas.data.map((marca) => ( 
                 <tr className="tbody-tr border-b dark:border-gray-700" key={marca.id}>
                   <td className="px-4 py-3 w-4">
                     <Checkbox id={"chk_"+marca.id} name={"chk_"+marca.id} className="chk-td" checked={checkedItems[marca.id] || false} onChange={() => handleToggleItem(marca.id)} />
