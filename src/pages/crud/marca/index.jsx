@@ -50,12 +50,11 @@ const Index = () => {
 
   const fetchMarcas = async (filters = {}) => {
     try {
-      const json = await getMarcas({ ...marcas.filters, ...filters });
-      setMarcas(json);
-      const total = json.data ?? json;
+      const newFilters = { ...marcas.filters, ...filters };
+      const json = await getMarcas(newFilters);
+      setMarcas({...json, filters: newFilters});
 
-      setData(json.data ?? json); // soporta ambas estructuras
-      setTotal(total.length); // ← AQUÍ guardas la cantidad de registros
+      setData(json.data ?? json);
     } catch (error) {
       console.error("Error al obtener marcas:", error);
     }
@@ -108,7 +107,7 @@ const Index = () => {
         links={["/tablas", appRoutes.marca]}
       />
 
-      {//flash && <AppNotification type={flash.type} message={flash.message} />
+      {flash && <AppNotification type={flash.type} message={flash.message} />
     }
 
         <div className="div-uno">
@@ -126,7 +125,7 @@ const Index = () => {
 
           {visibility.isCreateModalOpen && (
             <div className="flex w-full items-center align-middle">
-              <ModalCreate onSuccess={() => {fetchMarcas();}} title={Module} handleClose={() => handleCreateClick(setVisibility)} />
+              <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} />
             </div>
           )}
 

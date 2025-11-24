@@ -10,24 +10,12 @@ export default function ModalCreate( {
         nombre: "",
         abreviado: "",
     });
-/*
+
     const handleSubmit = async (e) => {
       e.preventDefault();
-
       try {
-        await createUnidadMedida(data);
-        reset();
-        if (onSuccess) onSuccess();
-      } catch (error) {
-        // los errores se manejan en el hook
-      }
-    };
-*/
-    const handleSubmit = async (e) => {
-      try {
-        e.preventDefault();
-        if (onSuccess) await onSuccess(data) // ✅ usa el handler del hook
-        reset();              // ✅ limpia campos
+        if (onSuccess) await onSuccess(data)
+        reset();            
       } catch (error) {
         // los errores se manejan en el hook
       }
