@@ -1,4 +1,4 @@
-// Continentes/Show.jsx
+// ModalShow.jsx
 import AppBtnX from "../../../components/form/btnX";
 import dayjs from 'dayjs';
 

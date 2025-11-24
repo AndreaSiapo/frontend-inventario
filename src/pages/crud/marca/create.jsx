@@ -11,7 +11,7 @@ export default function ModalCreate( {
   inert,
   onSuccess
   }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         nombre: "",
         abreviado: "",
         ruc: "",
@@ -23,8 +23,9 @@ export default function ModalCreate( {
       e.preventDefault();
 
       try {
-        await createMarca(data);
-        if (onSuccess) onSuccess();
+        if (onSuccess) onSuccess(data);
+        reset();
+        handleClose();
       } catch (error) {
         // los errores se manejan en el hook
       }
@@ -38,7 +39,7 @@ export default function ModalCreate( {
             {/* Modal header */}
             <div className="modal-header">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Crear {title}: </h3>
-              <AppBtnX $route={modules+'.index'} handleClose={handleClose} />
+              <AppBtnX $route={'/tablas/presentaciones'} handleClose={handleClose} />
             </div>
           {/* Modal body */}
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
