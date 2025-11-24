@@ -1,3 +1,4 @@
+// src/pages/crud/u_medida/index.jsx
 import React, { useState, useEffect } from "react";
 
 //import { appRoutes } from "../../../routes/appRoutes";
@@ -49,8 +50,10 @@ const Index = () => {
 
   const fetchUnidades = async (filters = {}) => {
     try {
-      const json = await getUnidadesMedida({ ...unidades.filters, ...filters });
-      setUnidades(json);
+      const newFilters = { ...unidades.filters, ...filters };
+
+      const json = await getUnidadesMedida(newFilters);
+      setUnidades({...json, filters: newFilters});
 
       setData(json.data ?? json); // soporta ambas estructuras
     } catch (error) {
@@ -97,6 +100,8 @@ const Index = () => {
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
 
+  
+
   return (
     <>
       <AppBreadcrumb
@@ -123,7 +128,7 @@ const Index = () => {
 
           {visibility.isCreateModalOpen && (
             <div className="flex w-full items-center align-middle">
-              <ModalCreate onSuccess={() => {fetchUnidades();}} /> 
+              <ModalCreate onSuccess={handleCreateSubmit} /> 
               <AppBtnX $route={modules+'.index'} handleClose={() => handleCreateClick(setVisibility)} />
             </div>
           )}

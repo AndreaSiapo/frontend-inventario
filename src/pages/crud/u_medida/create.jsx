@@ -1,4 +1,4 @@
-//Create.jsx
+// src/pages/crud/u_medida/create.jsx
 import useForm from "../../../hook/useForm";
 import { createUnidadMedida } from "../../../api/umedidas";
 
@@ -10,7 +10,7 @@ export default function ModalCreate( {
         nombre: "",
         abreviado: "",
     });
-
+/*
     const handleSubmit = async (e) => {
       e.preventDefault();
 
@@ -18,6 +18,16 @@ export default function ModalCreate( {
         await createUnidadMedida(data);
         reset();
         if (onSuccess) onSuccess();
+      } catch (error) {
+        // los errores se manejan en el hook
+      }
+    };
+*/
+    const handleSubmit = async (e) => {
+      try {
+        e.preventDefault();
+        if (onSuccess) await onSuccess(data) // ✅ usa el handler del hook
+        reset();              // ✅ limpia campos
       } catch (error) {
         // los errores se manejan en el hook
       }

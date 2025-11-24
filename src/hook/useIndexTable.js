@@ -1,4 +1,4 @@
-// useIndexTable.js
+// src/hook/useIndexTable.js
 import { useState, useEffect } from "react";
 //import { Inertia } from "@inertiajs/inertia";
 import dayjs from "dayjs"

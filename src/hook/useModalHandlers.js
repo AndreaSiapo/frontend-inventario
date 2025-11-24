@@ -1,4 +1,4 @@
-//useModalHandler.js
+// src/hook/useModalHandlers.js
 import { useState } from "react";
 
 export default function useModalHandlers({ Module, modules, route, currentFilters= {}, handleFalse,
@@ -9,9 +9,9 @@ export default function useModalHandlers({ Module, modules, route, currentFilter
   notify
 }) {
 
-  const handleCreateSubmit = async (data) => {
+  const handleCreateSubmit = async (data = {}) => {
     try {
-      await createItem({ ...data, ...currentFilters });
+      await createItem({ ...data });
       if (onSuccess) await onSuccess(); // refresca lista si se pasa
       handleFalse("isCreateModalOpen");
     } catch (e) {

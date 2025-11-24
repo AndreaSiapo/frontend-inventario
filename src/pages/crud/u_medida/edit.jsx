@@ -1,4 +1,4 @@
-//edit.jsx
+// src/pages/crud/u_medida/edit.jsx
 import AppBtnX from "../../../components/form/btnX";
 import useForm from "../../../hook/useForm";
 
