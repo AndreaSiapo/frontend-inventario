@@ -1,6 +1,5 @@
 //Create.jsx
 import useForm from "../../../hook/useForm";
-import { createPresentacion } from "../../../api/presentaciones";
 import AppBtnX from "../../../components/form/btnX";
 
 export default function ModalCreate( {
@@ -19,14 +18,8 @@ export default function ModalCreate( {
     const handleSubmit = async (e) => {
       e.preventDefault();
 
-      try {
-        if (onSuccess) onSuccess(data);
-        reset();
-        handleClose();
-      } catch (error) {
-        console.error("Delete failed:", error);
-        alert("No se pudo crear el registro.");
-      }
+      if (onSuccess) onSuccess(data);
+      handleClose();
     };
 
   return (

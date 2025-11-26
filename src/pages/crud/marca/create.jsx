@@ -21,13 +21,10 @@ export default function ModalCreate( {
     const handleSubmit = async (e) => {
       e.preventDefault();
 
-      try {
-        if (onSuccess) onSuccess(data);
-        reset();
-        handleClose();
-      } catch (error) {
-        // los errores se manejan en el hook
-      }
+      if (onSuccess) onSuccess(data);
+      reset();
+      handleClose();
+      notifySuccess("Marcas creada con éxito.");
     };
 
     return (

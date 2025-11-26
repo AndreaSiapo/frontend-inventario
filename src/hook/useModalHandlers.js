@@ -14,6 +14,7 @@ export default function useModalHandlers({ Module, modules, route, currentFilter
       await createItem({ ...data });
       if (onSuccess) await onSuccess(); // refresca lista si se pasa
       handleFalse("isCreateModalOpen");
+      notify?.("Creado con éxito", "success");
     } catch (e) {
       console.error("Error create:", e);
       notify?.("Error al crear "+Module, "error");
@@ -25,6 +26,7 @@ export default function useModalHandlers({ Module, modules, route, currentFilter
       await updateItem(id, { ...data, ...currentFilters });
       if (onSuccess) await onSuccess(); // refresca lista si se pasa
       handleFalse("isEditModalOpen");
+      notify?.("Actualizado con éxito", "success");
     } catch (e) {
       console.error("Error edit:", e);
       notify?.("Error al editar "+Module, "error");
