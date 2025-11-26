@@ -22,9 +22,7 @@ export default function ModalCreate( {
       e.preventDefault();
 
       if (onSuccess) onSuccess(data);
-      reset();
       handleClose();
-      notifySuccess("Marcas creada con éxito.");
     };
 
     return (
