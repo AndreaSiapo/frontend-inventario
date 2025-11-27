@@ -32,7 +32,7 @@ export default function Sidebar({ isOpen }) {
   const tablas = [
     { label: "Unidades de Medida", path: appRoutes.u_medida,            icon: Book },
     { label: "Bodega",             path: appRoutes.bodega,              icon: Book },
-    { label: "Categoría",          path: appRoutes.categoría,           icon: Book },
+    { label: "Categoría",          path: appRoutes.categoria,           icon: Book },
     { label: "Destinatario",       path: appRoutes.destinatario,        icon: Book },
     { label: "Existencia",         path: appRoutes.existencia,          icon: Book },
     { label: "Marca",              path: appRoutes.marca,               icon: Book },

@@ -23,5 +23,6 @@ export default {
       require('@tailwindcss/forms'),
       require('@tailwindcss/typography'),
       require('@tailwindcss/container-queries'),
-      require('tailwindcss-bg-patterns'),],
+      require('tailwindcss-bg-patterns'),
+      require('tailwind-scrollbar')({ nocompatible: true }),],
 };

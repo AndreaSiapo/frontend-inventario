@@ -1,7 +1,8 @@
 // src/hook/useModalHandlers.js
 import { useState } from "react";
 
-export default function useModalHandlers({ Module, modules, route, currentFilters= {}, handleFalse,
+export default function useModalHandlers({ Module, modules, route, 
+  currentFilters= {}, handleFalse,
   fetchItem,       // (id) => Promise
   createItem,      // (data) => Promise
   updateItem,      // (id, data) => Promise,
@@ -76,8 +77,6 @@ export default function useModalHandlers({ Module, modules, route, currentFilter
   const handleCloseModal = () => {
     handleFalse("isEditModalOpen");
     handleFalse("isShowModalOpen");
-    // ya no navegamos a rutas REST como en inertia
-    // simplemente cerramos modales
   };
 
   return {

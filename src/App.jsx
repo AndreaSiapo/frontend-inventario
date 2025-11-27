@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from   './components/app/layout'
 import Index from    './pages/home/index'
 import Marca from    './pages/crud/marca/index'
+import Categoria from    './pages/crud/categoria/index'
 import Presentacion from './pages/crud/presentacion/index'
 import U_Medida from './pages/crud/u_medida/index'
 import viteLogo from '/vite.svg'
@@ -25,6 +26,7 @@ function App() {
               <Route path='/tablas/unidad_medidas' element={<U_Medida></U_Medida>}></Route>
               <Route path='/tablas/marcas' element={<Marca></Marca>}></Route>
               <Route path='/tablas/presentaciones' element={<Presentacion></Presentacion>}></Route>
+              <Route path='/tablas/categorias' element={<Categoria></Categoria>}></Route>
             </Routes>
           </Layout>
         </BrowserRouter>
