@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import Layout from   './components/app/layout'
+import Error404 from   './components/app/404'
 import Index from    './pages/home/index'
 import Marca from    './pages/crud/marca/index'
 import Categoria from    './pages/crud/categoria/index'
@@ -27,6 +28,7 @@ function App() {
               <Route path='/tablas/marcas' element={<Marca></Marca>}></Route>
               <Route path='/tablas/presentaciones' element={<Presentacion></Presentacion>}></Route>
               <Route path='/tablas/categorias' element={<Categoria></Categoria>}></Route>
+              <Route path='*' element={<Error404></Error404>}></Route>
             </Routes>
           </Layout>
         </BrowserRouter>
