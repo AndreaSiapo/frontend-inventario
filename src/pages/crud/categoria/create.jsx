@@ -109,14 +109,14 @@ export default function ModalCreate( {
                     <li key={c.id}>
                       <input type="radio" id={"padre_"+c.id} name="categoriaPadreId" value={c.id} className="peer hidden" onChange={(e) => setData("categoriaPadreId", e.target.value)}/>
                       <label htmlFor={"padre_"+c.id} 
-                        className={`w-full cursor-pointer border-gray-300 bg-white transition text-gray-700 hover:bg-gray-200 peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-700 peer-has-checked:ring-2 peer-has-checked:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:peer-checked:bg-blue-900 dark:peer-checked:border-blue-400 dark:peer-checked:text-blue-300 dark:peer-has-checked:ring-blue-600 ${`pl-${Math.min(c.level * 4 + 2, 14)}`} ${index === categoriasOrdenadas.length - 1 ? "rounded-b-lg" : ""}`}
+                        className={`flex w-full cursor-pointer border-gray-300 bg-white transition text-gray-700 hover:bg-gray-200 peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-700 peer-has-checked:ring-2 peer-has-checked:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:peer-checked:bg-blue-900 dark:peer-checked:border-blue-400 dark:peer-checked:text-blue-300 dark:peer-has-checked:ring-blue-600 ${index === categoriasOrdenadas.length - 1 ? "rounded-b-lg" : ""}`}
                       >
-                        {c.hasChildren ? (
-                          <IconVRight className="inline-block mr-1 w-4 text-gray-500 dark:text-gray-300" />
-                        ) : (
-                          <span className="inline-block w-4"></span> // mantiene alineación
-                        )}
-                        {c.nombre}
+                        <div className={`pl-2`} style={{ paddingLeft: `${c.level * 12 + 8}px` }}>
+
+                          {c.hasChildren ? (
+                            <IconVRight className="inline-block w-4 text-gray-500 dark:text-gray-300" />
+                          ) : null}
+                        {c.nombre}</div>
                       </label>
                     </li>
                     ))}

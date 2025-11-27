@@ -96,7 +96,7 @@ export function getColumns() {
   return [
     { key: 'id',         label: 'ID' },
     { key: 'nombre',     label: 'Nombre' },
-    { key: 'categoriaPadreId ',   label: 'Categoría Padre' },
+    { key: 'categoriaPadreId',   label: 'Categoría Padre' },
     { key: 'detalle ',   label: 'Detalle' },
     { key: 'created_at', label: 'Creado' },
     { key: 'updated_at', label: 'Actualizado' },

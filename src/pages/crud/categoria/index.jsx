@@ -96,6 +96,20 @@ const Index = () => {
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
 
+  function buildCategoriaPath(categoria, allCategorias) {
+    let path = [];
+    let current = categoria;
+
+    while (current?.categoriaPadreId) {
+      const parent = allCategorias.find(c => c.id === current.categoriaPadreId);
+      if (!parent) break;
+      path.push(parent.nombre);
+      current = parent;
+    }
+
+    return path.reverse().join(" / ");
+  }
+
   return (
     <>
       <AppBreadcrumb
@@ -170,12 +184,15 @@ const Index = () => {
                   {visibility.nombre &&
                   <td className="px-4 py-3 w-4">
                    {categoria?.nombre}
-                   {categoria?.categoriaPadreId && (
-                    <div className="text-gray-500 text-sm">
-                      <br></br>
-                      {categoria.categoriaPadreId}
-                    </div>
-                  )}
+                   {visibility.categoriaPadreId && (
+
+                    categoria?.categoriaPadreId && (
+                      <div className="text-gray-500 text-xs">
+                        {buildCategoriaPath(categoria, categorias.data)}
+                      </div>
+                    )
+                    )
+                  }
                   </td>}
                   {visibility.detalle &&
                   <td className="px-4 py-3 w-4">
