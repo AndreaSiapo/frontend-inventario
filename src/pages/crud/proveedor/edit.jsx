@@ -45,12 +45,12 @@ export default function ModalEdit({
           <form className="p-4 md:p-5" onSubmit={onSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {data.codigo && (
-                <div className="mt-2 p-2 border rounded bg-white dark:bg-sky-900 overflow-auto col-span-2 flex justify-center text-gray-900 dark:text-white">
+                <div className="mt-2 p-2 border rounded bg-gray-300 overflow-auto col-span-2 flex justify-center text-gray-900 dark:text-white">
                   <Barcode
                     value={data.codigo}
                     background="transparent"
-                    lineColor={isDark ? "#fff" : "#000"}      // puedes cambiarlo si usas modo oscuro
-                    textColor={isDark ? "#fff" : "#000"} 
+                    lineColor={"#000"}
+                    textColor={"#000"}
                     height={50}
                     width={2}
                     displayValue={true}   // muestra el texto debajo

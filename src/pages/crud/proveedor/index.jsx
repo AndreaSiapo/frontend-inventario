@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Barcode from "react-barcode";
 
 //import { appRoutes } from "../../../routes/appRoutes";
 
@@ -134,6 +135,8 @@ const Index = () => {
                   <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
                   {visibility.codigo &&
                   <AppThTableOrder handleSort={() => handleSort('codigo', currentFilters)} label="CODIGO" />}
+                  {visibility.codigo_barra &&
+                  <AppThTableOrder handleSort={() => handleSort('codigo_barra', currentFilters)} label="BARCODE" />}
                   {visibility.nombre &&
                   <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
                   {visibility.referencia &&
@@ -142,10 +145,10 @@ const Index = () => {
                   <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCIÓN" />}
                   {visibility.plazo &&
                   <AppThTableOrder handleSort={() => handleSort('plazo', currentFilters)} label="PLAZO" />}
-                  {visibility.updated_at &&
-                  <AppThTableOrder handleSort={() => handleSort('updated_at', currentFilters)}label="updated_at" />}
                   {visibility.created_at &&
                   <AppThTableOrder handleSort={() => handleSort('created_at', currentFilters)}label="created_at" />}
+                  {visibility.updated_at &&
+                  <AppThTableOrder handleSort={() => handleSort('updated_at', currentFilters)}label="updated_at" />}
                   <th scope="col" className="p-4">ACTION </th>
                 </tr>
               </thead>
@@ -162,6 +165,21 @@ const Index = () => {
                   {visibility.codigo &&
                   <td className="px-4 py-3 w-4">
                    {proveedor.codigo}
+                  </td>}
+                  {visibility.codigo_barra &&
+                  <td className="px-4 py-3 w-48">
+                    <div className="mt-2 p-2 border rounded bg-gray-300 overflow-auto flex justify-center text-gray-900 dark:text-white w-48">
+                      <Barcode
+                        value={proveedor?.codigo}
+                        background="transparent"
+                        lineColor={"#000"}      
+                        textColor={"#000"} 
+                        height={50}
+                        width={1}
+                        displayValue={true} 
+                        fontSize={14}
+                      />
+                    </div>
                   </td>}
                   {visibility.nombre &&
                   <td className="px-4 py-3 w-4">

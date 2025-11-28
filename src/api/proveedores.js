@@ -94,26 +94,28 @@ export function deleteProveedor(id) {
 
 export function getColumns() {
   return [
-    { key: 'id',         label: 'ID' },
-    { key: 'codigo',     label: 'Codigo' },
-    { key: 'nombre',     label: 'Nombre' },
-    { key: 'referencia', label: 'Referencia' },
+    { key: 'id',           label: 'ID' },
+    { key: 'codigo',       label: 'Codigo' },
+    { key: 'codigo_barra', label: 'Codigo de Barras' },
+    { key: 'nombre',       label: 'Nombre' },
+    { key: 'referencia',   label: 'Referencia' },
     { key: 'descripcion ', label: 'Descripción' },
-    { key: 'plazo',      label: 'Plazo' },
-    { key: 'created_at', label: 'Creado' },
-    { key: 'updated_at', label: 'Actualizado' },
+    { key: 'plazo',        label: 'Plazo' },
+    { key: 'created_at',   label: 'Creado' },
+    { key: 'updated_at',   label: 'Actualizado' },
   ];
 }
 
 export function getDefaultVisibility() {
   return {
-    id: false,
-    codigo: false,
-    nombre: true,
-    referencia: true,
-    descripcion: false,
-    plazo: false,
-    updated_at: false,
-    created_at: false,
+    id:           false,
+    codigo:       false,
+    codigo_barra: false,
+    nombre:       true,
+    referencia:   true,
+    descripcion:  false,
+    plazo:        false,
+    updated_at:   false,
+    created_at:   false,
   };
 }
