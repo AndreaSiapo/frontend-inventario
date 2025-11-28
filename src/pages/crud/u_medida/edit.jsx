@@ -1,6 +1,6 @@
 // src/pages/crud/u_medida/edit.jsx
-import AppBtnX from "../../../components/form/btnX";
-import useForm from "../../../hook/useForm";
+import { useForm } from "../../../hook/useHandler";
+import { AppBtnX } from "../../../components/form/btn";
 
 export default function ModalEdit({
     title,

@@ -1,12 +1,26 @@
 // src/pages/crud/categoria/show.jsx
-import AppBtnX from "../../../components/form/btnX";
+import {AppBtnX} from "../../../components/form/btn";
 import dayjs from 'dayjs';
 
 export default function ModalShow({
   title,
   modules,
   value,
-  handleClose }) {
+  handleClose, allCategorias }) {
+
+  function buildCategoriaPath() {
+    let path = [];
+    let current = value;
+
+    while (current?.categoriaPadreId) {
+      const parent = allCategorias.find(c => c.id === current.categoriaPadreId);
+      if (!parent) break;
+      path.push(parent.nombre);
+      current = parent;
+    }
+
+    return path.reverse().join(" / ");
+  }
 
   return (
     <>
@@ -32,7 +46,7 @@ export default function ModalShow({
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="block mb-2 mr-2 text-sm font-medium">Ruta: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{value.categoriaPadreId}</div>
+                  <div className="text-gray-500 dark:text-gray-400">{buildCategoriaPath()}</div>
                 </div>
                 <div className="grid grid-cols-2">
                   <div className="block mb-2 mr-2 text-sm font-medium">Detalle: </div>

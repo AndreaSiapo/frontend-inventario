@@ -1,36 +1,39 @@
+// src/api/https.js
 const BASE_URL = "http://localhost:8080/api";
 
-export async function apiGet(endpoint) {
-  const res = await fetch(`${BASE_URL}${endpoint}`);
-  if (!res.ok) throw new Error("Error en petición GET");
-  return res.json();
+async function request(method, endpoint, data = null) {
+  try {
+    const options = {
+      method,
+      headers: { "Content-Type": "application/json" },
+    };
+
+    if (data) options.body = JSON.stringify(data);
+
+    const res = await fetch(`${BASE_URL}${endpoint}`, options);
+
+    // ❌ Si el endpoint no existe (404)
+    if (res.status === 404) {
+      throw new Error(`El API ${endpoint} no existe o no está disponible.`);
+    }
+
+    // ❌ Otros errores del servidor
+    if (!res.ok) {
+      throw new Error(`Error en el API: ${res.status}`);
+    }
+
+    // Si no hay body
+    const text = await res.text();
+    return text ? JSON.parse(text) : {};
+  } 
+  catch (error) {
+    // 💥 ESTE error se va a atrapar en tus modales y tablas
+    throw error;
+  }
 }
 
-export async function apiPost(endpoint, data) {
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) throw new Error("Error en petición POST");
-  return res.json();
-}
-
-export async function apiPut(endpoint, data) {
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) throw new Error("Error en petición PUT");
-  return res.json();
-}
-
-export async function apiDelete(endpoint) {
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
-    method: "DELETE",
-  });
-  if (!res.ok) throw new Error("Error en petición DELETE");
-  const text = await res.text();
-  return text ? JSON.parse(text) : { success: true };
-}
+// Funciones finales
+export const apiGet    = (e)       => request("GET", e);
+export const apiPost   = (e, d)    => request("POST", e, d);
+export const apiPut    = (e, d)    => request("PUT", e, d);
+export const apiDelete = (e)       => request("DELETE", e);

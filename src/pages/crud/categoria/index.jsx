@@ -4,22 +4,14 @@ import React, { useState, useEffect } from "react";
 
 // Componentes
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
-import AppBtnActions        from "./../../../components/html/btnActions";
-import AppBtnInfoCount      from "./../../../components/html/btnInfoCount";
-import AppBtnTableSetting   from "./../../../components/html/btnTableSetting";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
-import AppBtnCreate         from "./../../../components/form/btncreate";
-import AppBtnShowM          from "./../../../components/form/btnshow_m";
-import AppBtnEdit           from "./../../../components/form/btnedit";
-import AppBtnDelete         from "./../../../components/form/btndelete";
-import AppBtnX              from "./../../../components/form/btnX";
+import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting}   from "./../../../components/html/btn";
+import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete}  from "./../../../components/form/btn";
 import Checkbox             from './../../../components/form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import useIndexTable        from "./../../../hook/useIndexTable";
-import useModuleNames       from "./../../../hook/UseModuleName";
-import useModalHandlers       from "./../../../hook/useModalHandlers";
+import {useIndexTable, useModalHandlers, useModuleNames} from "./../../../hook/useHandler";
 import AppNotification, { useFlash } from "./../../../components/html/notification";
 import AppPagination        from "./../../../components/html/pagination";
 //import AppSearchIndex       from "./../../../components/form/search_index";
@@ -53,7 +45,7 @@ const Index = () => {
       setCategorias({...json, filters: newFilters});
 
     } catch (error) {
-      console.error("Error al obtener categorias:", error);
+      console.error("Error al obtener categorias:", error.message);
     }
   };
 
@@ -134,12 +126,6 @@ const Index = () => {
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
             </div>
 
-          {visibility.isCreateModalOpen && (
-            <div className="flex w-full items-center align-middle">
-              <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules} categoria={categorias.data}/>
-            </div>
-          )}
-
             <div className="div-cuatro">
               <div className="relative w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
                 <AppBtnCreate onCreate={() => handleCreateClick(setVisibility)} />
@@ -185,13 +171,11 @@ const Index = () => {
                   <td className="px-4 py-3 w-4">
                    {categoria?.nombre}
                    {visibility.categoriaPadreId && (
-
                     categoria?.categoriaPadreId && (
                       <div className="text-gray-500 text-xs">
                         {buildCategoriaPath(categoria, categorias.data)}
                       </div>
-                    )
-                    )
+                    ))
                   }
                   </td>}
                   {visibility.detalle &&
@@ -233,30 +217,38 @@ const Index = () => {
           </div>              
         </div>
       </div>
-        
-        {visibility.isEditModalOpen && editCategoria && (
-        <ModalEdit
-          title={Module}
-          modules={modules}
-          handleClose={() => {
-            handleCloseModal();
-            setEditCategoria(null);
-          }}
-          value={editCategoria}
-          handleEdit={handleEditSubmit}
-          inert={inertValue}
-          categoria={categorias.data}
-        />
-        )}
 
-        {visibility.isShowModalOpen && showCategoria && (
-        <ModalShow
-          title={Module}
-          modules={modules}
-          handleClose={handleCloseModal}
-          value={showCategoria}
+      {visibility.isCreateModalOpen && (
+        <div className="flex w-full items-center align-middle">
+          <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules} categoria={categorias.data}/>
+        </div>
+      )}
+      
+      {visibility.isEditModalOpen && editCategoria && (
+      <ModalEdit
+        title={Module}
+        modules={modules}
+        handleClose={() => {
+          handleCloseModal();
+          setEditCategoria(null);
+        }}
+        value={editCategoria}
+        handleEdit={handleEditSubmit}
+        inert={inertValue}
+        categoria={categorias.data}
         />
-        )}
+      )}
+
+      {
+      visibility.isShowModalOpen && showCategoria && (
+      <ModalShow
+        title={Module}
+        modules={modules}
+        handleClose={handleCloseModal}
+        value={showCategoria}
+        allCategorias={categorias.data}
+      />
+      )}
         
       </>
     );

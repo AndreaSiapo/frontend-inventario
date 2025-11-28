@@ -1,26 +1,16 @@
 // src/pages/crud/u_medida/index.jsx
 import React, { useState, useEffect } from "react";
 
-//import { appRoutes } from "../../../routes/appRoutes";
-
 // Componentes
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
-import AppBtnActions        from "./../../../components/html/btnActions";
-import AppBtnInfoCount      from "./../../../components/html/btnInfoCount";
-import AppBtnTableSetting   from "./../../../components/html/btnTableSetting";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
-import AppBtnCreate         from "./../../../components/form/btncreate";
-import AppBtnShowM          from "./../../../components/form/btnshow_m";
-import AppBtnEdit           from "./../../../components/form/btnedit";
-import AppBtnDelete         from "./../../../components/form/btndelete";
-import AppBtnX              from "./../../../components/form/btnX";
+import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting}           from "./../../../components/html/btn";
+import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete, AppBtnX} from "./../../../components/form/btn";
 import Checkbox             from './../../../components/form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import useIndexTable        from "./../../../hook/useIndexTable";
-import useModuleNames       from "./../../../hook/UseModuleName";
-import useModalHandlers       from "./../../../hook/useModalHandlers";
+import {useIndexTable, useModalHandlers, useModuleNames} from "./../../../hook/useHandler";
 import AppNotification, { useFlash } from "./../../../components/html/notification";
 import AppPagination        from "./../../../components/html/pagination";
 //import AppSearchIndex       from "./../../../components/form/search_index";
@@ -57,7 +47,7 @@ const Index = () => {
 
       setData(json.data ?? json); // soporta ambas estructuras
     } catch (error) {
-      console.error("Error al obtener unidades:", error);
+      console.error("Error al obtener unidades:", error.message);
     }
   };
 
@@ -125,13 +115,6 @@ const Index = () => {
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
             </div>
-
-          {visibility.isCreateModalOpen && (
-            <div className="flex w-full items-center align-middle">
-              <ModalCreate onSuccess={handleCreateSubmit} /> 
-              <AppBtnX $route={modules+'.index'} handleClose={() => handleCreateClick(setVisibility)} />
-            </div>
-          )}
 
             <div className="div-cuatro">
               <div className="relative w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
@@ -217,29 +200,36 @@ const Index = () => {
           </div>              
         </div>
       </div>
-        
-        {visibility.isEditModalOpen && editUnidadMedida && (
-        <ModalEdit
-          title={Module}
-          modules={modules}
-          handleClose={() => {
-            handleCloseModal();
-            setEditUnidadMedida(null);
-          }}
-          value={editUnidadMedida}
-          handleEdit={handleEditSubmit}
-          inert={inertValue}
-        />
-        )}
 
-        {visibility.isShowModalOpen && showUnidadMedida && (
-        <ModalShow
-          title={Module}
-          modules={modules}
-          handleClose={handleCloseModal}
-          value={showUnidadMedida}
-        />
-        )}
+      {visibility.isCreateModalOpen && (
+      <div className="flex w-full items-center align-middle">
+        <ModalCreate onSuccess={handleCreateSubmit} /> 
+        <AppBtnX $route={modules+'.index'} handleClose={() => handleCreateClick(setVisibility)} />
+      </div>
+      )}
+      
+      {visibility.isEditModalOpen && editUnidadMedida && (
+      <ModalEdit
+        title={Module}
+        modules={modules}
+        handleClose={() => {
+          handleCloseModal();
+          setEditUnidadMedida(null);
+        }}
+        value={editUnidadMedida}
+        handleEdit={handleEditSubmit}
+        inert={inertValue}
+      />
+      )}
+
+      {visibility.isShowModalOpen && showUnidadMedida && (
+      <ModalShow
+        title={Module}
+        modules={modules}
+        handleClose={handleCloseModal}
+        value={showUnidadMedida}
+      />
+      )}
         
       </>
     );

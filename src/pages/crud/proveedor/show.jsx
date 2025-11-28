@@ -1,5 +1,5 @@
 // ModalShow.jsx
-import AppBtnX from "../../../components/form/btnX";
+import { AppBtnX } from "../../../components/form/btn";
 import dayjs from 'dayjs';
 
 export default function ModalShow({

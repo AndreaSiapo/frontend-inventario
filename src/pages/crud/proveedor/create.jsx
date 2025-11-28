@@ -1,8 +1,8 @@
 //Create.jsx
 import Barcode from "react-barcode";
 import { useEffect, useState } from "react";
-import useForm from "../../../hook/useForm";
-import AppBtnX from "../../../components/form/btnX";
+import { useForm } from "../../../hook/useHandler";
+import { AppBtnX } from "../../../components/form/btn";
 
 
 export default function ModalCreate( {

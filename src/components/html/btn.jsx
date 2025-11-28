@@ -1,12 +1,118 @@
-//btnFilter.jsx
+//btn.jsx
+import { useState, useEffect, useRef } from "react";
 import { Link }             from "react-router-dom";
-import { useState }         from "react";
-import IconMagnifyingGlass  from "../icons/actions/magnifying-glass";
+import { apiDelete }        from "../../api/http";
+import CheckboxBall         from "../form/check2"
 import IconVUp              from "../icons/actions/v-up";
 import IconVDown            from "../icons/actions/v-down";
-import CheckboxBall         from "../form/check2"
+import IconMagnifyingGlass  from "../icons/actions/magnifying-glass";
+import IconInfo             from '../icons/actions/info';
+import IconSetting          from "../icons/actions/cog-6";
 
-export default function AppBreadcrumb({
+export function AppBtnActions({
+    modules,
+    checkedItems = {},
+    currentFilters = {},
+    endpoints = {}, // { massDestroy: '/ruta/massDestroy', truncate: '/ruta/truncate' }
+    labelDel = "Delete all",
+    labelDes = "Destroy all",
+    labelEdit = "Mass Edit",
+    onSuccess = () => {}
+}) {
+    const [btnVisibility, setVisibility] = useState({ actions: false });
+    const dropdownRef = useRef(null);
+
+    const handleToggle = (field) => {
+      setVisibility((prev) => ({ ...prev, [field]: !prev[field] }));
+    };
+
+    const deleteSelected = async () => {
+      const selectedIds = Object.keys(checkedItems).filter((id) => checkedItems[id]);
+      if (!selectedIds.length) {
+        alert("No has seleccionado ningún registro para eliminar.");
+        return;
+      }
+      if (!confirm("¿Estás seguro de que quieres eliminar los seleccionados?")) return;
+
+      try {
+        await apiDelete(endpoints.massDestroy, { ids: selectedIds, ...currentFilters });
+          onSuccess(); // refresca la tabla
+          handleToggle("actions");
+      } catch (e) {
+        console.error("Error al eliminar seleccionados:", e);
+      }
+    };
+
+    const destroyAll = async () => {
+      if (!confirm("¿Estás seguro de que quieres eliminar todos los registros?")) return;
+
+      try {
+        await apiDelete(endpoints.truncate, currentFilters);
+          onSuccess();
+          handleToggle("actions");
+      } catch (e) {
+        console.error("Error al eliminar todos:", e);
+      }
+    };
+
+    const editMass = () => {
+      alert("Función de edición masiva aún no implementada");
+      handleToggle("actions");
+    };
+
+    useEffect(() => {
+     const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setVisibility((prev) => ({ ...prev, actions: false }));
+        }
+      };
+
+      if (btnVisibility.actions) {
+        document.addEventListener("mousedown", handleClickOutside);
+      } else {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [btnVisibility.actions]);
+
+    return (
+      <div ref={dropdownRef} className="flex items-center space-x-3 w-full md:w-auto relative">
+        <button
+          id="actionsDropdownButton"
+          onClick={() => handleToggle("actions")}
+          className="btn-actions"
+          type="button"
+        >
+          Actions {btnVisibility.actions ? <IconVUp className="w-5 h-5" /> : <IconVDown className="w-5 h-5 shrink-0" />}
+        </button>
+
+        {btnVisibility.actions && (
+        <div className="absolute z-10 w-44 top-10 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+          <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="actionsDropdownButton">
+            <li>
+              <button type="button" onClick={editMass} className="block py-2 px-4 w-full text-left text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" >
+                {labelEdit}
+              </button>
+            </li>
+            <li>
+              <button type="button" onClick={deleteSelected} className="block py-2 px-4 w-full text-left text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" >
+                  {labelDel}
+              </button>
+            </li>
+          </ul>
+          <div className="py-1">
+            <button type="button" onClick={destroyAll} className="block py-2 px-4 w-full text-left text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" >
+                {labelDes}
+            </button>
+          </div>
+        </div>
+        )}
+      </div>
+    );
+}
+
+export function AppBtnFilter({
 
 }) {
 
@@ -182,3 +288,110 @@ export default function AppBreadcrumb({
   </>
   );
 }
+
+export function AppBtnInfoCount({
+    from, to, total,
+    classIcon="h-4 w-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:group-hover:text-white",
+ }) {
+  const dropdownRef = useRef(null);
+
+  const [visibility, setVisibility] = useState({
+    info: false
+  });
+
+  const handleToggle = (field) => {
+    setVisibility(prev => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setVisibility(prev => ({ ...prev, info: false }));
+      }
+    };
+    if (visibility.info) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [visibility.info]);
+
+  return (
+    <div ref={dropdownRef} className="w-auto">
+      <button type="button" className="group flex" onClick={() => handleToggle('info')} data-tooltip-target="results-tooltip">
+        <IconInfo className={classIcon} />
+        <span className="sr-only">Mas Info</span>
+      </button>
+      {visibility.info && (
+      <div id="results-tooltip" role="tooltip" className="div-info-results-tooltip">
+        Mostrando {from+"-"+to+" de "+total} resultados
+        <div className="tooltip-arrow" data-popper-arrow=""></div>
+      </div>
+      )}
+    </div>
+)}
+
+export function AppBtnTableSetting({
+    columns, visibility, toggleColumn
+  }) {
+  const dropdownRef = useRef(null);
+
+  const [btnvisibility, setVisibility] = useState({
+    tooltip: false
+  });
+
+  const handleToggle = (field) => {
+    setVisibility(prev => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setVisibility(prev => ({ ...prev, tooltip: false }));
+      }
+    };
+    if (btnvisibility.tooltip) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [btnvisibility.tooltip]);
+
+  return (
+    <>
+      {/* BTN TABLE SETTING */}
+      <div ref={dropdownRef} className="div-btn-settings-crud relative">
+        <button type="button" className="btn-settings-crud" onClick={() => handleToggle('tooltip')}>
+          <IconSetting className="mr-2 w-4 h-4" />
+          Table settings
+        </button>
+        {/*<!-- Dropdown menu -->*/}
+        <div id="dropdownToggle" className= {`${btnvisibility.tooltip ? '' : 'hidden '} z-10 top-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-72 dark:bg-gray-700 dark:divide-gray-600 absolute`}>
+          <ul className="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownToggleButton">
+            {columns.map(col => (
+            <li key={col.key}>
+              <div className="flex p-2 rounded-sm hover:bg-gray-100 dark:hover:bg-gray-600">
+                <label className="inline-flex items-center w-full cursor-pointer">
+                  <input id={`chk_col_`+col.label} type="checkbox" className="sr-only peer" onChange={() => toggleColumn(col.key)} checked={!!visibility[col.key]} />
+                  <div className="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:translate-x-[-100%] peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-500 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">{col.label}</span>
+                </label>
+              </div>
+            </li>
+          ))}
+          </ul>
+        </div>
+      </div>
+    </>
+)}
+
+
+
