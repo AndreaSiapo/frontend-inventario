@@ -4,7 +4,8 @@ export default function CheckboxBall({
     checked, onChange,
     label="",
     className = '' ,
-    classLabel1 = "relative flex items-center cursor-pointer", classLabel2 = "ml-2 text-sm text-gray-700" }) {
+    classLabel1 = "relative flex items-center cursor-pointer", classLabel2 = "ml-2 text-sm text-gray-700" 
+  }) {
   return (
     <>
     <label className={classLabel1}>
