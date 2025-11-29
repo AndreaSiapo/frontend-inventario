@@ -1,4 +1,5 @@
 //btn.jsx
+import Barcode from "react-barcode";
 import { useState, useEffect, useRef } from "react";
 import { Link }             from "react-router-dom";
 import { apiDelete }        from "../../api/http";
@@ -8,6 +9,7 @@ import IconVDown            from "../icons/actions/v-down";
 import IconMagnifyingGlass  from "../icons/actions/magnifying-glass";
 import IconInfo             from '../icons/actions/info';
 import IconSetting          from "../icons/actions/cog-6";
+import IconDowload          from "../icons/extra/download";
 
 export function AppBtnActions({
     modules,
@@ -393,5 +395,77 @@ export function AppBtnTableSetting({
     </>
 )}
 
+export function AppBtnCodeBar({
+    codigo="0",
+    classDiv1="gap-2 p-2 m-4 md:p-3 rounded-lg border bg-gray-300 text-gray-900 dark:text-white",
+    w=""
+}) {
+
+  return (
+    <div className={"relative flex items-center justify-center "+classDiv1+"overflow-auto col-span-2 flex justify-center "+w}>
+        <Barcode
+          renderer="svg"
+          value={codigo}
+          background="transparent"
+          lineColor={"#000"}
+          textColor={"#000"}
+          height={50}
+          width={2}
+          displayValue={true}
+          fontSize={14}
+        />
+    </div>
+  );
+}
+
+export function AppBtnCodeBarDownload({
+    modules="",
+    codigo="0",
+    classDiv1="gap-2 p-2 m-4 md:p-3 rounded-lg border bg-gray-300 text-gray-900 dark:text-white",
+    z=100,
+    w=""
+}) {
+  const barcodeRef = useRef(null);
+  const downloadSVG = () => {
+    const svg = barcodeRef.current?.querySelector("svg");
+    if (!svg) return;
+
+    const serializer = new XMLSerializer();
+    const source = serializer.serializeToString(svg);
+
+    const blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `cb_${modules+"_"+codigo}.svg`;
+    link.click();
+
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className={"relative flex items-center justify-center "+classDiv1} ref={barcodeRef}>
+      <div className={"overflow-auto col-span-2 flex justify-center "+w}>
+        <Barcode
+          renderer="svg"
+          value={codigo}
+          background="transparent"
+          lineColor={"#000"}
+          textColor={"#000"}
+          height={50}
+          width={2}
+          displayValue={true}
+          fontSize={14}
+        />
+      </div>
+      <div className={"z-"+z+" absolute flex rounded-lg justify-end pt-20 right-7"}>
+        <button onClick={downloadSVG} className="flex px-3 py-1 rounded-lg text-gray-400 hover:bg-gray-400 hover:text-gray-700 w-10 align-middle" >
+          <IconDowload className="h-5 w-5"/>
+        </button>
+      </div>
+    </div>
+  );
+}
 
 

@@ -1,8 +1,8 @@
 //edit.jsx
-import Barcode from "react-barcode";
 import { useEffect, useState } from "react";
 import { useForm } from "../../../hook/useHandler";
 import { AppBtnX } from "../../../components/form/btn";
+import { AppBtnCodeBarDownload, AppBtnCodeBar } from "../../../components/html/btn";
 
 export default function ModalEdit({
     title,
@@ -42,22 +42,11 @@ export default function ModalEdit({
             <AppBtnX $route={modules+'.index'} handleClose={handleClose} />
           </div>
           {/* Modal body */}
+          {data.codigoBarra && (
+          <AppBtnCodeBarDownload modules={modules} codigo={data.codigoBarra} />
+          )}
           <form className="p-4 md:p-5" onSubmit={onSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {data.codigo && (
-                <div className="mt-2 p-2 border rounded bg-gray-300 overflow-auto col-span-2 flex justify-center text-gray-900 dark:text-white">
-                  <Barcode
-                    value={data.codigo}
-                    background="transparent"
-                    lineColor={"#000"}
-                    textColor={"#000"}
-                    height={50}
-                    width={2}
-                    displayValue={true}   // muestra el texto debajo
-                    fontSize={14}
-                  />
-                </div>
-              )}
               <div className="flex flex-col">
                 <div className="col-span-2">
                   <label htmlFor="codigo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Código</label>

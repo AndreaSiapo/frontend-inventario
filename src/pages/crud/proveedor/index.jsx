@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Barcode from "react-barcode";
 
 //import { appRoutes } from "../../../routes/appRoutes";
 
 // Componentes
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
-import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting}           from "./../../../components/html/btn";
+import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting, AppBtnCodeBar, AppBtnCodeBarDownload} from "./../../../components/html/btn";
 import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete, AppBtnX} from "./../../../components/form/btn";
 import Checkbox             from './../../../components/form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import {useIndexTable, useModalHandlers, useModuleNames} from "./../../../hook/useHandler";
+import {useIndexTable, useModalHandlers, useModuleNames, useResource} from "./../../../hook/useHandler";
 import AppNotification, { useFlash } from "./../../../components/html/notification";
 import AppPagination        from "./../../../components/html/pagination";
 //import AppSearchIndex       from "./../../../components/form/search_index";
@@ -28,31 +27,11 @@ const Index = () => {
 
   const [showProveedor, setShowProveedor] = useState(null);
   const [editProveedor, setEditProveedor] = useState(null);
-  const [proveedores, setProveedores] = useState({
-    data: [],
-    total: 0,
-    from: 0,
-    to: 0,
-    links: [],
-    filters: { search: '', perPage: 10, page: 1, orderBy: 'id', orderDir: 'asc' },
-    columns: getColumns(),
-    defaultVisibility: getDefaultVisibility()
-  });
-
-  const fetchProveedores = async (filters = {}) => {
-    try {
-      const newFilters = { ...proveedores.filters, ...filters };
-      const json = await getProveedores(newFilters);
-      setProveedores({...json, filters: newFilters});
-
-    } catch (error) {
-      console.error("Error al obtener proveedores:", error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchProveedores();
-  }, []);
+    const { resource: proveedores, fetchResource: fetchProveedores } = useResource(
+      getProveedores,
+      getColumns,
+      getDefaultVisibility
+    );
 
   async function handEdit(id) {
     const item = await handleEditClick(id, setVisibility);
@@ -61,13 +40,7 @@ const Index = () => {
   async function handShow(id) {
     const item = await handleShowClick(id, setVisibility, setShowProveedor); }
 
-  const currentFilters = {
-    search: proveedores.filters.search,
-    perPage: proveedores.filters.perPage,
-    page: proveedores.filters.page,
-    orderBy: proveedores.filters.orderBy,
-    orderDir: proveedores.filters.orderDir
-  };
+  const currentFilters = proveedores.filters;
     
   // Hooks factorizaos
   const { module, modules, Module, Modules } = useModuleNames("proveedor", "proveedores");
@@ -168,18 +141,7 @@ const Index = () => {
                   </td>}
                   {visibility.codigo_barra &&
                   <td className="px-4 py-3 w-48">
-                    <div className="mt-2 p-2 border rounded bg-gray-300 overflow-auto flex justify-center text-gray-900 dark:text-white w-48">
-                      <Barcode
-                        value={proveedor?.codigo}
-                        background="transparent"
-                        lineColor={"#000"}      
-                        textColor={"#000"} 
-                        height={50}
-                        width={1}
-                        displayValue={true} 
-                        fontSize={14}
-                      />
-                    </div>
+                    <AppBtnCodeBar codigo={proveedor.codigo} w="w-48"/> 
                   </td>}
                   {visibility.nombre &&
                   <td className="px-4 py-3 w-4">
@@ -235,7 +197,11 @@ const Index = () => {
 
       {visibility.isCreateModalOpen && (
         <div className="flex w-full items-center align-middle">
-          <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules}/>
+          <ModalCreate 
+            onSuccess={handleCreateSubmit} 
+            title={Module} 
+            handleClose={() => handleCreateClick(setVisibility)} 
+            modules={modules}/>
         </div>
       )}
       
@@ -245,8 +211,7 @@ const Index = () => {
         modules={modules}
         handleClose={() => {
           handleCloseModal();
-          setEditProveedor(null);
-        }}
+          setEditProveedor(null); }}
         value={editProveedor}
         handleEdit={handleEditSubmit}
         inert={inertValue}
@@ -266,6 +231,5 @@ const Index = () => {
     );
 
 }
-
 
 export default Index;

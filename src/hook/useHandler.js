@@ -280,3 +280,36 @@ export function useForm(initialValues = {}) {
 
   return { data, setData: update, post, processing, errors };
 }
+
+export function useResource(fetchFn, getColumns, getDefaultVisibility) {
+  const [resource, setResource] = useState({
+    data: [],
+    total: 0,
+    from: 0,
+    to: 0,
+    links: [],
+    filters: { search: "", perPage: 10, page: 1, orderBy: "id", orderDir: "asc" },
+    columns: getColumns?.() ?? [],
+    defaultVisibility: getDefaultVisibility?.() ?? [],
+  });
+
+  const fetchResource = async (filters = {}) => {
+    try {
+      const newFilters = { ...resource.filters, ...filters };
+      const json = await fetchFn(newFilters);
+
+      setResource({
+        ...json,
+        filters: newFilters,
+        columns: resource.columns,
+        defaultVisibility: resource.defaultVisibility
+      });
+    } catch (error) {
+      console.error("Error al obtener data:", error.message);
+    }
+  };
+
+  useEffect(() => { fetchResource(); }, []);
+
+  return { resource, fetchResource, setResource };
+}
