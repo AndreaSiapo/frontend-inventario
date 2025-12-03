@@ -445,7 +445,7 @@ export function AppBtnCodeBarDownload({
   };
 
   return (
-    <div className={"relative flex items-center justify-center "+classDiv1} ref={barcodeRef}>
+    <div className={"relative flex items-center justify-center "+classDiv1+" "+w} ref={barcodeRef}>
       <div className={"overflow-auto col-span-2 flex justify-center "+w}>
         <Barcode
           renderer="svg"

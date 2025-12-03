@@ -166,6 +166,9 @@
     .modal-header {
         @apply flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200;
     }
+    .modal-footer {
+        @apply flex items-center border-t dark:border-gray-600 border-gray-200 space-x-4 pt-4 md:pt-5;
+    }
     .x-close {
         @apply text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white;
     }
@@ -189,4 +192,35 @@
     .title-textarea{
         @apply text-base ;
     }
-}
+    .text-label{
+        @apply text-sm font-medium text-gray-900 dark:text-white;
+    }
+    .h3-modal{
+        @apply text-lg font-semibold text-gray-900 dark:text-white;
+    }
+    .radio-select-ul{
+        @apply border border-gray-600 rounded-lg max-h-40 overflow-y-auto;
+    }
+    .radio-select-ul::-webkit-scrollbar {
+        width: 8px;
+    }
+    .radio-select-ul::-webkit-scrollbar-thumb {
+        background-color: #9ca3af; /* gray-400 */
+        border-radius: 8px;
+    }
+    .radio-select-ul::-webkit-scrollbar-track {
+        background-color: #e5e7eb; /* gray-200 */
+    }
+    /* Modo oscuro */
+    @media (prefers-color-scheme: dark) {
+        .radio-select-ul::-webkit-scrollbar-thumb {
+            background-color: #4b5563; /* gray-600 */
+        }
+        .radio-select-ul::-webkit-scrollbar-track {
+            background-color: #1f2937; /* gray-800 */
+        }
+    }
+    .radio-select-ul-li-label{
+        @apply w-full pl-2 cursor-pointer flex bg-white transition text-gray-700 hover:bg-gray-200 peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-700 peer-has-checked:ring-2 peer-has-checked:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:peer-checked:bg-blue-900 dark:peer-checked:border-blue-400 dark:peer-checked:text-blue-300 dark:peer-has-checked:ring-blue-600;
+    }
+}   

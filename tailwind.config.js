@@ -19,10 +19,15 @@ export default {
       },
       ringWidth: ['hover', 'active'],},
   },
+  variants: {
+    scrollbar: ['rounded', 'dark'],
+  },
   plugins: [
       require('@tailwindcss/forms'),
       require('@tailwindcss/typography'),
       require('@tailwindcss/container-queries'),
       require('tailwindcss-bg-patterns'),
-      require('tailwind-scrollbar')({ nocompatible: true }),],
+      require('tailwind-scrollbar')({ nocompatible: true }),
+      // plugin(require("tailwind-scrollbar")({ nocompatible: true })) // Probado antes pero no funciona,
+  ],
 };
