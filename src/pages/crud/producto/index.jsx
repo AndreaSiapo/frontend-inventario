@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-//import { appRoutes } from "../../../routes/appRoutes";
-
 // Componentes
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
@@ -134,8 +132,8 @@ const Index = () => {
                   <AppThTableOrder handleSort={() => handleSort('marcaId', currentFilters)} label="ID MARCA" />}
                   {visibility.marca &&
                   <AppThTableOrder handleSort={() => handleSort('marca', currentFilters)} label="MARCA" />}
-                  {visibility.categoriaID &&
-                  <AppThTableOrder handleSort={() => handleSort('categoriaID', currentFilters)} label="ID CATEGORÍA" />}
+                  {visibility.categoriaId &&
+                  <AppThTableOrder handleSort={() => handleSort('categoriaId', currentFilters)} label="ID CATEGORÍA" />}
                   {visibility.categoria &&
                   <AppThTableOrder handleSort={() => handleSort('categoria', currentFilters)} label="CATEGORÍA" />}
                   {visibility.presentacionId &&
@@ -217,9 +215,9 @@ const Index = () => {
                   <td className="px-4 py-3 w-4">
                    {producto.marca}
                   </td>}
-                  {visibility.categoriaID &&
+                  {visibility.categoriaId &&
                   <td className="px-4 py-3 w-4">
-                   {producto.categoriaID}
+                   {producto.categoriaId}
                   </td>}
                   {visibility.categoria &&
                   <td className="px-4 py-3 w-4">
