@@ -1,5 +1,5 @@
 // src/hook/useIndexTable.js
-import { useState, useEffect } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
 
@@ -278,7 +278,15 @@ export function useForm(initialValues = {}) {
     }
   };
 
-  return { data, setData: update, post, processing, errors };
+  return { 
+    data, 
+    setData: update, 
+    post, 
+    processing, 
+    errors,
+    setErrors,
+  };
+
 }
 
 export function useResource(fetchFn, getColumns, getDefaultVisibility) {
@@ -293,23 +301,32 @@ export function useResource(fetchFn, getColumns, getDefaultVisibility) {
     defaultVisibility: getDefaultVisibility?.() ?? [],
   });
 
+  const [error, setError] = useState(false);  // ⬅️ NUEVO
+  const [loading, setLoading] = useState(true);
+
   const fetchResource = async (filters = {}) => {
+    setLoading(true);
+
     try {
       const newFilters = { ...resource.filters, ...filters };
       const json = await fetchFn(newFilters);
-
       setResource({
         ...json,
         filters: newFilters,
         columns: resource.columns,
         defaultVisibility: resource.defaultVisibility
       });
+      setError(false); // API funcionando
+
     } catch (error) {
       console.error("Error al obtener data:", error.message);
+      setError(true); // ⬅️ API CAÍDA
     }
+
+    setLoading(false);
   };
 
   useEffect(() => { fetchResource(); }, []);
 
-  return { resource, fetchResource, setResource };
+  return { resource, fetchResource, setResource, loading, error };
 }
