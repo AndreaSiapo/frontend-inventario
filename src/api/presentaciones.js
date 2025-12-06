@@ -47,6 +47,32 @@ export async function getPresentaciones({ search = '', perPage = 10, page = 1, o
   };
 }
 
+export async function getPresentacionesFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/presentaciones");
+  const allData = json.data ?? json;
+  const normalize = (v) => (v ?? "").toString().toLowerCase();
+
+  // Filtro por search (opcional)
+  let filtered = allData.filter(item =>
+    normalize(item.nombre).includes(normalize(search)),
+  );
+
+  // Ordenamiento
+  filtered.sort((a, b) => {
+    const valA = a[orderBy];
+    const valB = b[orderBy];
+    if (valA < valB) return orderDir === 'asc' ? -1 : 1;
+    if (valA > valB) return orderDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  return {
+    data: filtered,
+    total: filtered.length,
+    filters: { search, orderBy, orderDir }
+  };
+}
+
 export function getPresentacion(id) {
   return apiGet(`/presentaciones/${id}`);
 }

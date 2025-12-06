@@ -1,13 +1,14 @@
-//src/api/umedidas.js
+//src/api/destinatarios.js
 import { apiGet, apiPost, apiPut, apiDelete } from "./http";
 
-export async function getUnidadesMedida({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
-  const json = await apiGet("/umedidas");
+export async function getDestinatarios({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/destinatarios");
   const allData = json.data ?? json;
+  const normalize = (v) => (v ?? "").toString().toLowerCase();
 
   // Filtro simple por search (si quieres puedes mejorarlo)
   let filtered = allData.filter(item => 
-    item.nombre.toLowerCase().includes(search.toLowerCase())
+    normalize(item.nombre).includes(normalize(search)),
   );
 
   // Ordenamiento simple
@@ -47,8 +48,8 @@ export async function getUnidadesMedida({ search = '', perPage = 10, page = 1, o
   };
 }
 
-export async function getUnidadesMedidaFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
-  const json = await apiGet("/umedidas");
+export async function getDestinatariosFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/destinatarios");
   const allData = json.data ?? json;
   const normalize = (v) => (v ?? "").toString().toLowerCase();
 
@@ -73,29 +74,31 @@ export async function getUnidadesMedidaFull({ search = '', orderBy = 'id', order
   };
 }
 
-export function getUnidadMedida(id) {
-  return apiGet(`/umedidas/${id}`);
+export function getDestinatario(id) {
+  return apiGet(`/destinatarios/${id}`);
 }
 
-export function createUnidadMedida(data) {
-  return apiPost("/umedidas", data);
+export function createDestinatario(data) {
+  return apiPost("/destinatarios", data);
 }
 
 // si tuvieras editar
-export function updateUnidadMedida(id, data) {
-  return apiPut(`/umedidas/${id}`, data);
+export function updateDestinatario(id, data) {
+  return apiPut(`/destinatarios/${id}`, data);
 }
 
 // si tuvieras eliminar
-export function deleteUnidadMedida(id) {
-  return apiDelete(`/umedidas/${id}`);
+export function deleteDestinatario(id) {
+  return apiDelete(`/destinatarios/${id}`);
 }
 
 export function getColumns() {
   return [
     { key: 'id',         label: 'ID' },
+    { key: 'codigo',     label: 'Codigo' },
     { key: 'nombre',     label: 'Nombre' },
-    { key: 'abreviado',  label: 'Abreviado' },
+    { key: 'descripcion ', label: 'Descripción' },
+    { key: 'plazo',      label: 'Plazo' },
     { key: 'created_at', label: 'Creado' },
     { key: 'updated_at', label: 'Actualizado' },
   ];
@@ -104,8 +107,10 @@ export function getColumns() {
 export function getDefaultVisibility() {
   return {
     id: false,
+    codigo: false,
     nombre: true,
-    abreviado: true,
+    descripcion: false,
+    plazo: false,
     updated_at: false,
     created_at: false,
   };
