@@ -235,7 +235,6 @@ const Index = () => {
         value={editCategoria}
         handleEdit={handleEditSubmit}
         inert={inertValue}
-        categoria={categorias.data}
         />
       )}
 

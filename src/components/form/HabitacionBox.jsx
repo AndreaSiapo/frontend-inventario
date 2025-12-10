@@ -28,9 +28,9 @@ function Box({ ancho, alto, largo }) {
   const pointsAlto = [
           [ancho / 2 + 0.1, -alto / 2, largo / 2],
           [ancho / 2 + 0.1,  alto / 2, largo / 2] ];
-  const positionTextAlto = [ancho / 2 + 0.2, 0, largo / 2];
-  const positionTextAncho = [0, -alto / 2 - 0.15, largo / 2];
-  const positionTextProfundidad = [ancho / 2+1, -alto / 2 - 0.15, 0];
+  const positionTextAlto        = [ancho / 2 + 0.2, 0,                largo / 2];
+  const positionTextAncho       = [0,               -alto / 2 - 0.15, largo / 2];
+  const positionTextProfundidad = [ancho / 2 + 0.15,   -alto / 2 - 0.15, 0];
   const fontSize = Math.max(ancho, alto, largo)*0.15;
 
   return (
@@ -55,27 +55,25 @@ function Box({ ancho, alto, largo }) {
       <Edges color="white" threshold={15} />
       </mesh>
 
-      // --- COTA VERTICAL (ALTO) ---
+      {/* COTA VERTICAL (ALTO) */}
       <Line points={pointsAlto} color="green" />
-      <Text position={positionTextAlto} fontSize={fontSize} color="white" > {alto} m </Text>
+      <Text position={positionTextAlto} fontSize={fontSize} color="white"   rotation={[0, 0, Math.PI / 2]}> {alto} m </Text>
 
-
-      // --- COTA HORIZONTAL (ANCHO) ---
+      {/* COTA HORIZONTAL (ANCHO) */}
       <Line points={pointsAncho} color="blue" />
       <Text position={positionTextAncho} fontSize={fontSize} color="white" > {ancho} m </Text>
 
-
-      // --- COTA PROFUNDIDAD (LARGO) ---
+      {/* COTA PROFUNDIDAD (LARGO) */}
       <Line points={pointsProdundidad} color="red" />
-      <Text position={positionTextProfundidad} fontSize={fontSize} color="white" > {largo} m </Text>
+      <Text position={positionTextProfundidad} fontSize={fontSize} color="white" rotation={[0, Math.PI / 2, 0]}> {largo} m </Text>
     </group>  
   );
 }
 
 export default function HabitacionBox({ ancho = 2, alto = 2, largo = 2 }) {
   return (
-    <div className="w-full h-96 border border-gray-600 rounded-xl overflow-hidden bg-gray-600">
-      <Canvas camera={{ position: [4, 4, 4] }}>
+    <div className="w-full h-40 border border-gray-600 rounded-xl overflow-hidden bg-gray-600">
+      <Canvas camera={{ position: [2, 1, 2] }}>
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
 

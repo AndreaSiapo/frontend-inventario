@@ -1,9 +1,8 @@
 //edit.jsx
-import { useEffect, useState } from "react";
-import { useForm } from "../../../hook/useHandler";
+import { useForm, useResource  } from "../../../hook/useHandler";
 import { AppBtnX } from "../../../components/form/btn";
-import IconVRight from "../../../components/icons/actions/v-right";
 import { getCategoriasFull } from "../../../api/categorias";
+import RadioTree from "../../../components/form/radioTree";
 
 export default function ModalEdit({
     title,
@@ -11,8 +10,7 @@ export default function ModalEdit({
     value,
     handleClose,
     handleEdit,
-    inert,
-    categoria = [],
+    inert
  }) {
      const { data, setData, processing, errors } = useForm({
          nombre: value?.nombre || "",
@@ -26,52 +24,7 @@ export default function ModalEdit({
          console.log(value.id,data);
      };
 
-    const [categoriasFull, setCategoriasFull] = useState([]);
-
-    useEffect(() => {
-      async function fetchCategorias() {
-        const res = await getCategoriasFull();
-        setCategoriasFull(res.data ?? []); // 👈 aquí está la magia
-      }
-      fetchCategorias();
-    }, []);
-
-
-    function buildHierarchy(list) {
-      const safeList = Array.isArray(list) ? list : []; // 👈 protección
-
-      const map = new Map(safeList.map(c => [c.id, { ...c, children: [], level: 0 }]));
-
-      let rootItems = [];
-
-      map.forEach(item => {
-        if (item.categoriaPadreId) {
-          const parent = map.get(item.categoriaPadreId);
-          if (parent) {
-            item.level = parent.level + 1;
-            parent.children.push(item);
-          }
-        } else {
-          rootItems.push(item);
-        }
-      });
-
-      // ✅ marcar si tiene hijos
-      map.forEach(item => {
-        item.hasChildren = item.children.length > 0;
-      });
-
-      // flatten preserving tree order
-      const result = [];
-      const traverse = (node) => {
-        result.push(node);
-        node.children.forEach(traverse);
-      };
-      rootItems.forEach(traverse);
-      return result;
-    }
-
-    const categoriasOrdenadas = buildHierarchy(categoriasFull || []);
+    const { resource: categoriasFull }     = useResource(getCategoriasFull);
 
   return (
     <div id="crud-modal" inert={inert} tabIndex="-1" className="crud-modal">
@@ -89,41 +42,15 @@ export default function ModalEdit({
               <div className="flex flex-col">
                 <div className="col-span-2">
                   <div className="block text-sm font-medium text-gray-900 dark:text-white">Categoría Padre</div>
-                    <ul className="border border-gray-600 rounded-lg max-h-40 overflow-y-auto scrollbar-thin scrollbar-thumb-sky-400 scrollbar-track-sky-200 dark:scrollbar-thumb-sky-600 dark:scrollbar-track-sky-800">
-                      <li key="0">
-                        <input type="radio" id="opcion0" name="categoriaPadreId" value="" className="peer hidden" 
-                        checked={data.categoriaPadreId === ""}
-                        onChange={(e) => setData("categoriaPadreId", e.target.value)}/>
-                        <label htmlFor="opcion0" className="w-full pl-2 cursor-pointer 
-                          border-gray-300 bg-white transition
-                          text-gray-700 hover:bg-gray-200
-                          peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-700
-                          peer-has-checked:ring-2 peer-has-checked:ring-blue-300
-                          dark:border-gray-600 dark:bg-gray-700
-                          dark:text-gray-200 dark:hover:bg-gray-800
-                          dark:peer-checked:bg-blue-900 dark:peer-checked:border-blue-400 dark:peer-checked:text-blue-300
-                          dark:peer-has-checked:ring-blue-600
-                          rounded-t-lg"
-                        > (Sin categoria)</label>
-                      </li>
-                      {categoriasOrdenadas.map((c, index) => (
-                      <li key={c.id}>
-                        <input type="radio" id={"padre_"+c.id} name="categoriaPadreId" value={c.id} className="peer hidden" 
-                        checked={data.categoriaPadreId == c.id}
-                        onChange={(e) => setData("categoriaPadreId", e.target.value)}/>
-                        <label htmlFor={"padre_"+c.id} 
-                          className={`w-full cursor-pointer border-gray-300 bg-white transition text-gray-700 hover:bg-gray-200 peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-700 peer-has-checked:ring-2 peer-has-checked:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:peer-checked:bg-blue-900 dark:peer-checked:border-blue-400 dark:peer-checked:text-blue-300 dark:peer-has-checked:ring-blue-600 ${`pl-${Math.min(c.level * 4 + 2, 14)}`} ${index === categoria.length - 1 ? "rounded-b-lg" : ""}`}
-                        >
-                          {c.hasChildren ? (
-                            <IconVRight className="inline-block mr-1 w-4 text-gray-500 dark:text-gray-300" />
-                          ) : (
-                            <span className="inline-block w-4"></span> // mantiene alineación
-                          )}
-                          {c.nombre}
-                        </label>
-                      </li>
-                      ))}
-                    </ul>
+                    <RadioTree
+                    data={categoriasFull.data || []}
+                    idField="id"
+                    parentField="categoriaPadreId"
+                    labelField="nombre"
+                    value={data.categoriaPadreId || ""}
+                    onChange={(val) => setData("categoriaPadreId", val)}
+                    rootLabel="(Sin categoría)"
+                    />
                     {errors.categoriaPadreId && (
                       <div className="text-red-500 text-sm mt-1">{errors.categoriaPadreId}</div>
                     )}

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-//import { appRoutes } from "../../../routes/appRoutes";
-
 // Componentes
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
@@ -140,7 +138,7 @@ const Index = () => {
                    {proveedor.codigo}
                   </td>}
                   {visibility.codigo_barra &&
-                  <td className="px-4 py-3 w-48">
+                  <td className="px-4 py-3 w-32">
                     <AppBtnCodeBar codigo={proveedor.codigo} w="w-48"/> 
                   </td>}
                   {visibility.nombre &&
