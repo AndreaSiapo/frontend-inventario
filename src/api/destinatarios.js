@@ -99,8 +99,8 @@ export function getColumns() {
     { key: 'nombre',     label: 'Nombre' },
     { key: 'descripcion ', label: 'Descripción' },
     { key: 'plazo',      label: 'Plazo' },
-    { key: 'created_at', label: 'Creado' },
-    { key: 'updated_at', label: 'Actualizado' },
+    { key: 'creadoEn', label: 'Creado' },
+    { key: 'actualizadoEn', label: 'Actualizado' },
   ];
 }
 
@@ -111,7 +111,7 @@ export function getDefaultVisibility() {
     nombre: true,
     descripcion: false,
     plazo: false,
-    updated_at: false,
-    created_at: false,
+    actualizadoEn: false,
+    creadoEn: false,
   };
 }

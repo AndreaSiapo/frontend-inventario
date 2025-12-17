@@ -32,7 +32,7 @@ export default function ModalCreate( {
 
     const [ dimensiones, setDimensiones ] = useState({
         ancho: 1,
-        alto:  2,
+        alto:  1,
         largo: 1,
     });
 
@@ -219,9 +219,9 @@ export default function ModalCreate( {
                 <div className="flex flex-col">
                   <h1 className="text-label">Vista de Bodega</h1>
                   <HabitacionBox 
-                      ancho={Number(dimensiones.ancho)}
-                      alto={Number(dimensiones.alto)}
-                      largo={Number(dimensiones.largo)}/>
+                      ancho ={Number(dimensiones.ancho)}
+                      alto  ={Number(dimensiones.alto)}
+                      largo ={Number(dimensiones.largo)}/>
                 </div>
               </div>
               <div className="modal-footer mt-4">

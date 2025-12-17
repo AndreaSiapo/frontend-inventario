@@ -1,7 +1,24 @@
 // src/hook/useIndexTable.js
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
+
+export function useMoneda({
+  locale = import.meta.env.VITE_LOCALE ?? 'es-PE',
+  currency = import.meta.env.VITE_CURRENCY ?? 'PEN',
+} = {}) {
+
+  const Moneda = useMemo(() => {
+    return (value) =>
+      Number(value ?? 0).toLocaleString(locale, {
+        style: 'currency',
+        currency,
+        minimumFractionDigits: 2,
+      });
+  }, [locale, currency]);
+
+  return Moneda;
+}
 
 export function useIndexTable({
     items,
@@ -127,15 +144,31 @@ export function useModalHandlers({ Module, modules, route,
   notify
 }) {
 
-  const handleCreateSubmit = async (data = {}) => {
+  const handleCreateSubmit = async (data = {}, setErrors) => {
+//      console.log("handleCreateSubmit", data);
     try {
       await createItem({ ...data });
       if (onSuccess) await onSuccess(); // refresca lista si se pasa
       handleFalse("isCreateModalOpen");
       notify?.("Creado con éxito", "success");
     } catch (e) {
-      console.error("Error create:", e.message);
-      notify?.("Error al crear "+Module, "error");
+      //console.error("Error create:", e.message);
+      //notify?.("Error al crear "+Module, "error");
+      
+      // Caso 1: errors = { campo: "mensaje" }
+      if (e.errors && !Array.isArray(e.errors)) {
+        setErrors(e.errors);
+      }
+      // Caso 2: errors = [{field, message}, ...]
+       else if (Array.isArray(e.errors)) {
+        const formatted = {};
+        e.errors.forEach(err => {
+            formatted[err.field] = err.message;
+        });
+        setErrors(formatted);
+      } else {
+        notify?.("error", e.message || "Error desconocido", "error");
+      }
     }
   };
 

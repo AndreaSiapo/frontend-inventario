@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 // Componentes
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
-import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting}   from "./../../../components/html/btn";
-import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete}  from "./../../../components/form/btn";
+import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting}           from "./../../../components/html/btn";
+import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete, AppBtnX} from "./../../../components/form/btn";
+import { IconInBox, IconOutBox } from "../../../components/icons/actions/box";
 import Checkbox             from './../../../components/form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
@@ -16,47 +17,47 @@ import AppPagination        from "./../../../components/html/pagination";
 //import Layout               from "./../../../components/app/layout";
 
 import { appRoutes } from "../../../routes/appRoutes";
-import { getCategorias, getCategoria, createCategoria, updateCategoria, getColumns, getDefaultVisibility } from "../../../api/categorias";
+import { getTipoDocumentos, getTipoDocumento, createTipoDocumento, updateTipoDocumento, getColumns, getDefaultVisibility } from "../../../api/tipoDocumentos";
 
 const Index = () => {
   const columns = getColumns();
   const defaultVisibility = getDefaultVisibility();
   const [flash, notify] = useFlash();
 
-  const [showCategoria, setShowCategoria] = useState(null);
-  const [editCategoria, setEditCategoria] = useState(null);
-  const { resource: categorias, fetchResource: fetchCategorias, loading, error } = useResource(
-    getCategorias,
+  const [showTipoDocumento, setShowTipoDocumento] = useState(null);
+  const [editTipoDocumento, setEditTipoDocumento] = useState(null);
+  const { resource: tipoDocumentos, fetchResource: fetchTipoDocumentos, loading, error } = useResource(
+    getTipoDocumentos,
     getColumns,
     getDefaultVisibility
   );
 
-  const currentFilters = categorias.filters;
+  const currentFilters = tipoDocumentos.filters;
 
   async function handEdit(id) {
     const item = await handleEditClick(id, setVisibility);
-    setEditCategoria(item); }
+    setEditTipoDocumento(item); }
 
   async function handShow(id) {
-    const item = await handleShowClick(id, setVisibility, setShowCategoria); }
+    const item = await handleShowClick(id, setVisibility, setShowTipoDocumento); }
     
   // Hooks factorizaos
-  const { module, modules, Module, Modules } = useModuleNames("categoria", "categorias");
+  const { module, modules, Module, Modules } = useModuleNames("Tipo de Documento", "Tipos de Documento");
   const { visibility, handleToggle, setVisibility, handleFalse,
   checkedItems, handleToggleAll, handleToggleItem, handleSort, handleDate 
   } = useIndexTable({
-      items: categorias.data,
+      items: tipoDocumentos.data,
       modules,
       //route,
-      filters: categorias.filters,
+      //filters,
       columns: columns,
       defaultVisibility: defaultVisibility  });
        
   const {handleEditClick, handleShowClick, handleEditSubmit, handleCreateClick, handleCreateSubmit, handleCloseModal} = useModalHandlers({Module, modules, currentFilters, handleFalse, notify,
-    fetchItem:  getCategoria,         // GET /categorias/:id
-    createItem: createCategoria,     // POST /categorias
-    updateItem: updateCategoria,     // PUT /categorias/:id
-    onSuccess:  fetchCategorias
+    fetchItem: getTipoDocumento,         // GET /tipoDocumentos/:id
+    createItem: createTipoDocumento,     // POST /tipoDocumentos
+    updateItem: updateTipoDocumento,     // PUT /tipoDocumentos/:id
+    onSuccess: fetchTipoDocumentos
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
   
@@ -66,7 +67,7 @@ const Index = () => {
         <AppBreadcrumb
           title={Modules}
           sites={["Tablas", Modules]}
-          links={["/tablas", appRoutes.categoria]} />
+          links={["/tablas", appRoutes.tipoDocumento]} />
 
         <div className="alert-api">
           ❗ La API no está disponible, por favor habilítala antes de usar este módulo.
@@ -80,7 +81,7 @@ const Index = () => {
         <AppBreadcrumb
           title={Modules}
           sites={["Tablas",Modules]}
-          links={["/tablas", appRoutes.categoria]}
+          links={["/tablas", appRoutes.tipoDocumento]}
         />
 
         {flash && <AppNotification type={flash.type} message={flash.message} /> }
@@ -91,20 +92,20 @@ const Index = () => {
               <div className="table-info-action relative">
                 <h5>
                   <p className="text-gray-500">Total de {modules}:</p>
-                  <p className="dark:text-white"> {categorias.total} </p>
+                  <p className="dark:text-white"> {tipoDocumentos.total} </p>
                 </h5>
-                <AppBtnInfoCount from={categorias.from} to={categorias.to} total={categorias.total}  />
+                <AppBtnInfoCount from={tipoDocumentos.from} to={tipoDocumentos.to} total={tipoDocumentos.total}  />
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
-              <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/categorias/massDestroy", truncate: "/categorias/truncate" }} onSuccess={fetchCategorias}/>
             </div>
 
             <div className="div-cuatro">
               <div className="relative w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
                 <AppBtnCreate onCreate={() => handleCreateClick(setVisibility)} />
+                <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/tipoDocumentos/massDestroy", truncate: "/tipoDocumentos/truncate" }} onSuccess={fetchTipoDocumentos}/>
               </div>
             </div>
-              
+            
             {/* TABLA */}
             <div className="overflow-x-auto div-de-crud">
               <table className="table">
@@ -118,10 +119,16 @@ const Index = () => {
                     </th>
                     {visibility.id &&
                     <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
+                    {visibility.codigo &&
+                    <AppThTableOrder handleSort={() => handleSort('codigo', currentFilters)} label="CODIGO" />}
                     {visibility.nombre &&
                     <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
-                    {visibility.detalle &&
-                    <AppThTableOrder handleSort={() => handleSort('detalle', currentFilters)} label="DETALLE" />}
+                    {visibility.abreviado &&
+                    <AppThTableOrder handleSort={() => handleSort('abreviado', currentFilters)} label="ABREVIADO" />}
+                    {visibility.descripcion &&
+                    <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCIÓN" />}
+                    {visibility.naturaleza &&
+                    <AppThTableOrder handleSort={() => handleSort('naturaleza', currentFilters)} label="NATURALEZA" />}
                     {visibility.actualizadoEn &&
                     <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="updated_at" />}
                     {visibility.creadoEn &&
@@ -130,29 +137,37 @@ const Index = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {categorias.data.map((categoria) => ( 
-                  <tr className="tbody-tr border-b dark:border-gray-700" key={categoria.id}>
+                  {tipoDocumentos.data.map((tipoDocumento) => ( 
+                  <tr className="tbody-tr border-b dark:border-gray-700" key={tipoDocumento.id}>
                     <td className="px-4 py-3 w-4">
-                      <Checkbox id={"chk_"+categoria.id} name={"chk_"+categoria.id} className="chk-td" checked={checkedItems[categoria.id] || false} onChange={() => handleToggleItem(categoria.id)} />
+                      <Checkbox id={"chk_"+tipoDocumento.id} name={"chk_"+tipoDocumento.id} className="chk-td" checked={checkedItems[tipoDocumento.id] || false} onChange={() => handleToggleItem(tipoDocumento.id)} />
                     </td>
                     {visibility.id &&
                     <td className="px-4 py-3 w-4">
-                    {categoria.id}
+                    {tipoDocumento.id}
+                    </td>}
+                    {visibility.codigo &&
+                    <td className="px-4 py-3 w-4">
+                    {tipoDocumento.codigo}
                     </td>}
                     {visibility.nombre &&
                     <td className="px-4 py-3 w-4">
-                    {categoria?.nombre}
-                    {visibility.categoriaPadreId && (
-                      categoria?.categoriaPadreId && (
-                        <div className="text-gray-500 text-xs">
-                          {buildCategoriaPath(categoria, categorias.data)}
-                        </div>
-                      ))
-                    }
+                    {tipoDocumento.nombre}
                     </td>}
-                    {visibility.detalle &&
+                    {visibility.abreviado &&
                     <td className="px-4 py-3 w-4">
-                    {categoria?.detalle}
+                    {tipoDocumento.abreviado}
+                    </td>}
+                    {visibility.descripcion &&
+                    <td className="px-4 py-3 w-4">
+                    {tipoDocumento.descripcion}
+                    </td>}
+                    {visibility.naturaleza &&
+                    <td className="px-4 py-3 w-4">
+                    {tipoDocumento.naturaleza
+                      ? <IconInBox className="w-4 h-4 text-green-600" />
+                      : <IconOutBox className="w-4 h-4 text-red-600" />
+                    }
                     </td>}
                     {visibility.actualizadoEn &&
                     <td className="px-4 py-3 w-4">
@@ -164,9 +179,9 @@ const Index = () => {
                     </td>}
                     <td className="px-4 py-3 w-48">
                       <div className="flex items-center space-x-4">
-                        <AppBtnEdit   modulo={modules} id={categoria.id} onEdit={() => handEdit(categoria.id)} />
-                        <AppBtnShowM  modulo={modules} id={categoria.id} onShow={() => handShow(categoria.id)}/>
-                        <AppBtnDelete id={categoria.id} modulo="categorias" currentFilters={currentFilters} onSuccess={() => fetchCategorias()} />
+                        <AppBtnEdit   modulo={modules} id={tipoDocumento.id} onEdit={() => handEdit(tipoDocumento.id)} />
+                        <AppBtnShowM  modulo={modules} id={tipoDocumento.id} onShow={() => handShow(tipoDocumento.id)}/>
+                        <AppBtnDelete id={tipoDocumento.id} modulo="tipoDocumentos" currentFilters={currentFilters} onSuccess={() => fetchTipoDocumentos()} />
                       </div>
                     </td>
                   </tr>
@@ -177,50 +192,51 @@ const Index = () => {
 
             <div className="table-footer" aria-label="Table navigation">
               <span className="footer-table-span">
-                Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+categorias.from+" - "+categorias.to+" "}</span>
-                of <span className="font-semibold text-gray-900 dark:text-white">{" "+categorias.total+" "}</span>
+                Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+tipoDocumentos.from+" - "+tipoDocumentos.to+" "}</span>
+                of <span className="font-semibold text-gray-900 dark:text-white">{" "+tipoDocumentos.total+" "}</span>
               </span>
               <AppPagination
-                page_links={categorias.links}
-                search={categorias.filters.search}
-                perPage={categorias.filters.perPage}
-                onPageChange={(page) => fetchCategorias({ page })} />
+                page_links={tipoDocumentos.links}
+                search={tipoDocumentos.filters.search}
+                perPage={tipoDocumentos.filters.perPage}
+                onPageChange={(page) => fetchTipoDocumentos({ page })}
+              />
             </div>              
           </div>
         </div>
 
         {visibility.isCreateModalOpen && (
           <div className="modal-create">
-            <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules} categoria={categorias.data}/>
+            <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules}/>
           </div>
         )}
         
-        {visibility.isEditModalOpen && editCategoria && (
+        {visibility.isEditModalOpen && editTipoDocumento && (
         <ModalEdit
           title={Module}
           modules={modules}
           handleClose={() => {
             handleCloseModal();
-            setEditCategoria(null);
+            setEditTipoDocumento(null);
           }}
-          value={editCategoria}
+          value={editTipoDocumento}
           handleEdit={handleEditSubmit}
           inert={inertValue}
-          />
+        />
         )}
 
-        { visibility.isShowModalOpen && showCategoria && (
+        {visibility.isShowModalOpen && showTipoDocumento && (
         <ModalShow
           title={Module}
           modules={modules}
           handleClose={handleCloseModal}
-          value={showCategoria}
-          allCategorias={categorias.data}
+          value={showTipoDocumento}
         />
         )}
       </>
     );
-  };    
+  }
 }
+
 
 export default Index;

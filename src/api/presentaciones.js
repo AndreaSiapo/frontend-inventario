@@ -97,17 +97,18 @@ export function getColumns() {
     { key: 'codigoBarra',    label: 'Nombre' },
     { key: 'nombre',         label: 'Abreviado' },
     { key: 'detalle',        label: 'Detalle' },
-    { key: 'created_at',     label: 'Creado' },
-    { key: 'updated_at',     label: 'Actualizado' },
+    { key: 'actualizadoEn',  label: 'Actualizado' },
+    { key: 'creadoEn',       label: 'Creado' },
   ];
 }
 
 export function getDefaultVisibility() {
   return {
-    id: false,
-    nombre: true,
-    detalle: false,
-    updated_at: false,
-    created_at: false,
+    id:            false,
+    codigoBarra:   false,
+    nombre:        true,
+    detalle:       false,
+    actualizadoEn: false,
+    creadoEn:      false,
   };
 }

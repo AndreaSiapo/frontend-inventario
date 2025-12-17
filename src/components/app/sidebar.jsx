@@ -30,7 +30,7 @@ export default function Sidebar({ isOpen }) {
   };
 
   const tablas = [
-    { label: "Unidades de Medida", path: appRoutes.u_medida,            icon: Book },
+    { label: "Unidades de Medida", path: appRoutes.uMedida,             icon: Book },
     { label: "Bodega",             path: appRoutes.bodega,              icon: Book },
     { label: "Categoría",          path: appRoutes.categoria,           icon: Book },
     { label: "Destinatario",       path: appRoutes.destinatario,        icon: Book },

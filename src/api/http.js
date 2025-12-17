@@ -19,7 +19,16 @@ async function request(method, endpoint, data = null) {
 
     // ❌ Otros errores del servidor
     if (!res.ok) {
-      throw new Error(`Error en el API: ${res.status}`);
+      let error = {};
+
+      try {
+        error = await res.json();
+      } catch {
+        error = { message: "Error desconocido en el servidor" };
+      }
+
+      throw error; // ⬅️ Muy importante
+//      throw new Error(`Error en el API: ${res.status}`);
     }
 
     // Si no hay body
@@ -27,7 +36,6 @@ async function request(method, endpoint, data = null) {
     return text ? JSON.parse(text) : {};
   } 
   catch (error) {
-    // 💥 ESTE error se va a atrapar en tus modales y tablas
     throw error;
   }
 }

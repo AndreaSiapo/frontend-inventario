@@ -10,7 +10,7 @@ import Checkbox             from './../../../components/form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import {useIndexTable, useModalHandlers, useModuleNames} from "./../../../hook/useHandler";
+import {useIndexTable, useModalHandlers, useModuleNames, useResource} from "./../../../hook/useHandler";
 import AppNotification, { useFlash } from "./../../../components/html/notification";
 import AppPagination        from "./../../../components/html/pagination";
 //import AppSearchIndex       from "./../../../components/form/search_index";
@@ -27,33 +27,13 @@ const Index = () => {
   const [data, setData] = useState([]);
   const [showUnidadMedida, setShowUnidadMedida] = useState(null);
   const [editUnidadMedida, setEditUnidadMedida] = useState(null);
-  const [unidades, setUnidades] = useState({
-    data: [],
-    total: 0,
-    from: 0,
-    to: 0,
-    links: [],
-    filters: { search: '', perPage: 10, page: 1, orderBy: 'id', orderDir: 'asc' },
-    columns: getColumns(),
-    defaultVisibility: getDefaultVisibility()
-  });
+  const { resource: unidades, fetchResource: fetchUnidades, loading, error } = useResource(
+    getUnidadesMedida,
+    getColumns,
+    getDefaultVisibility
+  );
 
-  const fetchUnidades = async (filters = {}) => {
-    try {
-      const newFilters = { ...unidades.filters, ...filters };
-
-      const json = await getUnidadesMedida(newFilters);
-      setUnidades({...json, filters: newFilters});
-
-      setData(json.data ?? json); // soporta ambas estructuras
-    } catch (error) {
-      console.error("Error al obtener unidades:", error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchUnidades();
-  }, []);
+  const currentFilters = unidades.filters;
 
   async function handEdit(id) {
     const item = await handleEditClick(id, setVisibility);
@@ -62,14 +42,6 @@ const Index = () => {
   async function handShow(id) {
     const item = await handleShowClick(id, setVisibility, setShowUnidadMedida); }
 
-  const currentFilters = {
-    search: data.search,
-    perPage: data.perPage,
-    page: data.page,
-    orderBy: data.orderBy,
-    orderDir: data.orderDir
-  };
-    
   // Hooks factorizaos
   const { module, modules, Module, Modules } = useModuleNames("unidad de medida", "unidades de medida");
   const { visibility, handleToggle, setVisibility, handleFalse,
@@ -78,7 +50,7 @@ const Index = () => {
       items: data,
       modules,
       //route,
-      //filters,
+      filters: unidades.filters,
       columns: columns,
       defaultVisibility: defaultVisibility  });
        
@@ -89,19 +61,31 @@ const Index = () => {
     onSuccess: fetchUnidades
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
-
   
+  if (error) {
+    return (
+      <>
+        <AppBreadcrumb
+          title={Modules}
+          sites={["Tablas", Modules]}
+          links={["/tablas", appRoutes.uMedida]} />
 
-  return (
-    <>
-      <AppBreadcrumb
-        title={Modules}
-        sites={["Tablas",Modules]}
-        links={["/tablas", appRoutes.u_medida]}
-      />
+        <div className="alert-api">
+          ❗ La API no está disponible, por favor habilítala antes de usar este módulo.
+        </div>
+      </>
+    );
+  }
+  else {
+    return (
+      <>
+        <AppBreadcrumb
+          title={Modules}
+          sites={["Tablas",Modules]}
+          links={["/tablas", appRoutes.uMedida]}
+        />
 
-      {flash && <AppNotification type={flash.type} message={flash.message} />
-    }
+        {flash && <AppNotification type={flash.type} message={flash.message} /> }
 
         <div className="div-uno">
           <div className="div-dos">
@@ -233,8 +217,7 @@ const Index = () => {
         
       </>
     );
-
+  }
 }
-
 
 export default Index;

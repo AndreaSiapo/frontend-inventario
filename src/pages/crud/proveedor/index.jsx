@@ -25,11 +25,13 @@ const Index = () => {
 
   const [showProveedor, setShowProveedor] = useState(null);
   const [editProveedor, setEditProveedor] = useState(null);
-    const { resource: proveedores, fetchResource: fetchProveedores } = useResource(
+    const { resource: proveedores, fetchResource: fetchProveedores, loading, error } = useResource(
       getProveedores,
       getColumns,
       getDefaultVisibility
     );
+
+  const currentFilters = proveedores.filters;
 
   async function handEdit(id) {
     const item = await handleEditClick(id, setVisibility);
@@ -37,8 +39,6 @@ const Index = () => {
 
   async function handShow(id) {
     const item = await handleShowClick(id, setVisibility, setShowProveedor); }
-
-  const currentFilters = proveedores.filters;
     
   // Hooks factorizaos
   const { module, modules, Module, Modules } = useModuleNames("proveedor", "proveedores");
@@ -48,7 +48,7 @@ const Index = () => {
       items: proveedores.data,
       modules,
       //route,
-      //filters,
+      filters: proveedores.filters,
       columns: columns,
       defaultVisibility: defaultVisibility  });
        
@@ -59,22 +59,35 @@ const Index = () => {
     onSuccess: fetchProveedores
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
+    
+  if (error) {
+    return (
+      <>
+        <AppBreadcrumb
+          title={Modules}
+          sites={["Tablas", Modules]}
+          links={["/tablas", appRoutes.proveedor]} />
 
-  return (
-    <>
-      <AppBreadcrumb
-        title={Modules}
-        sites={["Tablas",Modules]}
-        links={["/tablas", appRoutes.proveedor]}
-      />
+        <div className="alert-api">
+          ❗ La API no está disponible, por favor habilítala antes de usar este módulo.
+        </div>
+      </>
+    );
+  }
+  else {
+    return (
+      <>
+        <AppBreadcrumb
+          title={Modules}
+          sites={["Tablas",Modules]}
+          links={["/tablas", appRoutes.proveedor]} />
 
-      {flash && <AppNotification type={flash.type} message={flash.message} />
-    }
+        {flash && <AppNotification type={flash.type} message={flash.message} /> }
 
         <div className="div-uno">
           <div className="div-dos">
             <div className="div-tres">
-              <div className="flex-1 flex items-center space-x-2 relative">
+              <div className="table-info-action relative">
                 <h5>
                   <p className="text-gray-500">Total de {modules}:</p>
                   <p className="dark:text-white"> {proveedores.total} </p>
@@ -91,143 +104,138 @@ const Index = () => {
               </div>
             </div>
             
-          {/* TABLA */}
-          <div className="overflow-x-auto div-de-crud">
-            <table className="table">
-              <thead className="thead">
-                <tr>
-                  <th scope="col" className="p-4" onClick={() => handleToggle('chkTable')}>
-                    <div className="flex items-center">
-                      <input id="checkbox-all" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" checked={visibility.chkTable} onChange={handleToggleAll} />
-                      <label htmlFor="checkbox-all" className="sr-only">checkbox</label>
-                    </div>
-                  </th>
-                  {visibility.id &&
-                  <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
-                  {visibility.codigo &&
-                  <AppThTableOrder handleSort={() => handleSort('codigo', currentFilters)} label="CODIGO" />}
-                  {visibility.codigo_barra &&
-                  <AppThTableOrder handleSort={() => handleSort('codigo_barra', currentFilters)} label="BARCODE" />}
-                  {visibility.nombre &&
-                  <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
-                  {visibility.referencia &&
-                  <AppThTableOrder handleSort={() => handleSort('referencia', currentFilters)} label="REFERENCIA" />}
-                  {visibility.descripcion &&
-                  <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCIÓN" />}
-                  {visibility.plazo &&
-                  <AppThTableOrder handleSort={() => handleSort('plazo', currentFilters)} label="PLAZO" />}
-                  {visibility.created_at &&
-                  <AppThTableOrder handleSort={() => handleSort('created_at', currentFilters)}label="created_at" />}
-                  {visibility.updated_at &&
-                  <AppThTableOrder handleSort={() => handleSort('updated_at', currentFilters)}label="updated_at" />}
-                  <th scope="col" className="p-4">ACTION </th>
-                </tr>
-              </thead>
-              <tbody>
-                {proveedores.data.map((proveedor) => ( 
-                <tr className="tbody-tr border-b dark:border-gray-700" key={proveedor.id}>
-                  <td className="px-4 py-3 w-4">
-                    <Checkbox id={"chk_"+proveedor.id} name={"chk_"+proveedor.id} className="chk-td" checked={checkedItems[proveedor.id] || false} onChange={() => handleToggleItem(proveedor.id)} />
-                  </td>
-                  {visibility.id &&
-                  <td className="px-4 py-3 w-4">
-                   {proveedor.id}
-                  </td>}
-                  {visibility.codigo &&
-                  <td className="px-4 py-3 w-4">
-                   {proveedor.codigo}
-                  </td>}
-                  {visibility.codigo_barra &&
-                  <td className="px-4 py-3 w-32">
-                    <AppBtnCodeBar codigo={proveedor.codigo} w="w-48"/> 
-                  </td>}
-                  {visibility.nombre &&
-                  <td className="px-4 py-3 w-4">
-                   {proveedor.nombre}
-                  </td>}
-                  {visibility.referencia &&
-                  <td className="px-4 py-3 w-4">
-                   {proveedor.referencia}
-                  </td>}
-                  {visibility.descripcion &&
-                  <td className="px-4 py-3 w-4">
-                   {proveedor.descripcion}
-                  </td>}
-                  {visibility.plazo &&
-                  <td className="px-4 py-3 w-4">
-                   {proveedor.plazo}
-                  </td>}
-                  {visibility.created_at &&
-                  <td className="px-4 py-3 w-4">
-                   {proveedor.created_at}
-                  </td>}
-                  {visibility.updated_at &&
-                  <td className="px-4 py-3 w-4">
-                   {proveedor.updated_at}
-                  </td>}
-                  <td className="px-4 py-3 w-48">
-                    <div className="flex items-center space-x-4">
-                      <AppBtnEdit   modulo={modules} id={proveedor.id} onEdit={() => handEdit(proveedor.id)} />
-                      <AppBtnShowM  modulo={modules} id={proveedor.id} onShow={() => handShow(proveedor.id)}/>
-                      <AppBtnDelete id={proveedor.id} modulo="proveedores" currentFilters={currentFilters} onSuccess={() => fetchProveedores()} />
-                    </div>
-                  </td>
-                </tr>
-                ))}
-              </tbody>
-            </table>
+            {/* TABLA */}
+            <div className="overflow-x-auto div-de-crud">
+              <table className="table">
+                <thead className="thead">
+                  <tr>
+                    <th scope="col" className="p-4" onClick={() => handleToggle('chkTable')}>
+                      <div className="flex items-center">
+                        <input id="checkbox-all" type="checkbox" className="check-default" checked={visibility.chkTable} onChange={handleToggleAll} />
+                        <label htmlFor="checkbox-all" className="sr-only">checkbox</label>
+                      </div>
+                    </th>
+                    {visibility.id &&
+                    <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
+                    {visibility.codigo &&
+                    <AppThTableOrder handleSort={() => handleSort('codigo', currentFilters)} label="CODIGO" />}
+                    {visibility.codigo_barra &&
+                    <AppThTableOrder handleSort={() => handleSort('codigo_barra', currentFilters)} label="BARCODE" />}
+                    {visibility.nombre &&
+                    <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
+                    {visibility.referencia &&
+                    <AppThTableOrder handleSort={() => handleSort('referencia', currentFilters)} label="REFERENCIA" />}
+                    {visibility.descripcion &&
+                    <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCIÓN" />}
+                    {visibility.plazo &&
+                    <AppThTableOrder handleSort={() => handleSort('plazo', currentFilters)} label="PLAZO" />}
+                    {visibility.actualizadoEn &&
+                    <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="updated_at" />}
+                    {visibility.creadoEn &&
+                    <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="created_at" />}
+                    <th scope="col" className="p-4">ACTION </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {proveedores.data.map((proveedor) => ( 
+                  <tr className="tbody-tr border-b dark:border-gray-700" key={proveedor.id}>
+                    <td className="px-4 py-3 w-4">
+                      <Checkbox id={"chk_"+proveedor.id} name={"chk_"+proveedor.id} className="chk-td" checked={checkedItems[proveedor.id] || false} onChange={() => handleToggleItem(proveedor.id)} />
+                    </td>
+                    {visibility.id &&
+                    <td className="px-4 py-3 w-4">
+                    {proveedor.id}
+                    </td>}
+                    {visibility.codigo &&
+                    <td className="px-4 py-3 w-4">
+                    {proveedor.codigo}
+                    </td>}
+                    {visibility.codigo_barra &&
+                    <td className="px-4 py-3 w-32">
+                      <AppBtnCodeBar codigo={proveedor.codigo} w="w-48"/> 
+                    </td>}
+                    {visibility.nombre &&
+                    <td className="px-4 py-3 w-4">
+                    {proveedor.nombre}
+                    </td>}
+                    {visibility.referencia &&
+                    <td className="px-4 py-3 w-4">
+                    {proveedor.referencia}
+                    </td>}
+                    {visibility.descripcion &&
+                    <td className="px-4 py-3 w-4">
+                    {proveedor.descripcion}
+                    </td>}
+                    {visibility.plazo &&
+                    <td className="px-4 py-3 w-4">
+                    {proveedor.plazo}
+                    </td>}
+                    {visibility.actualizadoEn &&
+                    <td className="px-4 py-3 w-4">
+                    {categoria.actualizadoEn}
+                    </td>}
+                    {visibility.creadoEn &&
+                    <td className="px-4 py-3 w-4">
+                    {categoria.creadoEn}
+                    </td>}
+                    <td className="px-4 py-3 w-48">
+                      <div className="flex items-center space-x-4">
+                        <AppBtnEdit   modulo={modules} id={proveedor.id} onEdit={() => handEdit(proveedor.id)} />
+                        <AppBtnShowM  modulo={modules} id={proveedor.id} onShow={() => handShow(proveedor.id)}/>
+                        <AppBtnDelete id={proveedor.id} modulo="proveedores" currentFilters={currentFilters} onSuccess={() => fetchProveedores()} />
+                      </div>
+                    </td>
+                  </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="table-footer" aria-label="Table navigation">
+              <span className="footer-table-span">
+                Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+proveedores.from+" - "+proveedores.to+" "}</span>
+                of <span className="font-semibold text-gray-900 dark:text-white">{" "+proveedores.total+" "}</span>
+              </span>
+              <AppPagination
+                page_links={proveedores.links}
+                search={proveedores.filters.search}
+                perPage={proveedores.filters.perPage}
+                onPageChange={(page) => fetchProveedores({ page })}
+              />
+            </div>              
           </div>
-
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+proveedores.from+" - "+proveedores.to+" "}</span>
-              of <span className="font-semibold text-gray-900 dark:text-white">{" "+proveedores.total+" "}</span>
-            </span>
-            <AppPagination
-              page_links={proveedores.links}
-              search={proveedores.filters.search}
-              perPage={proveedores.filters.perPage}
-              onPageChange={(page) => fetchProveedores({ page })}
-            />
-          </div>              
         </div>
-      </div>
 
-      {visibility.isCreateModalOpen && (
-        <div className="flex w-full items-center align-middle">
-          <ModalCreate 
-            onSuccess={handleCreateSubmit} 
-            title={Module} 
-            handleClose={() => handleCreateClick(setVisibility)} 
-            modules={modules}/>
-        </div>
-      )}
-      
-      {visibility.isEditModalOpen && editProveedor && (
-      <ModalEdit
-        title={Module}
-        modules={modules}
-        handleClose={() => {
-          handleCloseModal();
-          setEditProveedor(null); }}
-        value={editProveedor}
-        handleEdit={handleEditSubmit}
-        inert={inertValue}
-      />
-      )}
-
-      {visibility.isShowModalOpen && showProveedor && (
-      <ModalShow
-        title={Module}
-        modules={modules}
-        handleClose={handleCloseModal}
-        value={showProveedor}
-      />
-      )}
+        {visibility.isCreateModalOpen && (
+          <div className="modal-create">
+            <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules}/>
+          </div>
+        )}
         
+        {visibility.isEditModalOpen && editProveedor && (
+        <ModalEdit
+          title={Module}
+          modules={modules}
+          handleClose={() => {
+            handleCloseModal();
+            setEditProveedor(null); }}
+          value={editProveedor}
+          handleEdit={handleEditSubmit}
+          inert={inertValue}
+        />
+        )}
+
+        {visibility.isShowModalOpen && showProveedor && (
+        <ModalShow
+          title={Module}
+          modules={modules}
+          handleClose={handleCloseModal}
+          value={showProveedor}
+        />
+        )}
       </>
     );
-
+  }
 }
 
 export default Index;

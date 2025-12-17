@@ -99,8 +99,8 @@ export function getColumns() {
     { key: 'ruc',          label: 'RUC' },
     { key: 'descripcion',  label: 'Descripcion' },
     { key: 'tipo',         label: 'Tipo' },
-    { key: 'created_at',   label: 'Creado' },
-    { key: 'updated_at',   label: 'Actualizado' },
+    { key: 'creadoEn',   label: 'Creado' },
+    { key: 'actualizadoEn',   label: 'Actualizado' },
   ];
 }
 
@@ -112,7 +112,7 @@ export function getDefaultVisibility() {
     ruc: false,
     descripcion: false,
     tipo: false,
-    updated_at: false,
-    created_at: false,
+    creadoEn: false,
+    actualizadoEn: false,
   };
 }

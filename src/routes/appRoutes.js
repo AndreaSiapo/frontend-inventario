@@ -11,7 +11,7 @@ export const appRoutes = {
   movimiento: "/tablas/movimientos",
   detalle_movimiento: "/tablas/detalle_movimientos",
   tipo_documento: "/tablas/tipo_documentos",
-  u_medida: "/tablas/unidad_medidas",
+  uMedida: "/tablas/unidad_medidas",
 };
 
 

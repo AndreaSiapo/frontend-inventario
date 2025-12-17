@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 // Componentes
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
-import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting}   from "./../../../components/html/btn";
-import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete}  from "./../../../components/form/btn";
+import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting}  from "./../../../components/html/btn";
+import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete} from "./../../../components/form/btn";
 import Checkbox             from './../../../components/form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
@@ -16,57 +16,57 @@ import AppPagination        from "./../../../components/html/pagination";
 //import Layout               from "./../../../components/app/layout";
 
 import { appRoutes } from "../../../routes/appRoutes";
-import { getCategorias, getCategoria, createCategoria, updateCategoria, getColumns, getDefaultVisibility } from "../../../api/categorias";
+import { getDestinatarios, getDestinatario, createDestinatario, updateDestinatario, getColumns, getDefaultVisibility } from "../../../api/destinatarios";
 
 const Index = () => {
   const columns = getColumns();
   const defaultVisibility = getDefaultVisibility();
   const [flash, notify] = useFlash();
 
-  const [showCategoria, setShowCategoria] = useState(null);
-  const [editCategoria, setEditCategoria] = useState(null);
-  const { resource: categorias, fetchResource: fetchCategorias, loading, error } = useResource(
-    getCategorias,
-    getColumns,
-    getDefaultVisibility
-  );
-
-  const currentFilters = categorias.filters;
+  const [showDestinatario, setShowDestinatario] = useState(null);
+  const [editDestinatario, setEditDestinatario] = useState(null);
+    const { resource: destinatarios, fetchResource: fetchDestinatarios, loading, error } = useResource(
+      getDestinatarios,
+      getColumns,
+      getDefaultVisibility
+    );
+  
+  const currentFilters = destinatarios.filters;
 
   async function handEdit(id) {
     const item = await handleEditClick(id, setVisibility);
-    setEditCategoria(item); }
+    setEditDestinatario(item); }
 
   async function handShow(id) {
-    const item = await handleShowClick(id, setVisibility, setShowCategoria); }
-    
+    const item = await handleShowClick(id, setVisibility, setShowDestinatario); }
+
   // Hooks factorizaos
-  const { module, modules, Module, Modules } = useModuleNames("categoria", "categorias");
+  const { module, modules, Module, Modules } = useModuleNames("destinatario", "destinatarios");
   const { visibility, handleToggle, setVisibility, handleFalse,
   checkedItems, handleToggleAll, handleToggleItem, handleSort, handleDate 
   } = useIndexTable({
-      items: categorias.data,
+      items: destinatarios.data,
       modules,
       //route,
-      filters: categorias.filters,
+      filters: destinatarios.filters,
       columns: columns,
       defaultVisibility: defaultVisibility  });
        
   const {handleEditClick, handleShowClick, handleEditSubmit, handleCreateClick, handleCreateSubmit, handleCloseModal} = useModalHandlers({Module, modules, currentFilters, handleFalse, notify,
-    fetchItem:  getCategoria,         // GET /categorias/:id
-    createItem: createCategoria,     // POST /categorias
-    updateItem: updateCategoria,     // PUT /categorias/:id
-    onSuccess:  fetchCategorias
+    fetchItem: getDestinatario,         // GET /destinatarios/:id
+    createItem: createDestinatario,     // POST /destinatarios
+    updateItem: updateDestinatario,     // PUT /destinatarios/:id
+    onSuccess: fetchDestinatarios
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
-  
+
   if (error) {
     return (
       <>
         <AppBreadcrumb
           title={Modules}
           sites={["Tablas", Modules]}
-          links={["/tablas", appRoutes.categoria]} />
+          links={["/tablas", appRoutes.destinatario]} />
 
         <div className="alert-api">
           ❗ La API no está disponible, por favor habilítala antes de usar este módulo.
@@ -80,8 +80,7 @@ const Index = () => {
         <AppBreadcrumb
           title={Modules}
           sites={["Tablas",Modules]}
-          links={["/tablas", appRoutes.categoria]}
-        />
+          links={["/tablas", appRoutes.destinatario]} />
 
         {flash && <AppNotification type={flash.type} message={flash.message} /> }
 
@@ -91,12 +90,12 @@ const Index = () => {
               <div className="table-info-action relative">
                 <h5>
                   <p className="text-gray-500">Total de {modules}:</p>
-                  <p className="dark:text-white"> {categorias.total} </p>
+                  <p className="dark:text-white"> {destinatarios.total} </p>
                 </h5>
-                <AppBtnInfoCount from={categorias.from} to={categorias.to} total={categorias.total}  />
+                <AppBtnInfoCount from={destinatarios.from} to={destinatarios.to} total={destinatarios.total}  />
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
-              <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/categorias/massDestroy", truncate: "/categorias/truncate" }} onSuccess={fetchCategorias}/>
+              <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/destinatarios/massDestroy", truncate: "/destinatarios/truncate" }} onSuccess={fetchDestinatarios}/>
             </div>
 
             <div className="div-cuatro">
@@ -104,7 +103,7 @@ const Index = () => {
                 <AppBtnCreate onCreate={() => handleCreateClick(setVisibility)} />
               </div>
             </div>
-              
+            
             {/* TABLA */}
             <div className="overflow-x-auto div-de-crud">
               <table className="table">
@@ -118,55 +117,60 @@ const Index = () => {
                     </th>
                     {visibility.id &&
                     <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
+                    {visibility.codigo &&
+                    <AppThTableOrder handleSort={() => handleSort('codigo', currentFilters)} label="CODIGO" />}
                     {visibility.nombre &&
                     <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
-                    {visibility.detalle &&
-                    <AppThTableOrder handleSort={() => handleSort('detalle', currentFilters)} label="DETALLE" />}
+                    {visibility.descripcion &&
+                    <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCIÓN" />}
+                    {visibility.plazo &&
+                    <AppThTableOrder handleSort={() => handleSort('plazo', currentFilters)} label="PLAZO" />}
                     {visibility.actualizadoEn &&
-                    <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="updated_at" />}
+                    <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="actualizado_en" />}
                     {visibility.creadoEn &&
-                    <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="created_at" />}
+                    <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="creado_en" />}
                     <th scope="col" className="p-4">ACTION </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {categorias.data.map((categoria) => ( 
-                  <tr className="tbody-tr border-b dark:border-gray-700" key={categoria.id}>
+                  {destinatarios.data.map((destinatario) => ( 
+                  <tr className="tbody-tr border-b dark:border-gray-700" key={destinatario.id}>
                     <td className="px-4 py-3 w-4">
-                      <Checkbox id={"chk_"+categoria.id} name={"chk_"+categoria.id} className="chk-td" checked={checkedItems[categoria.id] || false} onChange={() => handleToggleItem(categoria.id)} />
+                      <Checkbox id={"chk_"+destinatario.id} name={"chk_"+destinatario.id} className="chk-td" checked={checkedItems[destinatario.id] || false} onChange={() => handleToggleItem(destinatario.id)} />
                     </td>
                     {visibility.id &&
                     <td className="px-4 py-3 w-4">
-                    {categoria.id}
+                    {destinatario.id}
+                    </td>}
+                    {visibility.codigo &&
+                    <td className="px-4 py-3 w-4">
+                    {destinatario.codigo}
                     </td>}
                     {visibility.nombre &&
                     <td className="px-4 py-3 w-4">
-                    {categoria?.nombre}
-                    {visibility.categoriaPadreId && (
-                      categoria?.categoriaPadreId && (
-                        <div className="text-gray-500 text-xs">
-                          {buildCategoriaPath(categoria, categorias.data)}
-                        </div>
-                      ))
-                    }
+                    {destinatario.nombre}
                     </td>}
-                    {visibility.detalle &&
+                    {visibility.descripcion &&
                     <td className="px-4 py-3 w-4">
-                    {categoria?.detalle}
+                    {destinatario.descripcion}
+                    </td>}
+                    {visibility.plazo &&
+                    <td className="px-4 py-3 w-4">
+                    {destinatario.plazo}
                     </td>}
                     {visibility.actualizadoEn &&
                     <td className="px-4 py-3 w-4">
-                    {categoria.actualizadoEn}
+                    {destinatario.actualizadoEn}
                     </td>}
                     {visibility.creadoEn &&
                     <td className="px-4 py-3 w-4">
-                    {categoria.creadoEn}
+                    {destinatario.creadoEn}
                     </td>}
                     <td className="px-4 py-3 w-48">
                       <div className="flex items-center space-x-4">
-                        <AppBtnEdit   modulo={modules} id={categoria.id} onEdit={() => handEdit(categoria.id)} />
-                        <AppBtnShowM  modulo={modules} id={categoria.id} onShow={() => handShow(categoria.id)}/>
-                        <AppBtnDelete id={categoria.id} modulo="categorias" currentFilters={currentFilters} onSuccess={() => fetchCategorias()} />
+                        <AppBtnEdit   modulo={modules} id={destinatario.id} onEdit={() => handEdit(destinatario.id)} />
+                        <AppBtnShowM  modulo={modules} id={destinatario.id} onShow={() => handShow(destinatario.id)}/>
+                        <AppBtnDelete id={destinatario.id} modulo="destinatarios" currentFilters={currentFilters} onSuccess={() => fetchDestinatarios()} />
                       </div>
                     </td>
                   </tr>
@@ -175,52 +179,53 @@ const Index = () => {
               </table>
             </div>
 
-            <div className="table-footer" aria-label="Table navigation">
+            <div className="table-footer">
               <span className="footer-table-span">
-                Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+categorias.from+" - "+categorias.to+" "}</span>
-                of <span className="font-semibold text-gray-900 dark:text-white">{" "+categorias.total+" "}</span>
+                Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+destinatarios.from+" - "+destinatarios.to+" "}</span>
+                of <span className="font-semibold text-gray-900 dark:text-white">{" "+destinatarios.total+" "}</span>
               </span>
               <AppPagination
-                page_links={categorias.links}
-                search={categorias.filters.search}
-                perPage={categorias.filters.perPage}
-                onPageChange={(page) => fetchCategorias({ page })} />
+                page_links={destinatarios.links}
+                search={destinatarios.filters.search}
+                perPage={destinatarios.filters.perPage}
+                onPageChange={(page) => fetchDestinatarios({ page })} />
             </div>              
           </div>
         </div>
 
         {visibility.isCreateModalOpen && (
           <div className="modal-create">
-            <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules} categoria={categorias.data}/>
+            <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules}/>
           </div>
         )}
         
-        {visibility.isEditModalOpen && editCategoria && (
+        {visibility.isEditModalOpen && editDestinatario && (
         <ModalEdit
           title={Module}
           modules={modules}
           handleClose={() => {
             handleCloseModal();
-            setEditCategoria(null);
+            setEditDestinatario(null);
           }}
-          value={editCategoria}
+          value={editDestinatario}
           handleEdit={handleEditSubmit}
           inert={inertValue}
-          />
+        />
         )}
 
-        { visibility.isShowModalOpen && showCategoria && (
+        {visibility.isShowModalOpen && showDestinatario && (
         <ModalShow
           title={Module}
           modules={modules}
           handleClose={handleCloseModal}
-          value={showCategoria}
-          allCategorias={categorias.data}
+          value={showDestinatario}
         />
         )}
+          
       </>
     );
-  };    
+  }
 }
+
 
 export default Index;

@@ -1,7 +1,7 @@
-//src/api/tipo_documentos.js
+//src/api/tipoDocumentos.js
 import { apiGet, apiPost, apiPut, apiDelete } from "./http";
 
-export async function getTipo_documentos({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
+export async function getTipoDocumentos({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
   const json = await apiGet("/tipo_documentos");
   const allData = json.data ?? json;
 
@@ -47,21 +47,21 @@ export async function getTipo_documentos({ search = '', perPage = 10, page = 1, 
   };
 }
 
-export function getTipo_documento(id) {
+export function getTipoDocumento(id) {
   return apiGet(`/tipo_documentos/${id}`);
 }
 
-export function createTipo_documento(data) {
+export function createTipoDocumento(data) {
   return apiPost("/tipo_documentos", data);
 }
 
 // si tuvieras editar
-export function updateTipo_documento(id, data) {
+export function updateTipoDocumento(id, data) {
   return apiPut(`/tipo_documentos/${id}`, data);
 }
 
 // si tuvieras eliminar
-export function deleteTipo_documento(id) {
+export function deleteTipoDocumento(id) {
   return apiDelete(`/tipo_documentos/${id}`);
 }
 
@@ -73,8 +73,8 @@ export function getColumns() {
     { key: 'abreviado',   label: 'Abreviatura' },
     { key: 'descripcion', label: 'Descripción' },
     { key: 'naturaleza',  label: 'Naturaleza' },
-    { key: 'created_at',  label: 'Creado' },
-    { key: 'updated_at',  label: 'Actualizado' },
+    { key: 'creado_en',   label: 'Creado' },
+    { key: 'actualizado_en',  label: 'Actualizado' },
   ];
 }
 
@@ -86,7 +86,7 @@ export function getDefaultVisibility() {
     abreviado:    false,
     descripcion:  false,
     naturaleza:   false,
-    updated_at:       false,
-    created_at:       false,
+    creado_en:    false,
+    actualizado_en: false,
   };
 }

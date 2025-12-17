@@ -223,4 +223,22 @@
     .radio-select-ul-li-label{
         @apply w-full pl-2 cursor-pointer flex bg-white transition text-gray-700 hover:bg-gray-200 peer-checked:bg-blue-50 peer-checked:border-blue-500 peer-checked:text-blue-700 peer-has-checked:ring-2 peer-has-checked:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:peer-checked:bg-blue-900 dark:peer-checked:border-blue-400 dark:peer-checked:text-blue-300 dark:peer-has-checked:ring-blue-600;
     }
+    .modal-create {
+        @apply flex w-full items-center align-middle;
+    }
+    .table-footer{
+        @apply flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4;
+    }
+    .table-info-action {
+        @apply flex-1 flex items-center space-x-2 relative;
+    }
+    .check-default {
+        @apply w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
+    }
+    .footer-table-span {
+        @apply text-sm font-normal text-gray-500 dark:text-gray-400;
+    }
+    .alert-api {
+        @apply p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800;
+    }
 }   

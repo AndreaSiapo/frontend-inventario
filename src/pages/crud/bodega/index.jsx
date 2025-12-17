@@ -1,8 +1,6 @@
 // src/pages/crud/bodega/index.jsx
 import React, { useState, useEffect } from "react";
 
-//import { appRoutes } from "../../../routes/appRoutes";
-
 // Componentes
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
@@ -34,14 +32,14 @@ const Index = () => {
       getDefaultVisibility
     );
 
+  const currentFilters = bodegas.filters;
+
   async function handEdit(id) {
     const item = await handleEditClick(id, setVisibility);
     setEditBodega(item); }
 
   async function handShow(id) {
     const item = await handleShowClick(id, setVisibility, setShowBodega); }
-
-  const currentFilters = bodegas.filters;
     
   // Hooks factorizaos
   const { module, modules, Module, Modules } = useModuleNames("bodega", "bodegas");
@@ -71,7 +69,7 @@ const Index = () => {
           sites={["Tablas", Modules]}
           links={["/tablas", appRoutes.bodega]} />
 
-        <div className="p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800">
+        <div className="alert-api">
           ❗ La API no está disponible, por favor habilítala antes de usar este módulo.
         </div>
       </>
@@ -90,7 +88,7 @@ const Index = () => {
         <div className="div-uno">
           <div className="div-dos">
             <div className="div-tres">
-              <div className="flex-1 flex items-center space-x-2 relative">
+              <div className="table-info-action relative">
                 <h5>
                   <p className="text-gray-500">Total de {modules}:</p>
                   <p className="dark:text-white"> {bodegas.total} </p>
@@ -98,12 +96,12 @@ const Index = () => {
                 <AppBtnInfoCount from={bodegas.from} to={bodegas.to} total={bodegas.total}  />
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
+              <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/bodegas/massDestroy", truncate: "/bodegas/truncate" }} onSuccess={fetchBodegas}/>
             </div>
 
             <div className="div-cuatro">
               <div className="relative w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
                 <AppBtnCreate onCreate={() => handleCreateClick(setVisibility)} />
-                <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/bodegas/massDestroy", truncate: "/bodegas/truncate" }} onSuccess={fetchBodegas}/>
               </div>
             </div>
               
@@ -206,8 +204,8 @@ const Index = () => {
               </table>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
-              <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+            <div className="table-footer" aria-label="Table navigation">
+              <span className="footer-table-span">
                 Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+bodegas.from+" - "+bodegas.to+" "}</span>
                 of <span className="font-semibold text-gray-900 dark:text-white">{" "+bodegas.total+" "}</span>
               </span>
@@ -222,7 +220,7 @@ const Index = () => {
         </div>
 
         {visibility.isCreateModalOpen && (
-          <div className="flex w-full items-center align-middle">
+          <div className="modal-create">
             <ModalCreate 
               onSuccess={handleCreateSubmit} 
               title={Module} 

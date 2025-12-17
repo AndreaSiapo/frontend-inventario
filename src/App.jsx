@@ -2,17 +2,22 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import Layout   from './components/app/layout'
-import Error404 from './components/app/404'
-import Index    from './pages/home/index'
-import Marca        from './pages/crud/marca/index'
-import Bodega       from './pages/crud/bodega/index'
-import Categoria    from './pages/crud/categoria/index'
-import Producto     from './pages/crud/producto/index'
-import Proveedor    from './pages/crud/proveedor/index'
-import Presentacion from './pages/crud/presentacion/index'
-import U_Medida     from './pages/crud/u_medida/index'
-import viteLogo     from '/vite.svg'
+import Layout             from './components/app/layout';
+import Error404           from './components/app/404';
+import Index              from './pages/home/index';
+import Marca              from './pages/crud/marca/index';
+import Bodega             from './pages/crud/bodega/index';
+import Categoria          from './pages/crud/categoria/index';
+import Destinatario       from './pages/crud/destinatario/index';
+import Existencia          from './pages/crud/existencia/index';
+import DetalleMovimiento  from './pages/crud/detalle_movimiento/index';
+import Movimiento         from './pages/crud/movimiento/index';
+import Producto           from './pages/crud/producto/index';
+import Proveedor          from './pages/crud/proveedor/index';
+import Presentacion       from './pages/crud/presentacion/index';
+import TipoDoc            from './pages/crud/tipo_documento/index';
+import U_Medida           from './pages/crud/u_medida/index';
+import viteLogo           from '/vite.svg';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -33,7 +38,13 @@ function App() {
               <Route path='/tablas/categorias' element={<Categoria></Categoria>}></Route>
               <Route path='/tablas/proveedores' element={<Proveedor></Proveedor>}></Route>
               <Route path='/tablas/productos' element={<Producto></Producto>}></Route>
+
               <Route path='/tablas/bodegas' element={<Bodega></Bodega>}></Route>
+              <Route path='/tablas/destinatarios' element={<Destinatario></Destinatario>}></Route>
+              <Route path='/tablas/detalle_movimientos' element={<DetalleMovimiento></DetalleMovimiento>}></Route>
+              <Route path='/tablas/existencias' element={<Existencia></Existencia>}></Route>
+              <Route path='/tablas/movimientos' element={<Movimiento></Movimiento>}></Route>
+              <Route path='/tablas/tipo_documentos' element={<TipoDoc></TipoDoc>}></Route>
               <Route path='*' element={<Error404></Error404>}></Route>
             </Routes>
           </Layout>

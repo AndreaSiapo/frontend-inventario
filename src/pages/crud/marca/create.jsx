@@ -1,4 +1,5 @@
 //Create.jsx
+import { useEffect, useState, useMemo } from "react";
 import { useForm } from "../../../hook/useHandler";
 import { AppBtnX } from "../../../components/form/btn";
 
@@ -10,7 +11,7 @@ export default function ModalCreate( {
   inert,
   onSuccess
   }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, setErrors, reset } = useForm({
         nombre: "",
         abreviado: "",
         ruc: "",
@@ -18,11 +19,29 @@ export default function ModalCreate( {
         tipo: ""
     });
 
+    const now = new Date().toISOString();
+
     const handleSubmit = async (e) => {
       e.preventDefault();
+      const newErrors = {};
+     
+      if (!data.nombre?.trim())
+      newErrors.nombre = "El nombre es obligatorio";
+      if (!data.abreviado?.trim())
+      newErrors.abreviado = "La abreviatura es obligatoria";
+      if (!data.ruc.length == 11)
+      newErrors.ruc = "Debe tener 11 dígitos y comenzar con 20"
+      if (!/^(20)\d{9}$/.test(data.ruc)) {
+        newErrors.ruc = "El RUC debe tener 11 dígitos y comenzar con 20";
+      }
 
-      if (onSuccess) onSuccess(data);
-      handleClose();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+      if (onSuccess) await onSuccess(data, setErrors);
+//      handleClose();
     };
 
     return (
@@ -33,7 +52,7 @@ export default function ModalCreate( {
             {/* Modal header */}
             <div className="modal-header">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Crear {title}: </h3>
-              <AppBtnX $route={'/tablas/presentaciones'} handleClose={handleClose} />
+              <AppBtnX $route={'/tablas/marcas'} handleClose={handleClose} />
             </div>
           {/* Modal body */}
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
@@ -77,13 +96,14 @@ export default function ModalCreate( {
                     <input
                       id="ruc"
                       name="ruc"
-                      type="text"
+                      type="number"
                       inputMode="numeric"
                       pattern="[0-9]*"
                       placeholder="RUC"
+                      maxLength={11}
                       value={data.ruc}
                       autoComplete="ruc"
-                      onChange={(e) => { const onlyNums = e.target.value.replace(/\D/g, "");
+                      onChange={(e) => { const onlyNums = e.target.value.replace(/\D/g, "").slice(0, 11);
                         setData("ruc", onlyNums);}}
                       className={'input-modal '+classInput+`${errors.ruc && ' ring-red-500 border-red-200'}`}
                     />

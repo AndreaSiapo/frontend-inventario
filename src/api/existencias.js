@@ -1,4 +1,5 @@
 //src/api/exostencia.js
+import { label } from "three/tsl";
 import { apiGet, apiPost, apiPut, apiDelete } from "./http";
 
 export async function getExistencias({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
@@ -68,31 +69,37 @@ export function deleteExistencia(id) {
 export function getColumns() {
   return [
     { key: 'id',              label: 'ID' },
-    { key: 'id_producto',     label: 'ID Producto' },
-    { key: 'producto',        label: 'Producto' },
-    { key: 'id_bodega',       label: 'ID Bodega' },
+    { key: 'bodegaId',        label: 'ID Bodega' },
     { key: 'bodega',          label: 'Bodega' },
-    { key: 'cantidad',        label: 'Cantidad' },
-    { key: 'año',             label: 'Año' },
-    { key: 'mes',             label: 'Mes' },
-    { key: 'precio_promedio', label: 'Precio Promedio' },
-    { key: 'created_at',      label: 'Creado' },
-    { key: 'updated_at',      label: 'Actualizado' },
+    { key: 'loteID',          label: 'ID Lote'},
+    { key: 'lote',            label: 'Lote'},
+    { key: 'productoId',      label: 'ID Producto' },
+    { key: 'producto',        label: 'Producto' },
+    { key: 'stockMinimo',     label: 'Minimo'},
+    { key: 'stockMaximo',     label: 'Maximo'},
+    { key: 'costoPromedio',   label: 'Costo Promedio' },
+    { key: 'fechaUltimoMovimiento', label: 'Fecha Ult. Mov.' },
+    { key: 'cantidadActual',  label: 'Cantidad Actual' },
+    { key: 'actualizadoEn',   label: 'Actualizado' },
+    { key: 'creadoEn',        label: 'Creado' },
   ];
 }
 
 export function getDefaultVisibility() {
   return {
-    id:               false,
-    id_producto:      false,
-    producto:         true,
-    id_bodega:        false,
-    bodega:           true,
-    cantidad:         false,
-    año:              false,
-    mes:              false,
-    precio_promedio:  false,
-    updated_at:       false,
-    created_at:       false,
+    id:              false,
+    bodegaID:        false,
+    bodega:          true,
+    loteID:          false,
+    lote:            true,
+    productoID:      false,
+    producto:        true,
+    stockMinimo:     false,
+    stockMaximo:     false,
+    costoPromedio:   false,
+    fechaUltimoMovimiento:  false,
+    cantidadActual:   false,
+    actualizadoEn:   false,
+    creadoEn:        false,
   };
 }

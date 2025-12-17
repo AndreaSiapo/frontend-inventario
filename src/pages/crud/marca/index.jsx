@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-//import { appRoutes } from "../../../routes/appRoutes";
-
 // Componentes
 import AppBreadcrumb        from "./../../../components/html/breadcrumb";
 import AppThTableOrder      from "./../../../components/html/thTableOrder";
@@ -11,7 +9,7 @@ import Checkbox             from './../../../components/form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import {useIndexTable, useModalHandlers, useModuleNames} from "./../../../hook/useHandler";
+import {useIndexTable, useModalHandlers, useModuleNames, useResource} from "./../../../hook/useHandler";
 import AppNotification, { useFlash } from "./../../../components/html/notification";
 import AppPagination        from "./../../../components/html/pagination";
 //import AppSearchIndex       from "./../../../components/form/search_index";
@@ -27,31 +25,13 @@ const Index = () => {
 
   const [showMarca, setShowMarca] = useState(null);
   const [editMarca, setEditMarca] = useState(null);
-  const [marcas, setMarcas] = useState({
-    data: [],
-    total: 0,
-    from: 0,
-    to: 0,
-    links: [],
-    filters: { search: '', perPage: 10, page: 1, orderBy: 'id', orderDir: 'asc' },
-    columns: getColumns(),
-    defaultVisibility: getDefaultVisibility()
-  });
+    const { resource: marcas, fetchResource: fetchMarcas, loading, error } = useResource(
+      getMarcas,
+      getColumns,
+      getDefaultVisibility
+    );
 
-  const fetchMarcas = async (filters = {}) => {
-    try {
-      const newFilters = { ...marcas.filters, ...filters };
-      const json = await getMarcas(newFilters);
-      setMarcas({...json, filters: newFilters});
-
-    } catch (error) {
-      console.error("Error al obtener marcas:", error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchMarcas();
-  }, []);
+  const currentFilters = marcas.filters;
 
   async function handEdit(id) {
     const item = await handleEditClick(id, setVisibility);
@@ -59,14 +39,6 @@ const Index = () => {
 
   async function handShow(id) {
     const item = await handleShowClick(id, setVisibility, setShowMarca); }
-
-  const currentFilters = {
-    search: marcas.filters.search,
-    perPage: marcas.filters.perPage,
-    page: marcas.filters.page,
-    orderBy: marcas.filters.orderBy,
-    orderDir: marcas.filters.orderDir
-  };
     
   // Hooks factorizaos
   const { module, modules, Module, Modules } = useModuleNames("marca", "marcas");
@@ -76,7 +48,7 @@ const Index = () => {
       items: marcas.data,
       modules,
       //route,
-      //filters,
+      filters: marcas.filters,
       columns: columns,
       defaultVisibility: defaultVisibility  });
        
@@ -87,6 +59,22 @@ const Index = () => {
     onSuccess: fetchMarcas
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
+  
+  if (error) {
+    return (
+      <>
+        <AppBreadcrumb
+          title={Modules}
+          sites={["Tablas", Modules]}
+          links={["/tablas", appRoutes.marca]} />
+
+        <div className="alert-api">
+          ❗ La API no está disponible, por favor habilítala antes de usar este módulo.
+        </div>
+      </>
+    );
+  }
+  else {
 
   return (
     <>
@@ -142,10 +130,10 @@ const Index = () => {
                   <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCIÓN" />}
                   {visibility.tipo &&
                   <AppThTableOrder handleSort={() => handleSort('tipo', currentFilters)} label="TIPO" />}
-                  {visibility.updated_at &&
-                  <AppThTableOrder handleSort={() => handleSort('updated_at', currentFilters)}label="updated_at" />}
-                  {visibility.created_at &&
-                  <AppThTableOrder handleSort={() => handleSort('created_at', currentFilters)}label="created_at" />}
+                  {visibility.actualizadoEn &&
+                  <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="updated_at" />}
+                  {visibility.creadoEn &&
+                  <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="created_at" />}
                   <th scope="col" className="p-4">ACTION </th>
                 </tr>
               </thead>
@@ -179,13 +167,13 @@ const Index = () => {
                   <td className="px-4 py-3 w-4">
                    {marca.tipo}
                   </td>}
-                  {visibility.created_at &&
+                  {visibility.actualizadoEn &&
                   <td className="px-4 py-3 w-4">
-                   {marca.created_at}
+                   {marca.actualizadoEn}
                   </td>}
-                  {visibility.updated_at &&
+                  {visibility.creadoEn &&
                   <td className="px-4 py-3 w-4">
-                   {marca.updated_at}
+                   {marca.creadoEn}
                   </td>}
                   <td className="px-4 py-3 w-48">
                     <div className="flex items-center space-x-4">
@@ -216,7 +204,7 @@ const Index = () => {
       </div>
 
       {visibility.isCreateModalOpen && (
-        <div className="flex w-full items-center align-middle">
+        <div className="modal-create">
           <ModalCreate onSuccess={handleCreateSubmit} title={Module} handleClose={() => handleCreateClick(setVisibility)} modules={modules}/>
         </div>
       )}
@@ -225,14 +213,10 @@ const Index = () => {
       <ModalEdit
         title={Module}
         modules={modules}
-        handleClose={() => {
-          handleCloseModal();
-          setEditMarca(null);
-        }}
+        handleClose={() => { handleCloseModal(); setEditMarca(null); }}
         value={editMarca}
         handleEdit={handleEditSubmit}
-        inert={inertValue}
-      />
+        inert={inertValue} />
       )}
 
       {visibility.isShowModalOpen && showMarca && (
@@ -240,14 +224,10 @@ const Index = () => {
         title={Module}
         modules={modules}
         handleClose={handleCloseModal}
-        value={showMarca}
-      />
+        value={showMarca} />
       )}
-        
       </>
     );
-
+  }
 }
-
-
 export default Index;
