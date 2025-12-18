@@ -20,15 +20,36 @@ export default function ModalCreate( {
     }, []);
     
     const { data, setData, post, processing, errors, reset } = useForm({
-        nombre: "",
-        codigo: "",
-        referencia: "",
-        descripcion: "",
-        plazo: "",
+        id_movimiento:  "",
+        id_producto:    "",
+        detalle:        "",
+        cantidad:       "",
+        valor:          "",
+        subtotal:       "",
+        fecha:          "",
     });
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      const newErrors = {};
+
+      if (!data.id_movimiento?.trim()) 
+        newErrors.id_movimiento = "El movimiento es obligatorio";
+      if (!data.id_producto?.trim()) 
+        newErrors.id_producto = "El producto es obligatorio";
+      if (!data.detalle?.trim()) 
+        newErrors.detalle = "El detalle es obligatorio";
+      if (!data.cantidad?.trim()) 
+        newErrors.cantidad = "La cantidad es obligatoria";
+      if (!data.valor?.trim())
+        newErrors.valor = "El valor es obligatorio."
+      if (!data.fecha?.trim())
+        newErrors.fecha = "La fecha es obligatoria."
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
 
       if (onSuccess) onSuccess(data);
       handleClose();
@@ -47,102 +68,123 @@ export default function ModalCreate( {
           {/* Modal body */}
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {data.codigo && (
-                  <div className="mt-2 p-2 border rounded bg-white dark:bg-sky-900 overflow-auto col-span-2 flex justify-center text-gray-900 dark:text-white">
-                    <Barcode
-                      value={data.codigo}
-                      background="transparent"
-                      lineColor={isDark ? "#fff" : "#000"}      // puedes cambiarlo si usas modo oscuro
-                      textColor={isDark ? "#fff" : "#000"} 
-                      height={50}
-                      width={2}
-                      displayValue={true}   // muestra el texto debajo
-                      fontSize={14}
-                    />
-                  </div>
-                )}
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="codigo" className="block text-sm font-medium text-gray-900 dark:text-white">Código</label>
-                    <input id="codigo" name="codigo" type="text"
-                      placeholder="Codigo de la Proveedor"
-                      value={data.codigo}
-                      autoComplete="codigo"
-                      onChange={(e) => setData("codigo", e.target.value)}
-                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
+                    <label htmlFor="id_movimiento" className="block text-sm font-medium text-gray-900 dark:text-white">ID Movimiento</label>
+                    <input id="id_movimiento" name="id_movimiento" type="text"
+                      placeholder="ID del Movimiento"
+                      value={data.id_movimiento}
+                      autoComplete="id_movimiento"
+                      onChange={(e) => setData("id_movimiento", e.target.value)}
+                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.id_movimiento && ' ring-red-500 border-red-200'}`}
                     />
-                  {errors.codigo && (
-                    <div className="text-red-500 text-sm mt-1">{errors.codigo}</div>
+                  {errors.id_movimiento && (
+                    <div className="text-red-500 text-sm mt-1">{errors.id_movimiento}</div>
                   )}
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="nombre" className="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                    <input id="nombre" name="nombre" type="text"
-                      placeholder="Nombre de la Proveedor"
-                      value={data.nombre}
-                      autoComplete="nombre"
-                      onChange={(e) => setData("nombre", e.target.value)}
-                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
+                    <label htmlFor="id_producto" className="block text-sm font-medium text-gray-900 dark:text-white">ID Producto</label>
+                    <input id="id_producto" name="id_producto" type="text"
+                      placeholder="ID del Producto"
+                      value={data.id_producto}
+                      autoComplete="id_producto"
+                      onChange={(e) => setData("id_producto", e.target.value)}
+                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.id_producto && ' ring-red-500 border-red-200'}`}
                     />
-                  {errors.nombre && (
-                    <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>
+                  {errors.id_producto && (
+                    <div className="text-red-500 text-sm mt-1">{errors.id_producto}</div>
                   )}
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="referencia" className="block text-sm font-medium text-gray-900 dark:text-white">Referencia</label>
-                    <input
-                      id="referencia"
-                      name="referencia"
-                      type="text"
-                      placeholder="Referencias"
-                      value={data.referencia}
-                      autoComplete="referencia"
-                      onChange={(e) => setData("referencia", e.target.value)}
-                      className={'input-modal '+classInput+`${errors.referencia && ' ring-red-500 border-red-200'}`}
+                    <label htmlFor="detalle" className="block text-sm font-medium text-gray-900 dark:text-white">Detalle</label>
+                    <textarea
+                      id="detalle"
+                      name="detalle"
+                      placeholder="Detalle de la Proveedor"
+                      value={data.detalle}
+                      autoComplete="Detalle"
+                      onChange={(e) => setData("detalle", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.detalle && ' ring-red-500 border-red-200'}`}
                     />
-                  {errors.referencia && (
-                    <div className="text-red-500 text-sm mt-1">{errors.referencia}</div>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <div className="col-span-2">
-                    <label htmlFor="descripcion" className="block text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
-                    <input
-                      id="descripcion"
-                      name="descripcion"
-                      type="text"
-                      placeholder="Descripcion de la Proveedor"
-                      value={data.descripcion}
-                      autoComplete="descripcion"
-                      onChange={(e) => setData("descripcion", e.target.value)}
-                      className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
-                    />
-                  {errors.descripcion && (
-                    <div className="text-red-500 text-sm mt-1">{errors.descripcion}</div>
+                  {errors.detalle && (
+                    <div className="text-red-500 text-sm mt-1">{errors.detalle}</div>
                     )}
                   </div>
                 </div>
                 <div className="flex flex-col col-span-2">
                   <div className="col-span-2">
-                    <label htmlFor="plazo" className="block text-sm font-medium text-gray-900 dark:text-white">Plazo</label>
+                    <label htmlFor="cantidad" className="block text-sm font-medium text-gray-900 dark:text-white">Cantidad</label>
                     <input
-                      id="plazo"
-                      name="plazo"
+                      id="cantidad"
+                      name="cantidad"
                       type="number"
-                      placeholder="Plazos de entrega estimados del Proveedor"
-                      value={data.plazo}
-                      autoComplete="plazo"
-                      onChange={(e) => setData("plazo", e.target.value)}
-                      className={'input-modal '+classInput+`${errors.plazo && ' ring-red-500 border-red-200'}`}
+                      placeholder="Cantidad de productos"
+                      value={data.cantidad}
+                      autoComplete="cantidad"
+                      onChange={(e) => setData("cantidad", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.cantidad && ' ring-red-500 border-red-200'}`}
                     />
-                  {errors.plazo && (
-                    <div className="text-red-500 text-sm mt-1">{errors.plazo}</div>
+                  {errors.cantidad && (
+                    <div className="text-red-500 text-sm mt-1">{errors.cantidad}</div>
                     )}
+                  </div>
+                </div>
+                <div className="flex flex-col col-span-2">
+                  <div className="col-span-2">
+                    <label htmlFor="valor" className="block text-sm font-medium text-gray-900 dark:text-white">Valor Unitario</label>
+                    <input
+                      id="valor"
+                      name="valor"
+                      type="number"
+                      placeholder="Valor unitario de productos"
+                      value={data.valor}
+                      autoComplete="valor"
+                      onChange={(e) => setData("valor", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.valor && ' ring-red-500 border-red-200'}`}
+                    />
+                  {errors.valor && (
+                    <div className="text-red-500 text-sm mt-1">{errors.valor}</div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col col-span-2">
+                  <div className="col-span-2">
+                    <label htmlFor="subtotal" className="block text-sm font-medium text-gray-900 dark:text-white">Subtotal:</label>
+                    <input
+                      id="subtotal"
+                      name="subtotal"
+                      type="number"
+                      placeholder="Subtotal"
+                      value={data.subtotal}
+                      autoComplete="subtotal"
+                      onChange={(e) => setData("subtotal", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.subtotal && ' ring-red-500 border-red-200'}`}
+                    />
+                  {errors.subtotal && (
+                    <div className="text-red-500 text-sm mt-1">{errors.subtotal}</div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col col-span-2">
+                  <div className="col-span-2">
+                    <label htmlFor="fecha" className="block text-sm font-medium text-gray-900 dark:text-white">Fecha:</label>
+                    <input
+                      id="fecha"
+                      name="fecha"
+                      type="date"
+                      placeholder="fecha"
+                      value={data.fecha}
+                      autoComplete="fecha"
+                      onChange={(e) => setData("fecha", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.fecha && ' ring-red-500 border-red-200'}`}
+                    />
+                  {errors.fecha && (
+                    <div className="text-red-500 text-sm mt-1">{errors.fecha}</div>
+                  )}
                   </div>
                 </div>
               </div>

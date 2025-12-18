@@ -128,9 +128,9 @@ const Index = () => {
                     {visibility.bodega &&
                     <AppThTableOrder handleSort={() => handleSort('bodega', currentFilters)} label="BODEGA" />}
                     {visibility.loteId &&
-                    <AppThTableOrder handleSort={() => handleSort('bodegaId', currentFilters)} label="BODEGA ID" />}
+                    <AppThTableOrder handleSort={() => handleSort('loteId', currentFilters)} label="BODEGA ID" />}
                     {visibility.lote &&
-                    <AppThTableOrder handleSort={() => handleSort('bodega', currentFilters)} label="BODEGA" />}
+                    <AppThTableOrder handleSort={() => handleSort('lote', currentFilters)} label="BODEGA" />}
                     {visibility.stockMinimo &&
                     <AppThTableOrder handleSort={() => handleSort('stockMinimo', currentFilters)} label="MIN" />}
                     {visibility.stockMaximo &&

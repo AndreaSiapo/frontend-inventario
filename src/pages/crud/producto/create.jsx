@@ -107,7 +107,7 @@ export default function ModalCreate( {
         newErrors.presentacionId = "Seleccione la presentación";
 
       if (Object.keys(newErrors).length > 0) {
-        setErrors(newErrors);  // <-- IMPORTANTE
+        setErrors(newErrors);
         return;
       }
       if (onSuccess) onSuccess(data);

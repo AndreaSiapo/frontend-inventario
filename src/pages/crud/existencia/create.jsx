@@ -1,9 +1,11 @@
 //Create.jsx
 import Barcode from "react-barcode";
-import { useEffect, useState } from "react";
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
-
+import { useEffect, useState }  from "react";
+import { useForm, useResource } from "../../../hook/useHandler";
+import { AppBtnX }              from "../../../components/form/btn";
+import { getBodegasFull }       from "../../../api/bodegas";
+import { getLotesFull }         from "../../../api/lotes";
+import { getProductosFull }     from "../../../api/productos";
 
 export default function ModalCreate( {
   modules,
@@ -13,23 +15,57 @@ export default function ModalCreate( {
   inert,
   onSuccess
   }) {
+    const { resource: bodegas } = useResource(getBodegasFull);
+    const { resource: lotes } = useResource(getLotesFull);
+    const { resource: productos } = useResource(getProductosFull);
     const [isDark, setIsDark] = useState(false);
 
     useEffect(() => {
       setIsDark(document.documentElement.classList.contains("dark"));
     }, []);
     
-    const { data, setData, post, processing, errors, reset } = useForm({
-        nombre: "",
-        codigo: "",
-        referencia: "",
-        descripcion: "",
-        plazo: "",
+    const { data, setData, post, processing, errors, setErrors } = useForm({
+        bodegaId:        "",
+        bodega:          "",
+        loteId:          "",
+        lote:            "",
+        productoId:      "",
+        producto:        "",
+        stockMinimo:     "",
+        stockMaximo:     "",
+        costoPromedio:   "",
+        fechaUltimoMovimiento:  "",
+        cantidadActual:   "",
     });
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      const newErrors = {};
+      const min = data.stockMinimo !== "" ? Number(data.stockMinimo) : null;
+      const max = data.stockMaximo !== "" ? Number(data.stockMaximo) : null;
 
+      if (!data.bodegaId?.trim()) 
+        newErrors.bodegaId = "La Bodega es obligatoria.";
+      if (!data.loteId?.trim())
+        newErrors.loteId = "El lote es obligatorio.";
+      if (!data.productoId?.trim())
+        newErrors.productoId = "El producto es obligatorio.";
+      if (min !== null && max !== null) {
+        if (max < min) {
+          newErrors.maximo = "El máximo debe ser mayor que el mínimo";
+        }
+      }
+      if (!data.costoPromedio?.trim())
+        newErrors.costoPromedio = "El Costo Promedio es obligatorio.";
+      if (!data.fechaUltimoMovimiento?.trim())
+        newErrors.fechaUltimoMovimiento = "La Fecha del Último Movimiento es obligatoria.";
+      if (!data.cantidadActual?.trim())
+        newErrors.cantidadActual = "La Cantidad Actual es obligatoria.";
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }      
       if (onSuccess) onSuccess(data);
       handleClose();
     };
@@ -47,65 +83,115 @@ export default function ModalCreate( {
           {/* Modal body */}
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {data.codigo && (
-                  <div className="mt-2 p-2 border rounded bg-white dark:bg-sky-900 overflow-auto col-span-2 flex justify-center text-gray-900 dark:text-white">
-                    <Barcode
-                      value={data.codigo}
-                      background="transparent"
-                      lineColor={isDark ? "#fff" : "#000"}      // puedes cambiarlo si usas modo oscuro
-                      textColor={isDark ? "#fff" : "#000"} 
-                      height={50}
-                      width={2}
-                      displayValue={true}   // muestra el texto debajo
-                      fontSize={14}
-                    />
-                  </div>
-                )}
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="codigo" className="block text-sm font-medium text-gray-900 dark:text-white">Código</label>
-                    <input id="codigo" name="codigo" type="text"
-                      placeholder="Codigo de la Proveedor"
-                      value={data.codigo}
-                      autoComplete="codigo"
-                      onChange={(e) => setData("codigo", e.target.value)}
-                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
-                    />
-                  {errors.codigo && (
-                    <div className="text-red-500 text-sm mt-1">{errors.codigo}</div>
+                    <label htmlFor="productoId" className="block text-sm font-medium text-gray-900 dark:text-white">Producto</label>
+                    <select id="productoId" name="productoId"
+                      value={data.productoId ?? ""}
+                      onChange={(e) => setData("productoId", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.productoId && ' ring-red-500 border-red-200'}`}
+                    >
+                      <option value="">Seleccione un producto</option>
+                      {productos?.data?.map((producto) => (
+                        <option key={producto.id} value={producto.id}>
+                          {producto.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  {errors.productoId && (
+                    <div className="error">{errors.productoId}</div>
                   )}
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="nombre" className="block text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                    <input id="nombre" name="nombre" type="text"
-                      placeholder="Nombre de la Proveedor"
-                      value={data.nombre}
-                      autoComplete="nombre"
-                      onChange={(e) => setData("nombre", e.target.value)}
-                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
-                    />
-                  {errors.nombre && (
-                    <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>
+                    <label htmlFor="bodegaId" className="block text-sm font-medium text-gray-900 dark:text-white">Bodega</label>
+                    <select id="bodegaId" name="bodegaId"
+                      value={data.bodegaId ?? ""}
+                      onChange={(e) => setData("bodegaId", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.bodegaId && ' ring-red-500 border-red-200'}`}
+                    >
+                      <option value="">Seleccione una bodega</option>
+                      {bodegas?.data?.map((bodega) => (
+                        <option key={bodega.id} value={bodega.id}>
+                          {bodega.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  {errors.bodegaId && (
+                    <div className="error">{errors.bodegaId}</div>
                   )}
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="referencia" className="block text-sm font-medium text-gray-900 dark:text-white">Referencia</label>
+                    <label htmlFor="loteId" className="block text-sm font-medium text-gray-900 dark:text-white">Lote</label>
+                    <select id="loteId" name="loteId"
+                      value={data.loteId ?? ""}
+                      onChange={(e) => setData("loteId", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.loteId && ' ring-red-500 border-red-200'}`}
+                    >
+                      <option value="">Seleccione un lote</option>
+                      {lotes?.data?.map((lote) => (
+                        <option key={lote.id} value={lote.id}>
+                          {lote.nombre}
+                        </option>
+                      ))}
+                    </select>
+                  {errors.loteId && (
+                    <div className="error">{errors.loteId}</div>
+                  )}
+                  </div>
+                </div>
+                <div className="flex flex-col md:col-span-2">
+                  <label htmlFor="stockMinimo" className="block text-label">MIN - MAX</label>
+                  <div className="col-span-2 flex gap-2">
                     <input
-                      id="referencia"
-                      name="referencia"
-                      type="text"
-                      placeholder="Referencias"
-                      value={data.referencia}
-                      autoComplete="referencia"
-                      onChange={(e) => setData("referencia", e.target.value)}
-                      className={'input-modal '+classInput+`${errors.referencia && ' ring-red-500 border-red-200'}`}
+                      id="stockMinimo"
+                      name="stockMinimo"
+                      type="number"
+                      placeholder="MIN"
+                      value={data.stockMinimo ?? ""}
+                      autoComplete="stockMinimo"
+                      onChange={(e) => setData("stockMinimo", e.target.value === "" ? "" : e.target.value)}
+                      className={'input-modal w-20 '+classInput+`${errors.stockMinimo && ' ring-red-500 border-red-200'}`}
                     />
-                  {errors.referencia && (
-                    <div className="text-red-500 text-sm mt-1">{errors.referencia}</div>
+                    <label htmlFor="minimo" className="block text-sm text-gray-900 dark:text-gray-400"> - </label>
+                    <input
+                      id="stockMaximo"
+                      name="stockMaximo"
+                      type="number"
+                      placeholder="MAX"
+                      value={data.stockMaximo ?? ""}
+                      autoComplete="stockMaximo"
+                      onChange={(e) => setData("stockMaximo", e.target.value === "" ? "" : e.target.value)}
+                      className={'input-modal w-20 '+classInput+`${errors.maximo && ' ring-red-500 border-red-200'}`}
+                    />
+                  </div>
+                  <div>
+                  {errors.stockMinimo && (
+                    <div className="error">{errors.stockMinimo}</div>
+                  )}
+                  {errors.stockMaximo && (
+                    <div className="error">{errors.stockMaximo}</div>
+                  )}
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <div className="col-span-2">
+                    <label htmlFor="costoPromedio" className="block text-sm font-medium text-gray-900 dark:text-white">costoPromedio</label>
+                    <input
+                      id="costoPromedio"
+                      name="costoPromedio"
+                      type="text"
+                      placeholder="costoPromedio"
+                      value={data.costoPromedio}
+                      autoComplete="costoPromedio"
+                      onChange={(e) => setData("costoPromedio", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.costoPromedio && ' ring-red-500 border-red-200'}`}
+                    />
+                  {errors.costoPromedio && (
+                    <div className="error">{errors.costoPromedio}</div>
                     )}
                   </div>
                 </div>
@@ -123,7 +209,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.descripcion && (
-                    <div className="text-red-500 text-sm mt-1">{errors.descripcion}</div>
+                    <div className="error">{errors.descripcion}</div>
                     )}
                   </div>
                 </div>
@@ -141,14 +227,16 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.plazo && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.plazo && (
-                    <div className="text-red-500 text-sm mt-1">{errors.plazo}</div>
+                    <div className="error">{errors.plazo}</div>
                     )}
                   </div>
                 </div>
-              </div>
-              <button type="submit" className="submit-modal mt-4">
+            </div>
+            <div className="modal-footer mt-4">
+              <button type="submit" className="submit-modal">
                 Crear {title.toLowerCase()}
               </button>
+            </div>
           </form>
         </div>
       </div>

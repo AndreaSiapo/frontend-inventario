@@ -38,6 +38,29 @@ export default function ModalCreate( {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      const newErrors = {};
+
+      if (!data.codigo?.trim()) 
+        newErrors.codigo = "El código es obligatorio";
+      if (!data.nombre?.trim()) 
+        newErrors.nombre = "El nombre es obligatorio";
+      if (!data.detalle?.trim()) 
+        newErrors.detalle = "El detalle es obligatorio";
+      if (!data.plazo?.trim()) 
+        newErrors.plazo = "El plazo es obligatorio";
+      if (!data.ubicacion?.trim())
+        newErrors.ubicacion = "La ubicación es obligatoria."
+      if (!data.referencia?.trim())
+        newErrors.referencia = "La referencia es obligatoria."
+/*      if (!data.capacidad?.trim())
+        newErrors.capacidad = "La capacidad es obligatoria."
+      if (!data.tamano?.trim())
+        newErrors.tamano = "El tamaño es obligatorio."*/
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
 
       if (onSuccess) onSuccess(data);
       handleClose();

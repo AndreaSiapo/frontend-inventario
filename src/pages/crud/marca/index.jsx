@@ -98,12 +98,12 @@ const Index = () => {
                 <AppBtnInfoCount from={marcas.from} to={marcas.to} total={marcas.total}  />
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
+              <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/marcas/massDestroy", truncate: "/marcas/truncate" }} onSuccess={fetchMarcas}/>
             </div>
 
             <div className="div-cuatro">
               <div className="relative w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
                 <AppBtnCreate onCreate={() => handleCreateClick(setVisibility)} />
-                <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/marcas/massDestroy", truncate: "/marcas/truncate" }} onSuccess={fetchMarcas}/>
               </div>
             </div>
             

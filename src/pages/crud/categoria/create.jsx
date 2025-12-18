@@ -21,6 +21,19 @@ export default function ModalCreate( {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+      const newErrors = {};
+
+      if (!data.nombre?.trim()) 
+        newErrors.nombre = "El nombre es obligatorio";
+      if (!data.detalle?.trim()) 
+        newErrors.detalle = "El detalle es obligatorio";
+      if (!data.categoriaPadreId?.trim()) 
+        newErrors.categoriaPadreId = "Es necesario indicar donde se encuentra ubicada la categoría.";
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
 
       if (onSuccess) onSuccess(data);
       handleClose();
