@@ -132,7 +132,7 @@ const Index = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((unidad) => ( 
+                {unidades.data.map((unidad) => ( 
                 <tr className="tbody-tr border-b dark:border-gray-700" key={unidad.id}>
                   <td className="px-4 py-3 w-4">
                     <Checkbox id={"chk_"+unidad.id} name={"chk_"+unidad.id} className="chk-td" checked={checkedItems[unidad.id] || false} onChange={() => handleToggleItem(unidad.id)} />
