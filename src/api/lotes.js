@@ -1,8 +1,8 @@
-//src/api/productos.js
+//src/api/lotes.js
 import { apiGet, apiPost, apiPut, apiDelete } from "./http";
 
-export async function getProductos({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
-  const json = await apiGet("/productos");
+export async function getLotes({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/lotes");
   const allData = json.data ?? json;
 
   // Filtro simple por search (si quieres puedes mejorarlo)
@@ -47,8 +47,8 @@ export async function getProductos({ search = '', perPage = 10, page = 1, orderB
   };
 }
 
-export async function getProductosFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
-  const json = await apiGet("/umedidas");
+export async function getLotesFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/lotes");
   const allData = json.data ?? json;
   const normalize = (v) => (v ?? "").toString().toLowerCase();
 
@@ -73,45 +73,34 @@ export async function getProductosFull({ search = '', orderBy = 'id', orderDir =
   };
 }
 
-export function getProducto(id) {
-  return apiGet(`/productos/${id}`);
+export function getLote(id) {
+  return apiGet(`/lotes/${id}`);
 }
 
-export function createProducto(data) {
-  return apiPost("/productos", data);
+export function createLote(data) {
+  return apiPost("/lotes", data);
 }
 
 // si tuvieras editar
-export function updateProducto(id, data) {
-  return apiPut(`/productos/${id}`, data);
+export function updateLote(id, data) {
+  return apiPut(`/lotes/${id}`, data);
 }
 
 // si tuvieras eliminar
-export function deleteProducto(id) {
-  return apiDelete(`/productos/${id}`);
+export function deleteLote(id) {
+  return apiDelete(`/lotes/${id}`);
 }
 
 export function getColumns() {
   return [
     { key: 'id',               label: 'ID' },
-    { key: 'codigo',           label: 'Codigo' },
-    { key: 'codigoBarra',      label: 'Codigo de Barra' },
+    { key: 'codigo',           label: 'Codigo de Barra' },
     { key: 'nombre',           label: 'Nombre' },
-    { key: 'descripcion',      label: 'Descripción' },
-    { key: 'minimo',           label: 'Mínimo' },
-    { key: 'maximo',           label: 'Máximo' },
-    { key: 'fecha',            label: 'Fecha' },
-    { key: 'activo',           label: 'Activo' },
-    { key: 'precio',           label: 'Precio' },
-    { key: 'medidaId',         label: 'ID Unidad de Medida' },
-    { key: 'medida',           label: 'Und.Medida' },
-    { key: 'medidaAbreviado', label: 'U.M.' },
-    { key: 'marcaId',          label: 'ID Marca' },
-    { key: 'marca',            label: 'Marca' },
-    { key: 'categoriaId',      label: 'ID Categoría' },
-    { key: 'categoria',        label: 'Categoría' },
-    { key: 'presentacionId',   label: 'ID Presentación' },
-    { key: 'presentacion',     label: 'Presentación' },
+    { key: 'detalle',          label: 'Detalle' },
+    { key: 'ubicacion',        label: 'Ubicación' },
+    { key: 'referencia',       label: 'Referencias' },
+    { key: 'capacidad',        label: 'capacidad' },
+    { key: 'tamano',           label: 'Tamaño' },
     { key: 'created_at',       label: 'Creado' },
     { key: 'updated_at',       label: 'Actualizado' },
   ];
@@ -119,26 +108,15 @@ export function getColumns() {
 
 export function getDefaultVisibility() {
   return {
-    id:               false,
-    codigo:           false,
-    codigoBarra:      true,
-    nombre:           true,
-    descripcion:      false,
-    minimo:           false,
-    maximo:           false,
-    fecha:            false,
-    activo:           false,
-    precio:           false,
-    medidaId:         false,
-    medida:           false,
-    medidaAbreviado:  false,
-    marcaId:          false,
-    marca:            false,
-    categoriaId:      false,
-    categoria:        false,
-    presentacionId:   false,
-    presentacion:     false,
-    updated_at:       false,
-    created_at:       false,
+    id:         false,
+    codigo:     true,
+    nombre:     true,
+    detalle:    false,
+    ubicacion:  false,
+    referencia: false,
+    capacidad:  false,
+    tamano:     false,
+    updated_at: false,
+    created_at: false,
   };
 }

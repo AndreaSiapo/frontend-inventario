@@ -8,7 +8,9 @@ export async function getBodegas({ search = '', perPage = 10, page = 1, orderBy 
   // Filtro simple por search (si quieres puedes mejorarlo)
   let filtered = allData.filter(item => 
     item.nombre.toLowerCase().includes(search.toLowerCase())
-  );
+  );  
+
+  
 
   // Ordenamiento simple
   filtered.sort((a, b) => {
@@ -44,6 +46,32 @@ export async function getBodegas({ search = '', perPage = 10, page = 1, orderBy 
     filters: { search, perPage, page, orderBy, orderDir },
     columns: getColumns(),
     defaultVisibility: getDefaultVisibility()
+  };
+}
+
+export async function getBodegasFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/bodegas");
+  const allData = json.data ?? json;
+  const normalize = (v) => (v ?? "").toString().toLowerCase();
+
+  // Filtro por search (opcional)
+  let filtered = allData.filter(item =>
+    normalize(item.nombre).includes(normalize(search)),
+  );
+
+  // Ordenamiento
+  filtered.sort((a, b) => {
+    const valA = a[orderBy];
+    const valB = b[orderBy];
+    if (valA < valB) return orderDir === 'asc' ? -1 : 1;
+    if (valA > valB) return orderDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  return {
+    data: filtered,
+    total: filtered.length,
+    filters: { search, orderBy, orderDir }
   };
 }
 

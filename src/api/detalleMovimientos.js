@@ -77,8 +77,8 @@ export function getColumns() {
     { key: 'valor',         label: 'Valor' },
     { key: 'subtotal',      label: 'Sub Total' },
     { key: 'fecha',         label: 'Fecha' },
-    { key: 'created_at',    label: 'Creado' },
-    { key: 'updated_at',    label: 'Actualizado' },
+    { key: 'actualizadoEn', label: 'Actualizado' },
+    { key: 'creadoEn',      label: 'Creado' },
   ];
 }
 
@@ -86,15 +86,15 @@ export function getDefaultVisibility() {
   return {
     id:             false,
     id_movimiento:  true,
-    movimiento:     true,
+    movimiento:     false,
     id_producto:    true,
-    producto:       true,
-    detalle:        false,
-    cantidad:       false,
-    valor:          false,
-    subtotal:       false,
-    fecha:          false,
-    updated_at:     false,
-    created_at:     false,
+    producto:       false,
+    detalle:        true,
+    cantidad:       true,
+    valor:          true,
+    subtotal:       true,
+    fecha:          true,
+    actualizadoEn:  false,
+    creadoEn:       false,
   };
 }

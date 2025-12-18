@@ -103,9 +103,9 @@ export function getColumns() {
 
 export function getDefaultVisibility() {
   return {
-    id: false,
-    nombre: true,
-    abreviado: true,
+    id:         false,
+    nombre:     true,
+    abreviado:  true,
     updated_at: false,
     created_at: false,
   };

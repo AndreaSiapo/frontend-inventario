@@ -71,7 +71,7 @@ export function getColumns() {
     { key: 'id',              label: 'ID' },
     { key: 'bodegaId',        label: 'ID Bodega' },
     { key: 'bodega',          label: 'Bodega' },
-    { key: 'loteID',          label: 'ID Lote'},
+    { key: 'loteId',          label: 'ID Lote'},
     { key: 'lote',            label: 'Lote'},
     { key: 'productoId',      label: 'ID Producto' },
     { key: 'producto',        label: 'Producto' },
@@ -88,11 +88,11 @@ export function getColumns() {
 export function getDefaultVisibility() {
   return {
     id:              false,
-    bodegaID:        false,
+    bodegaId:        false,
     bodega:          true,
-    loteID:          false,
+    loteId:          false,
     lote:            true,
-    productoID:      false,
+    productoId:      false,
     producto:        true,
     stockMinimo:     false,
     stockMaximo:     false,
