@@ -143,9 +143,9 @@ const Index = () => {
                     {visibility.naturaleza &&
                     <AppThTableOrder handleSort={() => handleSort('naturaleza', currentFilters)} label="NATURALEZA" />}
                     {visibility.actualizadoEn &&
-                    <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="updated_at" />}
+                    <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="actualizadoEn" />}
                     {visibility.creadoEn &&
-                    <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="created_at" />}
+                    <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="creadoEn" />}
                     <th scope="col" className="p-4">ACTION </th>
                   </tr>
                 </thead>
@@ -207,13 +207,13 @@ const Index = () => {
                     <td className="px-4 py-3 w-4">
                     {movimiento.naturaleza}
                     </td>}
-                    {visibility.created_at &&
+                    {visibility.creadoEn &&
                     <td className="px-4 py-3 w-4">
-                    {movimiento.created_at}
+                    {movimiento.creadoEn}
                     </td>}
-                    {visibility.updated_at &&
+                    {visibility.actualizadoEn &&
                     <td className="px-4 py-3 w-4">
-                    {movimiento.updated_at}
+                    {movimiento.actualizadoEn}
                     </td>}
                     <td className="px-4 py-3 w-48">
                       <div className="flex items-center space-x-4">

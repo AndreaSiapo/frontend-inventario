@@ -105,15 +105,15 @@ export function getColumns() {
     { key: 'precio',           label: 'Precio' },
     { key: 'medidaId',         label: 'ID Unidad de Medida' },
     { key: 'medida',           label: 'Und.Medida' },
-    { key: 'medidaAbreviado', label: 'U.M.' },
+    { key: 'medidaAbreviado',  label: 'U.M.' },
     { key: 'marcaId',          label: 'ID Marca' },
     { key: 'marca',            label: 'Marca' },
     { key: 'categoriaId',      label: 'ID Categoría' },
     { key: 'categoria',        label: 'Categoría' },
     { key: 'presentacionId',   label: 'ID Presentación' },
     { key: 'presentacion',     label: 'Presentación' },
-    { key: 'created_at',       label: 'Creado' },
-    { key: 'updated_at',       label: 'Actualizado' },
+    { key: 'creadoEn',         label: 'Creado' },
+    { key: 'actualizadoEn',    label: 'Actualizado' },
   ];
 }
 
@@ -138,7 +138,7 @@ export function getDefaultVisibility() {
     categoria:        false,
     presentacionId:   false,
     presentacion:     false,
-    updated_at:       false,
-    created_at:       false,
+    actualizadoEn:    false,
+    creadoEn:         false,
   };
 }

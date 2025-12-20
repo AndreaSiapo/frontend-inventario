@@ -101,22 +101,22 @@ export function getColumns() {
     { key: 'referencia',       label: 'Referencias' },
     { key: 'capacidad',        label: 'capacidad' },
     { key: 'tamano',           label: 'Tamaño' },
-    { key: 'created_at',       label: 'Creado' },
-    { key: 'updated_at',       label: 'Actualizado' },
+    { key: 'creadoEn',         label: 'Creado' },
+    { key: 'actualizadoEn',    label: 'Actualizado' },
   ];
 }
 
 export function getDefaultVisibility() {
   return {
-    id:         false,
-    codigo:     true,
-    nombre:     true,
-    detalle:    false,
-    ubicacion:  false,
-    referencia: false,
-    capacidad:  false,
-    tamano:     false,
-    updated_at: false,
-    created_at: false,
+    id:            false,
+    codigo:        true,
+    nombre:        true,
+    detalle:       false,
+    ubicacion:     false,
+    referencia:    false,
+    capacidad:     false,
+    tamano:        false,
+    actualizadoEn: false,
+    creadoEn:      false,
   };
 }

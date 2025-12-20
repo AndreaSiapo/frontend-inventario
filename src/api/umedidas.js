@@ -93,20 +93,20 @@ export function deleteUnidadMedida(id) {
 
 export function getColumns() {
   return [
-    { key: 'id',         label: 'ID' },
-    { key: 'nombre',     label: 'Nombre' },
-    { key: 'abreviado',  label: 'Abreviado' },
-    { key: 'created_at', label: 'Creado' },
-    { key: 'updated_at', label: 'Actualizado' },
+    { key: 'id',            label: 'ID' },
+    { key: 'nombre',        label: 'Nombre' },
+    { key: 'abreviado',     label: 'Abreviado' },
+    { key: 'creadoEn',      label: 'Creado' },
+    { key: 'actualizadoEn', label: 'Actualizado' },
   ];
 }
 
 export function getDefaultVisibility() {
   return {
-    id:         false,
-    nombre:     true,
-    abreviado:  true,
-    updated_at: false,
-    created_at: false,
+    id:            false,
+    nombre:        true,
+    abreviado:     true,
+    actualizadoEn: false,
+    creadoEn:      false,
   };
 }

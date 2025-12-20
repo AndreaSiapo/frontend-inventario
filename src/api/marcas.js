@@ -93,26 +93,26 @@ export function deleteMarca(id) {
 
 export function getColumns() {
   return [
-    { key: 'id',           label: 'ID' },
-    { key: 'nombre',       label: 'Nombre' },
-    { key: 'abreviado',    label: 'Abreviado' },
-    { key: 'ruc',          label: 'RUC' },
-    { key: 'descripcion',  label: 'Descripcion' },
-    { key: 'tipo',         label: 'Tipo' },
-    { key: 'creadoEn',   label: 'Creado' },
-    { key: 'actualizadoEn',   label: 'Actualizado' },
+    { key: 'id',            label: 'ID' },
+    { key: 'nombre',        label: 'Nombre' },
+    { key: 'abreviado',     label: 'Abreviado' },
+    { key: 'ruc',           label: 'RUC' },
+    { key: 'descripcion',   label: 'Descripcion' },
+    { key: 'tipo',          label: 'Tipo' },
+    { key: 'creadoEn',      label: 'Creado' },
+    { key: 'actualizadoEn', label: 'Actualizado' },
   ];
 }
 
 export function getDefaultVisibility() {
   return {
-    id: false,
-    nombre: true,
-    abreviado: false,
-    ruc: false,
-    descripcion: false,
-    tipo: false,
-    creadoEn: false,
+    id:            false,
+    nombre:        true,
+    abreviado:     false,
+    ruc:           false,
+    descripcion:   false,
+    tipo:          false,
+    creadoEn:      false,
     actualizadoEn: false,
   };
 }

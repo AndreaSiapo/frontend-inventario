@@ -94,22 +94,22 @@ export function deleteCategoria(id) {
 
 export function getColumns() {
   return [
-    { key: 'id',         label: 'ID' },
-    { key: 'nombre',     label: 'Nombre' },
-    { key: 'categoriaPadreId',   label: 'Categoría Padre' },
-    { key: 'detalle ',   label: 'Detalle' },
-    { key: 'created_at', label: 'Creado' },
-    { key: 'updated_at', label: 'Actualizado' },
+    { key: 'id',               label: 'ID' },
+    { key: 'nombre',           label: 'Nombre' },
+    { key: 'categoriaPadreId', label: 'Categoría Padre' },
+    { key: 'detalle ',         label: 'Detalle' },
+    { key: 'creadoEn',         label: 'Creado' },
+    { key: 'actualizadoEn',    label: 'Actualizado' },
   ];
 }
 
 export function getDefaultVisibility() {
   return {
-    id: false,
-    nombre: true,
+    id:               false,
+    nombre:           true,
     categoriaPadreId: false,
-    detalle: true,
-    updated_at: false,
-    created_at: false,
+    detalle:          true,
+    actualizadoEn:    false,
+    creadoEn:         false,
   };
 }

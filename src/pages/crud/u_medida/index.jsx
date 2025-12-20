@@ -124,10 +124,10 @@ const Index = () => {
                   <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
                   {visibility.abreviado &&
                   <AppThTableOrder handleSort={() => handleSort('abreviado', currentFilters)} label="ABREVIADO" />}
-                  {visibility.updated_at &&
-                  <AppThTableOrder handleSort={() => handleSort('updated_at', currentFilters)}label="updated_at" />}
-                  {visibility.created_at &&
-                  <AppThTableOrder handleSort={() => handleSort('created_at', currentFilters)}label="created_at" />}
+                  {visibility.actualizadoEn &&
+                  <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="actualizadoEn" />}
+                  {visibility.creadoEn &&
+                  <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="creadoEn" />}
                   <th scope="col" className="p-4">ACTION </th>
                 </tr>
               </thead>
@@ -149,13 +149,13 @@ const Index = () => {
                   <td className="px-4 py-3 w-4">
                    {unidad.abreviado}
                   </td>}
-                  {visibility.created_at &&
+                  {visibility.creadoEn &&
                   <td className="px-4 py-3 w-4">
-                   {unidad.created_at}
+                   {unidad.creadoEn}
                   </td>}
-                  {visibility.updated_at &&
+                  {visibility.actualizadoEn &&
                   <td className="px-4 py-3 w-4">
-                   {unidad.updated_at}
+                   {unidad.actualizadoEn}
                   </td>}
                   <td className="px-4 py-3 w-48">
                     <div className="flex items-center space-x-4">

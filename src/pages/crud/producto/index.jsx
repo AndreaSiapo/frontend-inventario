@@ -156,9 +156,9 @@ const Index = () => {
                     {visibility.presentacion &&
                     <AppThTableOrder handleSort={() => handleSort('presentacion', currentFilters)} label="PRESENTACIÓN" />}
                     {visibility.actualizadoEn &&
-                    <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="updated_at" />}
+                    <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="actualizadoEn" />}
                     {visibility.creadoEn &&
-                    <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="created_at" />}
+                    <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="creadoEn" />}
                     <th scope="col" className="p-4">ACTION </th>
                   </tr>
                 </thead>
