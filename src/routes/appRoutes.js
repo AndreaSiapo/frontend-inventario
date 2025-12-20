@@ -1,17 +1,20 @@
 //src/routes/appRoutes.js
 export const appRoutes = {
-  bodega: "/tablas/bodegas",
-  categoria: "/tablas/categorias",
-  destinatario: "/tablas/destinatarios",
-  existencia: "/tablas/existencias",
-  marca: "/tablas/marcas",
-  presentacion: "/tablas/presentaciones",
-  producto: "/tablas/productos",
-  proveedor: "/tablas/proveedores",
-  movimiento: "/tablas/movimientos",
-  detalle_movimiento: "/tablas/detalle_movimientos",
-  tipo_documento: "/tablas/tipo_documentos",
-  uMedida: "/tablas/unidad_medidas",
+  bodega:            "/tablas/bodegas",
+  categoria:         "/tablas/categorias",
+  destinatario:      "/tablas/destinatarios",
+  existencia:        "/tablas/existencias",
+  lote:              "/tablas/lotes",
+  marca:             "/tablas/marcas",
+  movimiento:        "/tablas/movimientos",
+  detalleMovimiento: "/tablas/detalle_movimientos",
+  precioProducto:    "/tablas/precio_productos",
+  presentacion:      "/tablas/presentaciones",
+  producto:          "/tablas/productos",
+  proveedor:         "/tablas/proveedores",
+  productoProveedor: "/tablas/producto_proveedores",
+  tipoDocumento:     "/tablas/tipo_documentos",
+  uMedida:           "/tablas/unidad_medidas",
 };
 
 

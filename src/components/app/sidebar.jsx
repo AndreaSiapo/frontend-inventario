@@ -2,16 +2,16 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 // Iconos
-import Book     from "../icons/menu/book";
+import Book      from "../icons/menu/book";
 import Dashboard from "../icons/menu/dashboard";
-import Inbox    from "../icons/menu/inbox";
-import Kanban   from "../icons/menu/kanban";
-import User     from "../icons/menu/user";
-import Products from "../icons/menu/products";
-import SignIn   from "../icons/menu/sign-in";
-import SignUp   from "../icons/menu/sign-up";
+import Inbox     from "../icons/menu/inbox";
+import Kanban    from "../icons/menu/kanban";
+import User      from "../icons/menu/user";
+import Products  from "../icons/menu/products";
+import SignIn    from "../icons/menu/sign-in";
+import SignUp    from "../icons/menu/sign-up";
 import IconVDown from "../icons/actions/v-down";
-import IconVUp  from "../icons/actions/v-up";
+import IconVUp   from "../icons/actions/v-up";
 
 // Rutas reemplazando Ziggy
 import { appRoutes } from "../../routes/appRoutes";
@@ -30,18 +30,21 @@ export default function Sidebar({ isOpen }) {
   };
 
   const tablas = [
-    { label: "Unidades de Medida", path: appRoutes.uMedida,             icon: Book },
     { label: "Bodega",             path: appRoutes.bodega,              icon: Book },
     { label: "Categoría",          path: appRoutes.categoria,           icon: Book },
     { label: "Destinatario",       path: appRoutes.destinatario,        icon: Book },
     { label: "Existencia",         path: appRoutes.existencia,          icon: Book },
+    { label: "Lote",               path: appRoutes.lote,                icon: Book },
     { label: "Marca",              path: appRoutes.marca,               icon: Book },
     { label: "Movimiento",         path: appRoutes.movimiento,          icon: Book },
-    { label: "Detalle Movimiento", path: appRoutes.detalle_movimiento,  icon: Book },
-    { label: "Tipo de Documento",  path: appRoutes.tipo_documento,      icon: Book },
+    { label: "Detalle Movimiento", path: appRoutes.detalleMovimiento,   icon: Book },
+    { label: "Precio Productos",   path: appRoutes.precioProducto,      icon: Book },
     { label: "Presentacion",       path: appRoutes.presentacion,        icon: Book },
     { label: "Producto",           path: appRoutes.producto,            icon: Book },
+    { label: "Producto Proveedor", path: appRoutes.productoProveedor,   icon: Book },
     { label: "Proveedor",          path: appRoutes.proveedor,           icon: Book },
+    { label: "Tipo de Documento",  path: appRoutes.tipoDocumento,       icon: Book },
+    { label: "Unidades de Medida", path: appRoutes.uMedida,             icon: Book },
   ];
 
 
