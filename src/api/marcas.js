@@ -99,8 +99,8 @@ export function getColumns() {
     { key: 'ruc',           label: 'RUC' },
     { key: 'descripcion',   label: 'Descripcion' },
     { key: 'tipo',          label: 'Tipo' },
-    { key: 'creadoEn',      label: 'Creado' },
     { key: 'actualizadoEn', label: 'Actualizado' },
+    { key: 'creadoEn',      label: 'Creado' },
   ];
 }
 

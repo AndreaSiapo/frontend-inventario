@@ -94,29 +94,35 @@ export function deleteLote(id) {
 export function getColumns() {
   return [
     { key: 'id',               label: 'ID' },
-    { key: 'codigo',           label: 'Codigo de Barra' },
-    { key: 'nombre',           label: 'Nombre' },
-    { key: 'detalle',          label: 'Detalle' },
-    { key: 'ubicacion',        label: 'Ubicación' },
-    { key: 'referencia',       label: 'Referencias' },
-    { key: 'capacidad',        label: 'capacidad' },
-    { key: 'tamano',           label: 'Tamaño' },
-    { key: 'creadoEn',         label: 'Creado' },
+    { key: 'idProducto',       label: 'ID Producto' },
+    { key: 'producto',         label: 'Producto' },
+    { key: 'codigoLote',       label: 'Codigo de Lote' },
+    { key: 'codigoBar',        label: 'Codigo de Barras' },
+    { key: 'fechaVencimiento', label: 'fechaVencimiento' },
+    { key: 'cantidadInicial',  label: 'Cant. Inicial' },
+    { key: 'cantidadActual',   label: 'Cant. Actual' },
+    { key: 'costoUnitario',    label: 'Costo Unitario' },
+    { key: 'costoTotal',       label: 'Costo Total' },
+    { key: 'fechaIngreso',     label: 'Fecha Ingreso' },
     { key: 'actualizadoEn',    label: 'Actualizado' },
+    { key: 'creadoEn',         label: 'Creado' },
   ];
 }
 
 export function getDefaultVisibility() {
   return {
-    id:            false,
-    codigo:        true,
-    nombre:        true,
-    detalle:       false,
-    ubicacion:     false,
-    referencia:    false,
-    capacidad:     false,
-    tamano:        false,
-    actualizadoEn: false,
-    creadoEn:      false,
+    id:               false,
+    idProducto:       false,
+    producto:         false,
+    codigoLote:       true,
+    codigoBar:       true,
+    fechaVencimiento: true,
+    cantidadInicial:  true,
+    cantidadActual:   true,
+    costoUnitario:    true,
+    costoTotal:       true,
+    fechaIngreso:     true,
+    actualizadoEn:    false,
+    creadoEn:         false,
   };
 }

@@ -99,8 +99,8 @@ export function getColumns() {
     { key: 'abreviado',   label: 'Abreviatura' },
     { key: 'descripcion', label: 'Descripción' },
     { key: 'naturaleza',  label: 'Naturaleza' },
-    { key: 'creado_en',   label: 'Creado' },
-    { key: 'actualizado_en',  label: 'Actualizado' },
+    { key: 'creadoEn',   label: 'Creado' },
+    { key: 'actualizadoEn',  label: 'Actualizado' },
   ];
 }
 
@@ -112,7 +112,7 @@ export function getDefaultVisibility() {
     abreviado:    false,
     descripcion:  false,
     naturaleza:   false,
-    creado_en:    false,
-    actualizado_en: false,
+    creadoEn:    false,
+    actualizadoEn: false,
   };
 }
