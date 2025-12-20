@@ -18,47 +18,47 @@ import AppPagination        from "./../../../components/html/pagination";
 //import Layout               from "./../../../components/app/layout";
 
 import { appRoutes } from "../../../routes/appRoutes";
-import { getDetalleMovimientos, getDetalleMovimiento, createDetalleMovimiento, updateDetalleMovimiento, getColumns, getDefaultVisibility } from "../../../api/detalleMovimientos";
+import { getProductoProveedores, getProductoProveedor, createProductoProveedor, updateProductoProveedor, getColumns, getDefaultVisibility } from "../../../api/productoProveedores";
 
 const Index = () => {
   const columns = getColumns();
   const defaultVisibility = getDefaultVisibility();
   const [flash, notify] = useFlash();
 
-  const [showDetalleMovimiento, setShowDetalleMovimiento] = useState(null);
-  const [editDetalleMovimiento, setEditDetalleMovimiento] = useState(null);
-  const { resource: detalleMovimientos, fetchResource: fetchDetalleMovimientos, loading, error } = useResource(
-    getDetalleMovimientos,
+  const [showProductoProveedor, setShowProductoProveedor] = useState(null);
+  const [editProductoProveedor, setEditProductoProveedor] = useState(null);
+  const { resource: productoProveedores, fetchResource: fetchProductoProveedores, loading, error } = useResource(
+    getProductoProveedores,
     getColumns,
     getDefaultVisibility
   );
   
-  const currentFilters = detalleMovimientos.filters;
+  const currentFilters = productoProveedores.filters;
 
   async function handEdit(id) {
     const item = await handleEditClick(id, setVisibility);
-    setEditDetalleMovimiento(item); }
+    setEditProductoProveedor(item); }
 
   async function handShow(id) {
-    const item = await handleShowClick(id, setVisibility, setShowDetalleMovimiento); }
+    const item = await handleShowClick(id, setVisibility, setShowProductoProveedor); }
     
   // Hooks factorizaos
-  const { module, modules, Module, Modules } = useModuleNames("detalleMovimiento", "detalleMovimientos");
+  const { module, modules, Module, Modules } = useModuleNames("productoProveedor", "productoProveedores");
   const { visibility, handleToggle, setVisibility, handleFalse,
   checkedItems, handleToggleAll, handleToggleItem, handleSort, handleDate 
   } = useIndexTable({
-      items: detalleMovimientos.data,
+      items: productoProveedores.data,
       modules,
       //route,
-      filters: detalleMovimientos.filters,
+      filters: productoProveedores.filters,
       columns: columns,
       defaultVisibility: defaultVisibility  });
        
   const {handleEditClick, handleShowClick, handleEditSubmit, handleCreateClick, handleCreateSubmit, handleCloseModal} = useModalHandlers({Module, modules, currentFilters, handleFalse, notify,
-    fetchItem: getDetalleMovimiento,         // GET /detalleMovimientos/:id
-    createItem: createDetalleMovimiento,     // POST /detalleMovimientos
-    updateItem: updateDetalleMovimiento,     // PUT /detalleMovimientos/:id
-    onSuccess: fetchDetalleMovimientos
+    fetchItem:  getProductoProveedor,        // GET /productoProveedores/:id
+    createItem: createProductoProveedor,     // POST /productoProveedores
+    updateItem: updateProductoProveedor,     // PUT /productoProveedores/:id
+    onSuccess:  fetchProductoProveedores
   });
   
   if (error) {
@@ -67,7 +67,7 @@ const Index = () => {
         <AppBreadcrumb
           title={Modules}
           sites={["Tablas", Modules]}
-          links={["/tablas", appRoutes.detalleMovimiento]} />
+          links={["/tablas", appRoutes.productoProveedor]} />
 
         <div className="alert-api">
           ❗ La API no está disponible, por favor habilítala antes de usar este módulo.
@@ -81,7 +81,7 @@ const Index = () => {
       <AppBreadcrumb
         title={Modules}
         sites={["Tablas",Modules]}
-        links={["/tablas", appRoutes.detalleMovimiento]}
+        links={["/tablas", appRoutes.productoProveedor]}
       />
 
       {flash && <AppNotification type={flash.type} message={flash.message} /> }
@@ -92,12 +92,12 @@ const Index = () => {
             <div className="table-info-action relative">
               <h5>
                 <p className="text-gray-500">Total de {modules}:</p>
-                <p className="dark:text-white"> {detalleMovimientos.total} </p>
+                <p className="dark:text-white"> {productoProveedores.total} </p>
               </h5>
-              <AppBtnInfoCount from={detalleMovimientos.from} to={detalleMovimientos.to} total={detalleMovimientos.total}  />
+              <AppBtnInfoCount from={productoProveedores.from} to={productoProveedores.to} total={productoProveedores.total}  />
             </div>
             <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
-            <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/detalleMovimientos/massDestroy", truncate: "/detalleMovimientos/truncate" }} onSuccess={fetchDetalleMovimientos}/>
+            <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/productoProveedores/massDestroy", truncate: "/productoProveedores/truncate" }} onSuccess={fetchProductoProveedores}/>
           </div>
 
           <div className="div-cuatro">
@@ -119,16 +119,24 @@ const Index = () => {
                   </th>
                   {visibility.id &&
                   <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
+                  {visibility.idProducto &&
+                  <AppThTableOrder handleSort={() => handleSort('idProducto', currentFilters)} label="CODIGO" />}
+                  {visibility.producto &&
+                  <AppThTableOrder handleSort={() => handleSort('producto', currentFilters)} label="NOMBRE" />}
+                  {visibility.idProveedor &&
+                  <AppThTableOrder handleSort={() => handleSort('idProveedor', currentFilters)} label="ID PROVEEDOR" />}
+                  {visibility.proveedor &&
+                  <AppThTableOrder handleSort={() => handleSort('proveedor', currentFilters)} label="PROVEEDOR" />}
                   {visibility.codigo &&
                   <AppThTableOrder handleSort={() => handleSort('codigo', currentFilters)} label="CODIGO" />}
                   {visibility.nombre &&
                   <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
-                  {visibility.referencia &&
-                  <AppThTableOrder handleSort={() => handleSort('referencia', currentFilters)} label="REFERENCIA" />}
+                  {visibility.abreviado &&
+                  <AppThTableOrder handleSort={() => handleSort('abreviado', currentFilters)} label="ABREVIADO" />}
                   {visibility.descripcion &&
-                  <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCIÓN" />}
-                  {visibility.plazo &&
-                  <AppThTableOrder handleSort={() => handleSort('plazo', currentFilters)} label="PLAZO" />}
+                  <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCION" />}
+                  {visibility.naturaleza &&
+                  <AppThTableOrder handleSort={() => handleSort('naturaleza', currentFilters)} label="NATURALEZA" />}
                   {visibility.actualizadoEn &&
                   <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="actualizadoEn" />}
                   {visibility.creadoEn &&
@@ -137,48 +145,64 @@ const Index = () => {
                 </tr>
               </thead>
               <tbody>
-                {detalleMovimientos.data.map((detalleMovimiento) => ( 
-                <tr className="tbody-tr border-b dark:border-gray-700" key={detalleMovimiento.id}>
+                {productoProveedores.data.map((productoProveedor) => ( 
+                <tr className="tbody-tr border-b dark:border-gray-700" key={productoProveedor.id}>
                   <td className="px-4 py-3 w-4">
-                    <Checkbox id={"chk_"+detalleMovimiento.id} name={"chk_"+detalleMovimiento.id} className="chk-td" checked={checkedItems[detalleMovimiento.id] || false} onChange={() => handleToggleItem(detalleMovimiento.id)} />
+                    <Checkbox id={"chk_"+productoProveedor.id} name={"chk_"+productoProveedor.id} className="chk-td" checked={checkedItems[productoProveedor.id] || false} onChange={() => handleToggleItem(productoProveedor.id)} />
                   </td>
                   {visibility.id &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.id}
+                   {productoProveedor.id}
+                  </td>}
+                  {visibility.idProducto &&
+                  <td className="px-4 py-3 w-4">
+                   {productoProveedor.idProducto}
+                  </td>}
+                  {visibility.producto &&
+                  <td className="px-4 py-3 w-4">
+                   {productoProveedor.producto}
+                  </td>}
+                  {visibility.idProveedor &&
+                  <td className="px-4 py-3 w-4">
+                   {productoProveedor.idProveedor}
+                  </td>}
+                  {visibility.proveedor &&
+                  <td className="px-4 py-3 w-4">
+                   {productoProveedor.proveedor}
                   </td>}
                   {visibility.codigo &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.codigo}
+                   {productoProveedor.codigo}
                   </td>}
                   {visibility.nombre &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.nombre}
+                   {productoProveedor.nombre}
                   </td>}
-                  {visibility.referencia &&
+                  {visibility.abreviado &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.referencia}
+                   {productoProveedor.abreviado}
                   </td>}
                   {visibility.descripcion &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.descripcion}
+                   {productoProveedor.descripcion}
                   </td>}
-                  {visibility.plazo &&
+                  {visibility.naturaleza &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.plazo}
+                   {productoProveedor.naturaleza}
                   </td>}
                   {visibility.actualizadoEn &&
                   <td className="px-4 py-3 w-4">
-                  {detalleMovimiento.actualizadoEn}
+                  {productoProveedor.actualizadoEn}
                   </td>}
                   {visibility.creadoEn &&
                   <td className="px-4 py-3 w-4">
-                  {detalleMovimiento.creadoEn}
+                  {productoProveedor.creadoEn}
                   </td>}
                   <td className="px-4 py-3 w-48">
                     <div className="flex items-center space-x-4">
-                      <AppBtnEdit   modulo={modules} id={detalleMovimiento.id} onEdit={() => handEdit(detalleMovimiento.id)} />
-                      <AppBtnShowM  modulo={modules} id={detalleMovimiento.id} onShow={() => handShow(detalleMovimiento.id)}/>
-                      <AppBtnDelete id={detalleMovimiento.id} modulo="detalleMovimientos" currentFilters={currentFilters} onSuccess={() => fetchDetalleMovimientos()} />
+                      <AppBtnEdit   modulo={modules} id={productoProveedor.id} onEdit={() => handEdit(productoProveedor.id)} />
+                      <AppBtnShowM  modulo={modules} id={productoProveedor.id} onShow={() => handShow(productoProveedor.id)}/>
+                      <AppBtnDelete id={productoProveedor.id} modulo="productoProveedores" currentFilters={currentFilters} onSuccess={() => fetchProductoProveedores()} />
                     </div>
                   </td>
                 </tr>
@@ -189,14 +213,14 @@ const Index = () => {
 
           <div className="table-footer" aria-label="Table navigation">
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+detalleMovimientos.from+" - "+detalleMovimientos.to+" "}</span>
-              of <span className="font-semibold text-gray-900 dark:text-white">{" "+detalleMovimientos.total+" "}</span>
+              Mostrando <span className="font-semibold text-gray-900 dark:text-white">{" "+productoProveedores.from+" - "+productoProveedores.to+" "}</span>
+              of <span className="font-semibold text-gray-900 dark:text-white">{" "+productoProveedores.total+" "}</span>
             </span>
             <AppPagination
-              page_links={detalleMovimientos.links}
-              search={detalleMovimientos.filters.search}
-              perPage={detalleMovimientos.filters.perPage}
-              onPageChange={(page) => fetchDetalleMovimientos({ page })}
+              page_links={productoProveedores.links}
+              search={productoProveedores.filters.search}
+              perPage={productoProveedores.filters.perPage}
+              onPageChange={(page) => fetchProductoProveedores({ page })}
             />
           </div>              
         </div>
@@ -208,26 +232,26 @@ const Index = () => {
         </div>
       )}
       
-      {visibility.isEditModalOpen && editDetalleMovimiento && (
+      {visibility.isEditModalOpen && editProductoProveedor && (
       <ModalEdit
         title={Module}
         modules={modules}
         handleClose={() => {
           handleCloseModal();
-          setEditDetalleMovimiento(null);
+          setEditProductoProveedor(null);
         }}
-        value={editDetalleMovimiento}
+        value={editProductoProveedor}
         handleEdit={handleEditSubmit}
         inert={inertValue}
       />
       )}
 
-      {visibility.isShowModalOpen && showDetalleMovimiento && (
+      {visibility.isShowModalOpen && showProductoProveedor && (
       <ModalShow
         title={Module}
         modules={modules}
         handleClose={handleCloseModal}
-        value={showDetalleMovimiento}
+        value={showProductoProveedor}
       />
       )}
         

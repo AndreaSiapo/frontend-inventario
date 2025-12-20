@@ -97,12 +97,12 @@ const Index = () => {
                 <AppBtnInfoCount from={tipoDocumentos.from} to={tipoDocumentos.to} total={tipoDocumentos.total}  />
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
+              <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/tipoDocumentos/massDestroy", truncate: "/tipoDocumentos/truncate" }} onSuccess={fetchTipoDocumentos}/>
             </div>
 
             <div className="div-cuatro">
               <div className="relative w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
                 <AppBtnCreate onCreate={() => handleCreateClick(setVisibility)} />
-                <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/tipoDocumentos/massDestroy", truncate: "/tipoDocumentos/truncate" }} onSuccess={fetchTipoDocumentos}/>
               </div>
             </div>
             
@@ -171,11 +171,11 @@ const Index = () => {
                     </td>}
                     {visibility.actualizadoEn &&
                     <td className="px-4 py-3 w-4">
-                    {categoria.actualizadoEn}
+                    {tipoDocumento.actualizadoEn}
                     </td>}
                     {visibility.creadoEn &&
                     <td className="px-4 py-3 w-4">
-                    {categoria.creadoEn}
+                    {tipoDocumento.creadoEn}
                     </td>}
                     <td className="px-4 py-3 w-48">
                       <div className="flex items-center space-x-4">

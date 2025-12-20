@@ -96,6 +96,7 @@ const Index = () => {
                   <p className="dark:text-white"> {unidades.total} </p>
                 </h5>
                 <AppBtnInfoCount from={unidades.from} to={unidades.to} total={unidades.total}  />
+                <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/umedidas/massDestroy", truncate: "/umedidas/truncate" }} onSuccess={fetchUnidades}/>
               </div>
               <AppBtnTableSetting visibility={visibility} toggleColumn={handleToggle} columns={columns} />
             </div>
@@ -103,9 +104,15 @@ const Index = () => {
             <div className="div-cuatro">
               <div className="relative w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
                 <AppBtnCreate onCreate={() => handleCreateClick(setVisibility)} />
-                <AppBtnActions modules={modules} checkedItems={checkedItems} currentFilters={currentFilters} endpoints={{ massDestroy: "/umedidas/massDestroy", truncate: "/umedidas/truncate" }} onSuccess={fetchUnidades}/>
               </div>
             </div>
+
+      {visibility.isCreateModalOpen && (
+      <div className="flex w-full items-center align-middle">
+        <ModalCreate onSuccess={handleCreateSubmit} /> 
+        <AppBtnX $route={modules+'.index'} handleClose={() => handleCreateClick(setVisibility)} />
+      </div>
+      )}
             
           {/* TABLA */}
           <div className="overflow-x-auto div-de-crud">
@@ -184,13 +191,6 @@ const Index = () => {
           </div>              
         </div>
       </div>
-
-      {visibility.isCreateModalOpen && (
-      <div className="flex w-full items-center align-middle">
-        <ModalCreate onSuccess={handleCreateSubmit} /> 
-        <AppBtnX $route={modules+'.index'} handleClose={() => handleCreateClick(setVisibility)} />
-      </div>
-      )}
       
       {visibility.isEditModalOpen && editUnidadMedida && (
       <ModalEdit

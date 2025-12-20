@@ -172,11 +172,11 @@ const Index = () => {
                     </td>}
                     {visibility.actualizadoEn &&
                     <td className="px-4 py-3 w-4">
-                    {categoria.actualizadoEn}
+                    {proveedor.actualizadoEn}
                     </td>}
                     {visibility.creadoEn &&
                     <td className="px-4 py-3 w-4">
-                    {categoria.creadoEn}
+                    {proveedor.creadoEn}
                     </td>}
                     <td className="px-4 py-3 w-48">
                       <div className="flex items-center space-x-4">

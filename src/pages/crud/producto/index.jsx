@@ -67,7 +67,7 @@ const Index = () => {
         <AppBreadcrumb
           title={Modules}
           sites={["Tablas", Modules]}
-          links={["/tablas", appRoutes.categoria]} />
+          links={["/tablas", appRoutes.producto]} />
 
         <div className="alert-api">
           ❗ La API no está disponible, por favor habilítala antes de usar este módulo.
