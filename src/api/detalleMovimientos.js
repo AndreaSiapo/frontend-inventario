@@ -47,6 +47,32 @@ export async function getDetalleMovimientos({ search = '', perPage = 10, page = 
   };
 }
 
+export async function getDetalleMovimientosFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/detalle_movimientos");
+  const allData = json.data ?? json;
+  const normalize = (v) => (v ?? "").toString().toLowerCase();
+
+  // Filtro por search (opcional)
+  let filtered = allData.filter(item =>
+    normalize(item.nombre).includes(normalize(search)),
+  );
+
+  // Ordenamiento
+  filtered.sort((a, b) => {
+    const valA = a[orderBy];
+    const valB = b[orderBy];
+    if (valA < valB) return orderDir === 'asc' ? -1 : 1;
+    if (valA > valB) return orderDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  return {
+    data: filtered,
+    total: filtered.length,
+    filters: { search, orderBy, orderDir }
+  };
+}
+
 export function getDetalleMovimiento(id) {
   return apiGet(`/detalle_movimientos/${id}`);
 }

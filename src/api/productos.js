@@ -48,7 +48,7 @@ export async function getProductos({ search = '', perPage = 10, page = 1, orderB
 }
 
 export async function getProductosFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
-  const json = await apiGet("/umedidas");
+  const json = await apiGet("/productos");
   const allData = json.data ?? json;
   const normalize = (v) => (v ?? "").toString().toLowerCase();
 

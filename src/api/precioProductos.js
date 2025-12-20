@@ -1,8 +1,8 @@
-//src/api/tipoDocumentos.js
+//src/api/precioProductos.js
 import { apiGet, apiPost, apiPut, apiDelete } from "./http";
 
-export async function getTipoDocumentos({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
-  const json = await apiGet("/tipo_documentos");
+export async function getPrecioProductos({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/precio_producto");
   const allData = json.data ?? json;
 
   // Filtro simple por search (si quieres puedes mejorarlo)
@@ -47,8 +47,8 @@ export async function getTipoDocumentos({ search = '', perPage = 10, page = 1, o
   };
 }
 
-export async function getTipoDocumentosFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
-  const json = await apiGet("/tipo_documentos");
+export async function getPrecioProductosFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/precio_producto");
   const allData = json.data ?? json;
   const normalize = (v) => (v ?? "").toString().toLowerCase();
 
@@ -73,22 +73,22 @@ export async function getTipoDocumentosFull({ search = '', orderBy = 'id', order
   };
 }
 
-export function getTipoDocumento(id) {
-  return apiGet(`/tipo_documentos/${id}`);
+export function getPrecioProducto(id) {
+  return apiGet(`/precio_producto/${id}`);
 }
 
-export function createTipoDocumento(data) {
-  return apiPost("/tipo_documentos", data);
+export function createPrecioProducto(data) {
+  return apiPost("/precio_producto", data);
 }
 
 // si tuvieras editar
-export function updateTipoDocumento(id, data) {
-  return apiPut(`/tipo_documentos/${id}`, data);
+export function updatePrecioProducto(id, data) {
+  return apiPut(`/precio_producto/${id}`, data);
 }
 
 // si tuvieras eliminar
-export function deleteTipoDocumento(id) {
-  return apiDelete(`/tipo_documentos/${id}`);
+export function deletePrecioProducto(id) {
+  return apiDelete(`/precio_producto/${id}`);
 }
 
 export function getColumns() {

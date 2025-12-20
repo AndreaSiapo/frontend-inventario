@@ -1,7 +1,7 @@
-//src/api/tipoDocumentos.js
+//src/api/productoProveedores.js
 import { apiGet, apiPost, apiPut, apiDelete } from "./http";
 
-export async function getTipoDocumentos({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
+export async function getProductoProveedores({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
   const json = await apiGet("/tipo_documentos");
   const allData = json.data ?? json;
 
@@ -47,7 +47,7 @@ export async function getTipoDocumentos({ search = '', perPage = 10, page = 1, o
   };
 }
 
-export async function getTipoDocumentosFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
+export async function getProductoProveedoresFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
   const json = await apiGet("/tipo_documentos");
   const allData = json.data ?? json;
   const normalize = (v) => (v ?? "").toString().toLowerCase();
@@ -73,21 +73,21 @@ export async function getTipoDocumentosFull({ search = '', orderBy = 'id', order
   };
 }
 
-export function getTipoDocumento(id) {
+export function getProductoProveedor(id) {
   return apiGet(`/tipo_documentos/${id}`);
 }
 
-export function createTipoDocumento(data) {
+export function createProductoProveedor(data) {
   return apiPost("/tipo_documentos", data);
 }
 
 // si tuvieras editar
-export function updateTipoDocumento(id, data) {
+export function updateProductoProveedor(id, data) {
   return apiPut(`/tipo_documentos/${id}`, data);
 }
 
 // si tuvieras eliminar
-export function deleteTipoDocumento(id) {
+export function deleteProductoProveedor(id) {
   return apiDelete(`/tipo_documentos/${id}`);
 }
 
