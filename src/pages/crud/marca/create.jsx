@@ -1,7 +1,8 @@
 //Create.jsx
 import { useEffect, useState, useMemo } from "react";
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
+import { useForm }                      from "../../../hook/useHandler";
+import { AppBtnX }                      from "../../../components/form/btn";
+import { appRoutes }                    from "../../../routes/appRoutes";
 
 export default function ModalCreate( {
   modules,
@@ -52,7 +53,7 @@ export default function ModalCreate( {
             {/* Modal header */}
             <div className="modal-header">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Crear {title}: </h3>
-              <AppBtnX $route={'/tablas/marcas'} handleClose={handleClose} />
+              <AppBtnX $route={appRoutes.marca} handleClose={handleClose} />
             </div>
           {/* Modal body */}
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
@@ -68,7 +69,7 @@ export default function ModalCreate( {
                       className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.nombre && (
-                    <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>
+                    <div className="error">{errors.nombre}</div>
                   )}
                   </div>
                 </div>
@@ -86,7 +87,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.abreviado && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.abreviado && (
-                    <div className="text-red-500 text-sm mt-1">{errors.abreviado}</div>
+                    <div className="error">{errors.abreviado}</div>
                     )}
                   </div>
                 </div>
@@ -108,7 +109,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.ruc && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.ruc && (
-                    <div className="text-red-500 text-sm mt-1">{errors.ruc}</div>
+                    <div className="error">{errors.ruc}</div>
                     )}
                   </div>
                 </div>
@@ -126,7 +127,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.descripcion && (
-                    <div className="text-red-500 text-sm mt-1">{errors.descripcion}</div>
+                    <div className="error">{errors.descripcion}</div>
                     )}
                   </div>
                 </div>
@@ -144,7 +145,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.tipo && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.tipo && (
-                    <div className="text-red-500 text-sm mt-1">{errors.tipo}</div>
+                    <div className="error">{errors.tipo}</div>
                     )}
                   </div>
                 </div>

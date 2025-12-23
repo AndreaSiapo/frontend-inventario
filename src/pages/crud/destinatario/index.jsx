@@ -59,7 +59,7 @@ const Index = () => {
     onSuccess: fetchDestinatarios
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
-
+/*
   if (error) {
     return (
       <>
@@ -74,7 +74,7 @@ const Index = () => {
       </>
     );
   }
-  else {
+  else {*/
     return (
       <>
         <AppBreadcrumb
@@ -225,7 +225,6 @@ const Index = () => {
       </>
     );
   }
-}
-
+//}
 
 export default Index;

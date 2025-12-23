@@ -1,14 +1,15 @@
 //Create.jsx
-import { useEffect, useState, useMemo }  from "react";
+import { useEffect, useState, useMemo }         from "react";
 import { AppBtnCodeBarDownload, AppBtnCodeBar } from "../../../components/html/btn";
-import { useForm, useResource } from "../../../hook/useHandler";
-import { AppBtnX }            from "../../../components/form/btn";
-import CheckboxBall           from "../../../components/form/check2";
-import IconVRight             from "../../../components/icons/actions/v-right";
+import { useForm, useResource }   from "../../../hook/useHandler";
+import { AppBtnX }                from "../../../components/form/btn";
+import CheckboxBall               from "../../../components/form/check2";
+import IconVRight                 from "../../../components/icons/actions/v-right";
 import { getUnidadesMedidaFull }  from "../../../api/umedidas";
 import { getMarcasFull }          from "../../../api/marcas";
 import { getCategoriasFull }      from "../../../api/categorias";
 import { getPresentacionesFull }  from "../../../api/presentaciones";
+import { appRoutes }              from "../../../routes/appRoutes";
 
 export default function ModalCreate( {
   modules,
@@ -122,7 +123,7 @@ export default function ModalCreate( {
           {/* Modal header */}
           <div className="modal-header">
             <h3 className="h3-modal"> Crear {title}: </h3>
-            <AppBtnX $route={'/tablas/presentaciones'} handleClose={handleClose} />
+            <AppBtnX $route={appRoutes.producto} handleClose={handleClose} />
           </div>
         {/* Modal body */}
           {data.codigoBarra && (

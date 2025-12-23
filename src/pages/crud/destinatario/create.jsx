@@ -1,8 +1,9 @@
 //Create.jsx
-import Barcode from "react-barcode";
+import Barcode                 from "react-barcode";
 import { useEffect, useState } from "react";
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
+import { useForm }             from "../../../hook/useHandler";
+import { AppBtnX }             from "../../../components/form/btn";
+import { appRoutes }           from "../../../routes/appRoutes";
 
 
 export default function ModalCreate( {
@@ -19,7 +20,7 @@ export default function ModalCreate( {
     setIsDark(document.documentElement.classList.contains("dark"));
   }, []);
   
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors, setErrors, reset } = useForm({
       codigo: "",
       nombre: "",
       descripcion: "",
@@ -56,7 +57,7 @@ export default function ModalCreate( {
           {/* Modal header */}
           <div className="modal-header">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Crear {title}: </h3>
-            <AppBtnX $route={'/tablas/presentaciones'} handleClose={handleClose} />
+            <AppBtnX $route={appRoutes.destinatario} handleClose={handleClose} />
           </div>
           {/* Modal body */}
           <form onSubmit={handleSubmit} className="p-4 md:p-5">
@@ -86,7 +87,7 @@ export default function ModalCreate( {
                     className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
                   />
                 {errors.codigo && (
-                  <div className="text-red-500 text-sm mt-1">{errors.codigo}</div>
+                  <div className="error">{errors.codigo}</div>
                 )}
                 </div>
               </div>
@@ -101,29 +102,11 @@ export default function ModalCreate( {
                     className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
                   />
                 {errors.nombre && (
-                  <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>
+                  <div className="error">{errors.nombre}</div>
                 )}
                 </div>
               </div>
               <div className="flex flex-col">
-                <div className="col-span-2">
-                  <label htmlFor="descripcion" className="block text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
-                  <input
-                    id="descripcion"
-                    name="descripcion"
-                    type="text"
-                    placeholder="Descripcion de la Destinatario"
-                    value={data.descripcion}
-                    autoComplete="descripcion"
-                    onChange={(e) => setData("descripcion", e.target.value)}
-                    className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
-                  />
-                {errors.descripcion && (
-                  <div className="text-red-500 text-sm mt-1">{errors.descripcion}</div>
-                )}
-                </div>
-              </div>
-              <div className="flex flex-col col-span-2">
                 <div className="col-span-2">
                   <label htmlFor="plazo" className="block text-sm font-medium text-gray-900 dark:text-white">Plazo</label>
                   <input
@@ -137,9 +120,24 @@ export default function ModalCreate( {
                     className={'input-modal '+classInput+`${errors.plazo && ' ring-red-500 border-red-200'}`}
                   />
                 {errors.plazo && (
-                  <div className="text-red-500 text-sm mt-1">{errors.plazo}</div>
+                  <div className="error">{errors.plazo}</div>
                   )}
                 </div>
+              </div>
+              <div className="flex flex-col col-span-2">
+                  <label htmlFor="descripcion" className="block text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
+                  <textarea
+                    id="descripcion"
+                    name="descripcion"
+                    placeholder="Descripcion de la Destinatario"
+                    value={data.descripcion}
+                    autoComplete="descripcion"
+                    onChange={(e) => setData("descripcion", e.target.value)}
+                    className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
+                  />
+                {errors.descripcion && (
+                  <div className="error">{errors.descripcion}</div>
+                )}
               </div>
             </div>
             <div className="modal-footer mt-4">

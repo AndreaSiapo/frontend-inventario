@@ -1,7 +1,8 @@
 //Create.jsx
 import { useEffect, useState } from "react";
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
+import { useForm }             from "../../../hook/useHandler";
+import { AppBtnX }             from "../../../components/form/btn";
+import { appRoutes }           from "../../../routes/appRoutes";
 
 
 export default function ModalCreate( {
@@ -18,26 +19,28 @@ export default function ModalCreate( {
       setIsDark(document.documentElement.classList.contains("dark"));
     }, []);
     
-    const { data, setData, post, processing, errors, reset } = useForm({
-        codigo: "",
-        nombre: "",
-        abreviado: "",
+    const { data, setData, post, processing, errors, setErrors, reset } = useForm({
+        codigo:      "",
+        nombre:      "",
+        abreviado:   "",
         descripcion: "",
-        naturaleza: "",
+        naturaleza:  "",
     });
 
     const handleSubmit = async (e) => {
       e.preventDefault();
       const newErrors = {};
 
-      if (!data.codigoBarra?.trim()) 
-        newErrors.codigoBarra = "El código es obligatorio";
+      if (!data.codigo?.trim()) 
+        newErrors.codigo = "El código es obligatorio";
       if (!data.nombre?.trim())
         newErrors.nombre = "El nombre es obligatorio";
       if (!data.abreviado)
         newErrors.abreviado = "El abreviado es obligatorio";
-      if (!data.descripcion)
+/*      if (!data.descripcion)
         newErrors.descripcion = "La descripción es obligatoria";
+      if (!data.naturaleza)
+        newErrors.naturaleza = "La descripción es obligatoria";*/
       
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);  // <-- IMPORTANTE
@@ -56,7 +59,7 @@ export default function ModalCreate( {
             {/* Modal header */}
             <div className="modal-header">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Crear {title}: </h3>
-              <AppBtnX $route={'/tablas/tipo_documentos'} handleClose={handleClose} />
+              <AppBtnX $route={appRoutes.tipoDocumento} handleClose={handleClose} />
             </div>
           {/* Modal body */}
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
@@ -72,7 +75,7 @@ export default function ModalCreate( {
                       className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.codigo && (
-                    <div className="text-red-500 text-sm mt-1">{errors.codigo}</div>
+                    <div className="error">{errors.codigo}</div>
                   )}
                   </div>
                 </div>
@@ -87,7 +90,7 @@ export default function ModalCreate( {
                       className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.nombre && (
-                    <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>
+                    <div className="error">{errors.nombre}</div>
                   )}
                   </div>
                 </div>
@@ -105,25 +108,25 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.abreviado && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.abreviado && (
-                    <div className="text-red-500 text-sm mt-1">{errors.abreviado}</div>
+                    <div className="error">{errors.abreviado}</div>
                     )}
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="naturaleza" className="block text-sm font-medium text-gray-900 dark:text-white">Naturaleza</label>
-                    <ul class="w-48 bg-neutral-primary-soft border border-gray-600 rounded-md">
-                      <li class="w-full border-b border-gray-600 flex items-center ps-3">
-                        <input id="naturaleza" name="naturaleza" type="radio" value={true} autoComplete="naturaleza" onChange={(e) => setData("naturaleza", e.target.value)} className={'w-4 h-4 text-neutral-primary border-gray-600 rounded-full '+classInput+`${errors.naturaleza && ' ring-red-500 border-red-200'}`} />
-                        <label for="planaturalezazo" class="w-full py-3 select-none ms-2 text-sm font-medium text-gray-400">Entrada </label>
+                    <label className="block text-sm font-medium text-gray-800 dark:text-gray-300">Naturaleza</label>
+                    <ul className="w-full border border-gray-600 rounded-md">
+                      <li className="w-full border-b border-gray-600 flex items-center ps-3">
+                        <input id="naturaleza_true" name="naturaleza" type="radio" value={true} autoComplete="naturaleza" onChange={(e) => setData("naturaleza", e.target.value)} className={'w-4 h-4 border-gray-600 rounded-full '+`${errors.naturaleza && ' ring-red-500 border-red-200'}`} />
+                        <label htmlFor="naturaleza_true" className="w-full py-3 select-none ms-2 text-sm font-medium text-gray-800 dark:text-gray-300">Entrada </label>
                       </li>
-                      <li class="w-full flex items-center ps-3">
-                        <input id="naturaleza" name="naturaleza" type="radio" value={false} autoComplete="naturaleza" onChange={(e) => setData("naturaleza", e.target.value)} className={'w-4 h-4 text-neutral-primary border-gray-600 rounded-full '+classInput+`${errors.naturaleza && ' ring-red-500 border-red-200'}`} />
-                        <label for="list-radio-id" class="w-full py-3 select-none ms-2 text-sm font-medium text-gray-400">Salida</label>
+                      <li className="w-full flex items-center ps-3">
+                        <input id="naturaleza_false" name="naturaleza" type="radio" value={false} autoComplete="naturaleza" onChange={(e) => setData("naturaleza", e.target.value)} className={'w-4 h-4 border-gray-600 rounded-full '+`${errors.naturaleza && ' ring-red-500 border-red-200'}`} />
+                        <label htmlFor="naturaleza_false" className="w-full py-3 select-none ms-2 text-sm font-medium text-gray-800 dark:text-gray-300">Salida</label>
                       </li>
                     </ul>
                     {errors.naturaleza && (
-                      <div className="text-red-500 text-sm mt-1">{errors.naturaleza}</div>
+                      <div className="error">{errors.naturaleza}</div>
                     )}
                   </div>
                 </div>
@@ -139,7 +142,7 @@ export default function ModalCreate( {
                     className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
                   />
                 {errors.descripcion && (
-                  <div className="text-red-500 text-sm mt-1">{errors.descripcion}</div>
+                  <div className="error">{errors.descripcion}</div>
                   )}
                 </div>
               </div>

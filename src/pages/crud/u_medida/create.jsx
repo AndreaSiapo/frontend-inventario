@@ -35,7 +35,7 @@ export default function ModalCreate( {
             className={classInput+`${errors.nombre && ' ring-red-500 border-red-200'}`}
           />
           {errors.nombre && (
-            <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>
+            <div className="error">{errors.nombre}</div>
           )}
           <input
             id="abreviado"
@@ -48,7 +48,7 @@ export default function ModalCreate( {
             className={classInput+`${errors.abreviado && ' ring-red-500 border-red-200'}`}
           />
           {errors.abreviado && (
-            <div className="text-red-500 text-sm mt-1">{errors.abreviado}</div>
+            <div className="error">{errors.abreviado}</div>
           )}
         <button type="submit" disabled={processing} className="hidden" />
       </form>

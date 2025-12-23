@@ -94,6 +94,7 @@ export function deleteMovimiento(id) {
 export function getColumns() {
   return [
     { key: 'id',               label: 'ID' },
+    { key: 'tipoMovimiento',   label: 'Tipo de Movimiento' },
     { key: 'tipoDocumentoId',  label: 'ID Tipo de Documentos' },
     { key: 'tipoDocumento',    label: 'Tipo de Documentos' },
     { key: 'bodegaId',         label: 'ID Bodega' },
@@ -103,7 +104,6 @@ export function getColumns() {
     { key: 'destinatarioId',   label: 'ID Destinatario' },
     { key: 'destinatario',     label: 'Destinatario' },
     { key: 'fecha',            label: 'Fecha' },
-    { key: 'tipoMovimiento',   label: 'Tipo de Movimiento' },
     { key: 'observacion',      label: 'Observación' },
     { key: 'naturaleza',       label: 'Naturaleza' },
     { key: 'creadoEn',         label: 'Creado' },
@@ -114,16 +114,16 @@ export function getColumns() {
 export function getDefaultVisibility() {
   return {
     id:                 false,
-    tipoDocumentoId:    false,
+    tipoMovimiento:     true,//
+    tipoDocumentoId:    false,//
     tipoDocumento:      true,
-    bodegaId:           false,
+    bodegaId:           false,//
     bodega:             true,
-    proveedorId:        false,
+    proveedorId:        false,//
     proveedor:          true,
-    destinatarioId:     false,
+    destinatarioId:     false,//
     destinatario:       true,
     fecha:              true,
-    tipoMovimiento:     true,
     observacion:        false,
     naturaleza:         true,
     actualizadoEn:      false,

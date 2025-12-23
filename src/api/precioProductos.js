@@ -114,7 +114,7 @@ export function getDefaultVisibility() {
     fechaHasta:     false,
     precioCompra:   false,
     precioVenta:    false,
-    actualizadoEn: false,
-    creadoEn:      false,
+    actualizadoEn:  false,
+    creadoEn:       false,
   };
 }

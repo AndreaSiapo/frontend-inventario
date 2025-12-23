@@ -6,6 +6,7 @@ import { AppBtnX }              from "../../../components/form/btn";
 import { getBodegasFull }       from "../../../api/bodegas";
 import { getLotesFull }         from "../../../api/lotes";
 import { getProductosFull }     from "../../../api/productos";
+import { appRoutes }            from "../../../routes/appRoutes";
 
 export default function ModalCreate( {
   modules,
@@ -15,10 +16,10 @@ export default function ModalCreate( {
   inert,
   onSuccess
   }) {
-    const { resource: bodegas } = useResource(getBodegasFull);
-    const { resource: lotes } = useResource(getLotesFull);
+    const { resource: bodegas }   = useResource(getBodegasFull);
+    const { resource: lotes }     = useResource(getLotesFull);
     const { resource: productos } = useResource(getProductosFull);
-    const [isDark, setIsDark] = useState(false);
+    const [isDark, setIsDark]     = useState(false);
 
     useEffect(() => {
       setIsDark(document.documentElement.classList.contains("dark"));
@@ -26,11 +27,8 @@ export default function ModalCreate( {
     
     const { data, setData, post, processing, errors, setErrors } = useForm({
         bodegaId:        "",
-        bodega:          "",
         loteId:          "",
-        lote:            "",
         productoId:      "",
-        producto:        "",
         stockMinimo:     "",
         stockMaximo:     "",
         costoPromedio:   "",
@@ -78,7 +76,7 @@ export default function ModalCreate( {
             {/* Modal header */}
             <div className="modal-header">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Crear {title}: </h3>
-              <AppBtnX $route={'/tablas/presentaciones'} handleClose={handleClose} />
+              <AppBtnX $route={appRoutes.existencia} handleClose={handleClose} />
             </div>
           {/* Modal body */}
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
@@ -125,7 +123,7 @@ export default function ModalCreate( {
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="loteId" className="block text-sm font-medium text-gray-900 dark:text-white">Lote</label>
+                    <label htmlFor="loteId" className="block text-sm font-medium text-gray-900 dark:text-white">lote</label>
                     <select id="loteId" name="loteId"
                       value={data.loteId ?? ""}
                       onChange={(e) => setData("loteId", e.target.value)}
@@ -143,38 +141,40 @@ export default function ModalCreate( {
                   )}
                   </div>
                 </div>
-                <div className="flex flex-col md:col-span-2">
-                  <label htmlFor="stockMinimo" className="block text-label">MIN - MAX</label>
-                  <div className="col-span-2 flex gap-2">
-                    <input
-                      id="stockMinimo"
-                      name="stockMinimo"
-                      type="number"
-                      placeholder="MIN"
-                      value={data.stockMinimo ?? ""}
-                      autoComplete="stockMinimo"
-                      onChange={(e) => setData("stockMinimo", e.target.value === "" ? "" : e.target.value)}
-                      className={'input-modal w-20 '+classInput+`${errors.stockMinimo && ' ring-red-500 border-red-200'}`}
-                    />
-                    <label htmlFor="minimo" className="block text-sm text-gray-900 dark:text-gray-400"> - </label>
-                    <input
-                      id="stockMaximo"
-                      name="stockMaximo"
-                      type="number"
-                      placeholder="MAX"
-                      value={data.stockMaximo ?? ""}
-                      autoComplete="stockMaximo"
-                      onChange={(e) => setData("stockMaximo", e.target.value === "" ? "" : e.target.value)}
-                      className={'input-modal w-20 '+classInput+`${errors.maximo && ' ring-red-500 border-red-200'}`}
-                    />
-                  </div>
-                  <div>
-                  {errors.stockMinimo && (
-                    <div className="error">{errors.stockMinimo}</div>
-                  )}
-                  {errors.stockMaximo && (
-                    <div className="error">{errors.stockMaximo}</div>
-                  )}
+                <div className="flex flex-col">
+                  <div className="col-span-2">
+                    <label htmlFor="stockMinimo" className="block text-label">Stock MIN - MAX</label>
+                    <div className="col-span-2 flex gap-2">
+                      <input
+                        id="stockMinimo"
+                        name="stockMinimo"
+                        type="number"
+                        placeholder="MIN"
+                        value={data.stockMinimo ?? ""}
+                        autoComplete="stockMinimo"
+                        onChange={(e) => setData("stockMinimo", e.target.value === "" ? "" : e.target.value)}
+                        className={'input-modal w-20 '+classInput+`${errors.stockMinimo && ' ring-red-500 border-red-200'}`}
+                      />
+                      <label htmlFor="minimo" className="block text-sm text-gray-900 dark:text-gray-400"> - </label>
+                      <input
+                        id="stockMaximo"
+                        name="stockMaximo"
+                        type="number"
+                        placeholder="MAX"
+                        value={data.stockMaximo ?? ""}
+                        autoComplete="stockMaximo"
+                        onChange={(e) => setData("stockMaximo", e.target.value === "" ? "" : e.target.value)}
+                        className={'input-modal w-20 '+classInput+`${errors.maximo && ' ring-red-500 border-red-200'}`}
+                      />
+                    </div>
+                    <div>
+                    {errors.stockMinimo && (
+                      <div className="error">{errors.stockMinimo}</div>
+                    )}
+                    {errors.stockMaximo && (
+                      <div className="error">{errors.stockMaximo}</div>
+                    )}
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col">
@@ -183,8 +183,7 @@ export default function ModalCreate( {
                     <input
                       id="costoPromedio"
                       name="costoPromedio"
-                      type="text"
-                      placeholder="costoPromedio"
+                      type="number"
                       value={data.costoPromedio}
                       autoComplete="costoPromedio"
                       onChange={(e) => setData("costoPromedio", e.target.value)}
@@ -197,37 +196,35 @@ export default function ModalCreate( {
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="descripcion" className="block text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
+                    <label htmlFor="fechaUltimoMovimiento" className="block text-sm font-medium text-gray-900 dark:text-white">Ultimo Movimiento</label>
                     <input
-                      id="descripcion"
-                      name="descripcion"
-                      type="text"
-                      placeholder="Descripcion de la Proveedor"
-                      value={data.descripcion}
-                      autoComplete="descripcion"
-                      onChange={(e) => setData("descripcion", e.target.value)}
-                      className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
+                      id="fechaUltimoMovimiento"
+                      name="fechaUltimoMovimiento"
+                      type="date"
+                      value={data.fechaUltimoMovimiento}
+                      autoComplete="fechaUltimoMovimiento"
+                      onChange={(e) => setData("fechaUltimoMovimiento", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.fechaUltimoMovimiento && ' ring-red-500 border-red-200'}`}
                     />
-                  {errors.descripcion && (
-                    <div className="error">{errors.descripcion}</div>
+                  {errors.fechaUltimoMovimiento && (
+                    <div className="error">{errors.fechaUltimoMovimiento}</div>
                     )}
                   </div>
                 </div>
                 <div className="flex flex-col col-span-2">
                   <div className="col-span-2">
-                    <label htmlFor="plazo" className="block text-sm font-medium text-gray-900 dark:text-white">Plazo</label>
+                    <label htmlFor="cantidadActual" className="block text-sm font-medium text-gray-900 dark:text-white">Cantidad Actual</label>
                     <input
-                      id="plazo"
-                      name="plazo"
+                      id="cantidadActual"
+                      name="cantidadActual"
                       type="number"
-                      placeholder="Plazos de entrega estimados del Proveedor"
-                      value={data.plazo}
-                      autoComplete="plazo"
-                      onChange={(e) => setData("plazo", e.target.value)}
-                      className={'input-modal '+classInput+`${errors.plazo && ' ring-red-500 border-red-200'}`}
+                      value={data.cantidadActual ?? "" }
+                      autoComplete="v"
+                      onChange={(e) => setData("cantidadActual", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.cantidadActual && ' ring-red-500 border-red-200'}`}
                     />
-                  {errors.plazo && (
-                    <div className="error">{errors.plazo}</div>
+                  {errors.cantidadActual && (
+                    <div className="error">{errors.cantidadActual}</div>
                     )}
                   </div>
                 </div>

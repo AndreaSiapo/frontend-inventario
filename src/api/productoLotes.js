@@ -1,8 +1,8 @@
-//src/api/productoProveedores.js
+//src/api/productoLotes.js
 import { apiGet, apiPost, apiPut, apiDelete } from "./http";
 
-export async function getProductoProveedores({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
-  const json = await apiGet("/tipo_documentos");
+export async function getProductoLotes({ search = '', perPage = 10, page = 1, orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/producto_lotes");
   const allData = json.data ?? json;
 
   // Filtro simple por search (si quieres puedes mejorarlo)
@@ -47,8 +47,8 @@ export async function getProductoProveedores({ search = '', perPage = 10, page =
   };
 }
 
-export async function getProductoProveedoresFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
-  const json = await apiGet("/tipo_documentos");
+export async function getProductoLotesFull({ search = '', orderBy = 'id', orderDir = 'asc' } = {}) {
+  const json = await apiGet("/producto_lotes");
   const allData = json.data ?? json;
   const normalize = (v) => (v ?? "").toString().toLowerCase();
 
@@ -73,49 +73,54 @@ export async function getProductoProveedoresFull({ search = '', orderBy = 'id', 
   };
 }
 
-export function getProductoProveedor(id) {
-  return apiGet(`/tipo_documentos/${id}`);
+export function getProductoLote(id) {
+  return apiGet(`/producto_lotes/${id}`);
 }
 
-export function createProductoProveedor(data) {
-  return apiPost("/tipo_documentos", data);
+export function createProductoLote(data) {
+  return apiPost("/producto_lotes", data);
 }
 
 // si tuvieras editar
-export function updateProductoProveedor(id, data) {
-  return apiPut(`/tipo_documentos/${id}`, data);
+export function updateProductoLote(id, data) {
+  return apiPut(`/producto_lotes/${id}`, data);
 }
 
 // si tuvieras eliminar
-export function deleteProductoProveedor(id) {
-  return apiDelete(`/tipo_documentos/${id}`);
+export function deleteProductoLote(id) {
+  return apiDelete(`/producto_lotes/${id}`);
 }
 
 export function getColumns() {
   return [
-    { key: 'id',          label: 'ID' },
-    { key: 'idProducto',  label: 'ID Producto' },
-    { key: 'producto',    label: 'Producto' },
-    { key: 'idProveedor', label: 'ID Proveedor' },
-    { key: 'proveedor',   label: 'Proveedor' },
-    { key: 'estado',      label: 'Estado' },
-    { key: 'observacion', label: 'Observacion' },
-    { key: 'actualizadoEn',  label: 'Actualizado' },
-    { key: 'creadoEn',   label: 'Creado' },
+    { key: 'id',               label: 'ID' },
+    { key: 'loteId',           label: 'ID Lote' },
+    { key: 'codigoLote',       label: 'Codigo Lote' },
+    { key: 'codigoBar',        label: 'Codigo de Barras' },
+    { key: 'productoId',       label: 'ID Producto' },
+    { key: 'producto',         label: 'Producto' },
+    { key: 'cantidadInicial',  label: 'Cant. Inicial' },
+    { key: 'cantidadActual',   label: 'Cant. Actual' },
+    { key: 'fechaVencimiento', label: 'fechaVencimiento' },
+    { key: 'costoUnitario',    label: 'Costo Unitario' },
+    { key: 'actualizadoEn',    label: 'Actualizado' },
+    { key: 'creadoEn',         label: 'Creado' },
   ];
 }
 
 export function getDefaultVisibility() {
   return {
-    id:            false,
-    idProducto:    true,
-    producto:      true,
-    idProveedor:   false,
-    proveedor:     false,
-    estado:        false,
-    observacion:   false,
-    naturaleza:    false,
-    actualizadoEn: false,
-    creadoEn:      false,
+    id:               false,
+    loteid:           true,
+    codigoLote:       false,
+    codigoBar:        true,
+    productoId:       false,
+    producto:         true,
+    cantidadInicial:  true,
+    cantidadActual:   true,
+    fechaVencimiento: true,
+    costoUnitario:    true,
+    actualizadoEn:    false,
+    creadoEn:         false,
   };
 }

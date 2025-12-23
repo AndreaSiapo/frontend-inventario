@@ -241,4 +241,7 @@
     .alert-api {
         @apply p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800;
     }
+    .radio-label-card {
+        @apply items-center w-auto p-1 border-2 text-sm text-gray-500 peer-checked:text-gray-600 dark:text-gray-400 peer-checked:dark:text-gray-300 border-gray-600 rounded-md cursor-pointer hover:bg-blue-700 peer-checked:bg-blue-900 peer-checked:border-gray-300 peer-checked:font-bold peer-checked:hover:bg-blue-900 text-center;
+    }
 }   

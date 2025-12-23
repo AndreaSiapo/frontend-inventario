@@ -127,16 +127,10 @@ const Index = () => {
                   <AppThTableOrder handleSort={() => handleSort('idProveedor', currentFilters)} label="ID PROVEEDOR" />}
                   {visibility.proveedor &&
                   <AppThTableOrder handleSort={() => handleSort('proveedor', currentFilters)} label="PROVEEDOR" />}
-                  {visibility.codigo &&
-                  <AppThTableOrder handleSort={() => handleSort('codigo', currentFilters)} label="CODIGO" />}
-                  {visibility.nombre &&
-                  <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
-                  {visibility.abreviado &&
-                  <AppThTableOrder handleSort={() => handleSort('abreviado', currentFilters)} label="ABREVIADO" />}
-                  {visibility.descripcion &&
-                  <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCION" />}
-                  {visibility.naturaleza &&
-                  <AppThTableOrder handleSort={() => handleSort('naturaleza', currentFilters)} label="NATURALEZA" />}
+                  {visibility.estado &&
+                  <AppThTableOrder handleSort={() => handleSort('estado', currentFilters)} label="ESTADO" />}
+                  {visibility.observacion &&
+                  <AppThTableOrder handleSort={() => handleSort('observacion', currentFilters)} label="OBSERVACION" />}
                   {visibility.actualizadoEn &&
                   <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="actualizadoEn" />}
                   {visibility.creadoEn &&
@@ -170,25 +164,13 @@ const Index = () => {
                   <td className="px-4 py-3 w-4">
                    {productoProveedor.proveedor}
                   </td>}
-                  {visibility.codigo &&
+                  {visibility.estado &&
                   <td className="px-4 py-3 w-4">
-                   {productoProveedor.codigo}
+                   {productoProveedor.estado}
                   </td>}
-                  {visibility.nombre &&
+                  {visibility.observacion &&
                   <td className="px-4 py-3 w-4">
-                   {productoProveedor.nombre}
-                  </td>}
-                  {visibility.abreviado &&
-                  <td className="px-4 py-3 w-4">
-                   {productoProveedor.abreviado}
-                  </td>}
-                  {visibility.descripcion &&
-                  <td className="px-4 py-3 w-4">
-                   {productoProveedor.descripcion}
-                  </td>}
-                  {visibility.naturaleza &&
-                  <td className="px-4 py-3 w-4">
-                   {productoProveedor.naturaleza}
+                   {productoProveedor.observacion}
                   </td>}
                   {visibility.actualizadoEn &&
                   <td className="px-4 py-3 w-4">

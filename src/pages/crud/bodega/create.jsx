@@ -5,6 +5,7 @@ import Barcode       from "react-barcode";
 import { useForm }   from "../../../hook/useHandler";
 import { AppBtnX }   from "../../../components/form/btn";
 import HabitacionBox from "../../../components/form/HabitacionBox";
+import { appRoutes } from "../../../routes/appRoutes";
 
 export default function ModalCreate( {
   modules,
@@ -74,7 +75,7 @@ export default function ModalCreate( {
             {/* Modal header */}
             <div className="modal-header">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Crear {title}: </h3>
-              <AppBtnX $route={'/tablas/presentaciones'} handleClose={handleClose} />
+              <AppBtnX $route={appRoutes.bodega} handleClose={handleClose} />
             </div>
           {/* Modal body */}
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
@@ -104,7 +105,7 @@ export default function ModalCreate( {
                       className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.codigo && (
-                    <div className="text-red-500 text-sm mt-1">{errors.codigo}</div>
+                    <div className="error">{errors.codigo}</div>
                   )}
                   </div>
                 </div>
@@ -119,7 +120,7 @@ export default function ModalCreate( {
                       className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.nombre && (
-                    <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>
+                    <div className="error">{errors.nombre}</div>
                   )}
                   </div>
                 </div>
@@ -135,7 +136,7 @@ export default function ModalCreate( {
                     className={'input-modal '+classInput+`${errors.detalle && ' ring-red-500 border-red-200'}`}
                   />
                 {errors.detalle && (
-                  <div className="text-red-500 text-sm mt-1">{errors.detalle}</div>
+                  <div className="error">{errors.detalle}</div>
                   )}
                 </div>
                 <div className="flex flex-col col-span-2">
@@ -150,7 +151,7 @@ export default function ModalCreate( {
                     className={'input-modal '+classInput+`${errors.referencia && ' ring-red-500 border-red-200'}`}
                   />
                 {errors.referencia && (
-                  <div className="text-red-500 text-sm mt-1">{errors.referencia}</div>
+                  <div className="error">{errors.referencia}</div>
                   )}
               </div>
                 <div className="flex flex-col">
@@ -167,7 +168,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.ubicacion && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.ubicacion && (
-                    <div className="text-red-500 text-sm mt-1">{errors.ubicacion}</div>
+                    <div className="error">{errors.ubicacion}</div>
                     )}
                   </div>
                 </div>
@@ -185,7 +186,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.capacidad && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.capacidad && (
-                    <div className="text-red-500 text-sm mt-1">{errors.capacidad}</div>
+                    <div className="error">{errors.capacidad}</div>
                     )}
                   </div>
                 </div>
@@ -203,7 +204,7 @@ export default function ModalCreate( {
                     className={'input-modal text-gray-500'+classInput+`${errors.tamano && ' ring-red-500 border-red-200'}`}
                   />
                   {errors.tamano && (
-                    <div className="text-red-500 text-sm mt-1">{errors.tamano}</div>
+                    <div className="error">{errors.tamano}</div>
                   )}
                   {/* ANCHO */}
                   <label htmlFor="ancho" className="block text-sm font-medium text-gray-900 dark:text-white">Ancho</label>

@@ -1,8 +1,9 @@
 //Create.jsx
 import { useForm, useResource } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
-import { getCategoriasFull } from "../../../api/categorias";
-import RadioTree from "../../../components/form/radioTree";
+import { AppBtnX }              from "../../../components/form/btn";
+import { getCategoriasFull }    from "../../../api/categorias";
+import RadioTree                from "../../../components/form/radioTree";
+import { appRoutes }            from "../../../routes/appRoutes";
 
 export default function ModalCreate( {
   modules,
@@ -13,7 +14,7 @@ export default function ModalCreate( {
   onSuccess,
   categoria = [],
   }) {
-    const { data, setData, post, processing, errors, reset} = useForm({
+    const { data, setData, post, processing, errors, setErrors, reset} = useForm({
         nombre: "",
         detalle: "",
         categoriaPadreId: "",
@@ -49,7 +50,7 @@ export default function ModalCreate( {
           {/* Modal header */}
           <div className="modal-header">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Crear {title}: </h3>
-            <AppBtnX $route={modules+'.index'} handleClose={handleClose} />
+            <AppBtnX $route={appRoutes.categoria} handleClose={handleClose} />
           </div>
           {/* Modal body */}
           <form onSubmit={handleSubmit} className="p-4 md:p-5">
@@ -67,7 +68,7 @@ export default function ModalCreate( {
                     rootLabel="(Sin categoría)"
                     />
                   {errors.categoriaPadreId && (
-                    <div className="text-red-500 text-sm mt-1">{errors.categoriaPadreId}</div>
+                    <div className="error">{errors.categoriaPadreId}</div>
                   )}
                 </div>
               </div>
@@ -85,7 +86,7 @@ export default function ModalCreate( {
                     className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.nombre && ' ring-red-500 border-red-200'}`}
                   />
                   {errors.nombre && (
-                    <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>
+                    <div className="error">{errors.nombre}</div>
                   )}
                 </div>
                 <div>
@@ -100,7 +101,7 @@ export default function ModalCreate( {
                     className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.detalle && ' ring-red-500 border-red-200'}`}
                   />
                   {errors.detalle && (
-                    <div className="text-red-500 text-sm mt-1">{errors.detalle}</div>
+                    <div className="error">{errors.detalle}</div>
                   )}
                 </div>
               </div>
