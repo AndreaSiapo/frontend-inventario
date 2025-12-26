@@ -1,7 +1,7 @@
 // src/components/form/radioTree.jsx
 import { useEffect, useState } from "react";
-import IconPlus from "../icons/actions/plus-mark";
-import IconMinus from "../icons/actions/minus-mark";
+import IconPlus from "@icons/actions/plus-mark";
+import IconMinus from "@icons/actions/minus-mark";
 
 export default function RadioTree({
   data = [],              // lista de objetos

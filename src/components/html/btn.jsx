@@ -1,15 +1,14 @@
 //btn.jsx
 import Barcode from "react-barcode";
 import { useState, useEffect, useRef } from "react";
-import { Link }             from "react-router-dom";
-import { apiDelete }        from "../../api/http";
-import CheckboxBall         from "../form/check2"
-import IconVUp              from "../icons/actions/v-up";
-import IconVDown            from "../icons/actions/v-down";
-import IconMagnifyingGlass  from "../icons/actions/magnifying-glass";
-import IconInfo             from '../icons/actions/info';
-import IconSetting          from "../icons/actions/cog-6";
-import IconDowload          from "../icons/extra/download";
+import { Link }               from "react-router-dom";
+import { apiDelete }          from "@/api/http";
+import CheckboxBall           from "@form/check2"
+import { IconVUp, IconVDown } from "@icons/actions/v";
+import IconMagnifyingGlass    from "@icons/actions/magnifying-glass";
+import IconInfo               from '@icons/actions/info';
+import IconSetting            from "@icons/actions/cog-6";
+import IconDowload            from "@icons/extra/download";
 
 export function AppBtnActions({
     modules,

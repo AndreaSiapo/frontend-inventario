@@ -1,6 +1,6 @@
-// src/components/ui/confirmdialog.jsx
-import IconDestroy from "../icons/actions/destroy";
-import IconX       from "../icons/actions/x-mark";
+// src/components/html/confirmdialog.jsx
+import IconDestroy from "@icons/actions/destroy";
+import IconX       from "@icons/actions/x-mark";
 
 export default function ConfirmDialog({ 
     isOpen, 

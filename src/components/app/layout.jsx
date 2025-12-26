@@ -1,6 +1,7 @@
+//layout.jsx
 import { useState } from 'react';
-import Sidebar from './sidebar';
-import Nav from './navbar';
+import Sidebar      from '@app/sidebar';
+import Nav          from '@app/navbar';
 
 const Layout = (props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

@@ -244,4 +244,25 @@
     .radio-label-card {
         @apply items-center w-auto p-1 border-2 text-sm text-gray-500 peer-checked:text-gray-600 dark:text-gray-400 peer-checked:dark:text-gray-300 border-gray-600 rounded-md cursor-pointer hover:bg-blue-700 peer-checked:bg-blue-900 peer-checked:border-gray-300 peer-checked:font-bold peer-checked:hover:bg-blue-900 text-center;
     }
+    .text-regular {
+        @apply  text-gray-800 dark:text-gray-500;
+    }
+    .panel-li-h2{
+        @apply text-lg text-gray-800 dark:text-gray-50 font-medium mb-2;
+    }
+    .panel-li-p{
+        @apply leading-relaxed text-base text-gray-800 dark:text-gray-500;
+    }
+    .panel-card4 {
+        @apply xl:w-1/4 lg:w-1/3 md:w-1/2 sm:w-full p-4 ;
+    }
+    .panel-card3 {
+        @apply xl:w-1/3 md:w-1/2 sm:w-full p-4 ;
+    }
+    .panel-card-div {
+        @apply border border-gray-200 dark:border-gray-700 p-6 rounded-lg hover:bg-indigo-100 dark:hover:bg-gray-700;
+    }
+    .panel-card-div-icon {
+        @apply w-18 h-18 inline-flex items-center justify-center rounded-full bg-indigo-100 dark:bg-stone-900 text-blue-500 mb-4
+    }
 }   

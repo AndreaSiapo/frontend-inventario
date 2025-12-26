@@ -1,5 +1,5 @@
 //search-index.jsx
-import IconMagnifyingGlass from "../icons/actions/magnifying-glass";
+import IconMagnifyingGlass from "@icons/actions/magnifying-glass";
 export default function AppSearchIndex({
     classDiv1="w-full md:w-1/2",
     classForm="flex items-center",

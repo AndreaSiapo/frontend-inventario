@@ -1,5 +1,5 @@
 //search-input.jsx
-import IconMagnifyingGlass from "../icons/actions/magnifying-glass";
+import IconMagnifyingGlass from "@icons/actions/magnifying-glass";
 export default function SearchInput({
     id = "simple-search",
     placeholder = "Search...",

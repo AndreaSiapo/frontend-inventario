@@ -1,6 +1,6 @@
 //breadcrumb.jsx
-import IconVRight from "../icons/actions/v-right";
-import { Link } from "react-router-dom";
+import { IconVRight } from "@icons/actions/v";
+import { Link }       from "react-router-dom";
 
 export default function AppBreadcrumb({
   title,

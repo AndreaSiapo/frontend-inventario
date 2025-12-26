@@ -1,4 +1,4 @@
-import Image404 from "../icons/extra/404";
+import Image404 from "@icons/extra/404";
 
 export default function Error404() {
   return(

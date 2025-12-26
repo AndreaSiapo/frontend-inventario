@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import IconStar from "../icons/extra/star.jsx";
+import IconStar from "@icons/extra/star.jsx";
 
 export default function Nav({ toggleSidebar }) {
 

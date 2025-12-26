@@ -1,5 +1,4 @@
-import IconVRight from "../icons/actions/v-right";
-import IconVLeft from "../icons/actions/v-left";
+import {IconVRight, IconVLeft} from "@icons/actions/v";
 
 export default function AppPagination({ 
   page_links, 

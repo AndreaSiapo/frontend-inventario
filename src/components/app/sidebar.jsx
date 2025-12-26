@@ -2,16 +2,15 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 // Iconos
-import Book      from "../icons/menu/book";
-import Dashboard from "../icons/menu/dashboard";
-import Inbox     from "../icons/menu/inbox";
-import Kanban    from "../icons/menu/kanban";
-import User      from "../icons/menu/user";
-import Products  from "../icons/menu/products";
-import SignIn    from "../icons/menu/sign-in";
-import SignUp    from "../icons/menu/sign-up";
-import IconVDown from "../icons/actions/v-down";
-import IconVUp   from "../icons/actions/v-up";
+import Book        from "@icons/menu/book";
+import Dashboard   from "@icons/menu/dashboard";
+import Inbox       from "@icons/menu/inbox";
+import Kanban      from "@icons/menu/kanban";
+import User        from "@icons/menu/user";
+import Products    from "@icons/menu/products";
+import SignIn      from "@icons/menu/sign-in";
+import SignUp      from "@icons/menu/sign-up";
+import { IconVDown, IconVUp } from "@icons/actions/v";
 
 // Rutas reemplazando Ziggy
 import { appRoutes } from "../../routes/appRoutes";
@@ -82,6 +81,15 @@ export default function Sidebar({ isOpen }) {
 
             {visibility.otros && (
               <ul className="pl-2">
+                <li>
+                  <Link to="/panel" className="aside-div-ul-li-link group">
+                    <Kanban className="aside-li-svg" />
+                    <span className="flex-1 ms-3 whitespace-nowrap">
+                      Panel
+                    </span>
+                  </Link>
+                </li>
+
                 <li>
                   <Link to="#" className="aside-div-ul-li-link group">
                     <Kanban className="aside-li-svg" />

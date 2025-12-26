@@ -1,5 +1,5 @@
 //thTableOrder.jsx
-import IconVUpDown      from "../icons/actions/v-up-down";
+import {IconVUpDown} from "@icons/actions/v";
 
 export default function AppThTableOrder({
     handleSort,label

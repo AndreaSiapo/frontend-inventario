@@ -1,12 +1,12 @@
 //btn.jsx
-import { apiDelete }  from "../../api/http";
-import { useConfirm } from "../../hook/useHandler";
-import ConfirmDialog  from "../html/confirmdialog";
-import IconPlus     from "../icons/actions/plus-mark";
-import IconDestroy  from "../icons/actions/destroy";
-import IconEdit     from "../icons/actions/edit";
-import IconShow     from "../icons/actions/show";
-import IconX        from "../icons/actions/x-mark";
+import { apiDelete }  from "@/api/http";
+import { useConfirm } from "@/hook/useHandler";
+import ConfirmDialog  from "@html/confirmdialog";
+import IconPlus       from "@icons/actions/plus-mark";
+import IconDestroy    from "@icons/actions/destroy";
+import IconEdit       from "@icons/actions/edit";
+import IconShow       from "@icons/actions/show";
+import IconX          from "@icons/actions/x-mark";
 
 export function AppBtnCreate({
     classButton="btn-create",

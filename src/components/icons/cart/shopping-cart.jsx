@@ -1,8 +1,8 @@
 //shopping-cart.jsx
-export default function IconShoppingCart({ className = 'w-4 h-4' }) {
+export default function IconShoppingCart({ fill="currentColor", className = 'w-4 h-4' }) {
   return (
     <svg
-      fill="currentColor"
+      fill={fill}
       className={className}
       viewBox="0 0 24 24"
       aria-hidden="true"
