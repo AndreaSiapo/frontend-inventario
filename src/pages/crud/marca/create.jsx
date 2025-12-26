@@ -1,8 +1,8 @@
 //Create.jsx
 import { useEffect, useState, useMemo } from "react";
-import { useForm }                      from "../../../hook/useHandler";
-import { AppBtnX }                      from "../../../components/form/btn";
-import { appRoutes }                    from "../../../routes/appRoutes";
+import { useForm }                      from "@/hook/useHandler";
+import { AppBtnX }                      from "@form/btn";
+import { appRoutes }                    from "@route";
 
 export default function ModalCreate( {
   modules,
@@ -13,11 +13,11 @@ export default function ModalCreate( {
   onSuccess
   }) {
     const { data, setData, post, processing, errors, setErrors, reset } = useForm({
-        nombre: "",
+        nombre:    "",
         abreviado: "",
-        ruc: "",
+        ruc:       "",
         descripcion: "",
-        tipo: ""
+        tipo:      "",
     });
 
     const now = new Date().toISOString();
@@ -28,13 +28,20 @@ export default function ModalCreate( {
      
       if (!data.nombre?.trim())
       newErrors.nombre = "El nombre es obligatorio";
-      if (!data.abreviado?.trim())
+      if (!data.abreviado?.trim()) {
       newErrors.abreviado = "La abreviatura es obligatoria";
+      } else if (data.abreviado.trim().length > 50) {
+        newErrors.abreviado = "La abreviatura no puede tener más de 50 caracteres";
+      }
       if (!data.ruc.length == 11)
       newErrors.ruc = "Debe tener 11 dígitos y comenzar con 20"
       if (!/^(20)\d{9}$/.test(data.ruc)) {
         newErrors.ruc = "El RUC debe tener 11 dígitos y comenzar con 20";
       }
+      if (data.descripcion.trim().length > 400)
+        newErrors.descripcion = "La descripcion no puede tener más de 400 caracteres";
+      if (data.tipo.trim().length > 50)
+        newErrors.tipo = "El tipo no puede tener más de 50 caracteres";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -99,9 +106,9 @@ export default function ModalCreate( {
                       name="ruc"
                       type="number"
                       inputMode="numeric"
+                      maxLength={11}
                       pattern="[0-9]*"
                       placeholder="RUC"
-                      maxLength={11}
                       value={data.ruc}
                       autoComplete="ruc"
                       onChange={(e) => { const onlyNums = e.target.value.replace(/\D/g, "").slice(0, 11);
@@ -115,11 +122,30 @@ export default function ModalCreate( {
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="descripcion" className="block text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
+                    <label htmlFor="tipo" className="block text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
                     <input
+                      id="tipo"
+                      name="tipo"
+                      type="text"
+                      maxLength={50}
+                      placeholder="Tipo"
+                      value={data.tipo}
+                      autoComplete="tipo"
+                      onChange={(e) => {
+                        setData("tipo", e.target.value)}}
+                      className={'input-modal '+classInput+`${errors.tipo && ' ring-red-500 border-red-200'}`}
+                    />
+                  {errors.tipo && (
+                    <div className="error">{errors.tipo}</div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <div className="col-span-2">
+                    <label htmlFor="descripcion" className="block text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
+                    <textarea
                       id="descripcion"
                       name="descripcion"
-                      type="text"
                       placeholder="Descripcion de la Marca"
                       value={data.descripcion}
                       autoComplete="descripcion"
@@ -128,24 +154,6 @@ export default function ModalCreate( {
                     />
                   {errors.descripcion && (
                     <div className="error">{errors.descripcion}</div>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <div className="col-span-2">
-                    <label htmlFor="tipo" className="block text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
-                    <input
-                      id="tipo"
-                      name="tipo"
-                      type="text"
-                      placeholder="Tipo de Marca"
-                      value={data.tipo}
-                      autoComplete="tipo"
-                      onChange={(e) => setData("tipo", e.target.value)}
-                      className={'input-modal '+classInput+`${errors.tipo && ' ring-red-500 border-red-200'}`}
-                    />
-                  {errors.tipo && (
-                    <div className="error">{errors.tipo}</div>
                     )}
                   </div>
                 </div>

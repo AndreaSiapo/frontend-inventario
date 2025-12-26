@@ -1,5 +1,5 @@
 // ModalShow.jsx
-import { AppBtnX } from "../../../components/form/btn";
+import { AppBtnX } from "@form/btn";
 import dayjs from 'dayjs';
 
 export default function ModalShow({
@@ -36,11 +36,11 @@ export default function ModalShow({
                 </div>
                 <div className="col-span-2 grid grid-cols-2">
                   <div className="block mb-2 mr-2 text-sm font-medium">Updated At: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{dayjs(value.updated_at).format('YYYY/MM/DD HH:mm:ss')}</div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.updated_at==null ? "Error sin fecha": dayjs(value.updated_at).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
                 <div className="col-span-2 grid grid-cols-2">
                   <div className="block mb-2 mr-2 text-sm font-medium">Created At: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{dayjs(value.created_at).format('YYYY/MM/DD HH:mm:ss')}</div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.created_at==null ? "Error sin fecha": dayjs(value.created_at).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
               </div>
             </div>

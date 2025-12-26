@@ -2,10 +2,10 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import Layout             from './components/app/layout';
-import Error404           from './components/app/404';
+import Layout             from '@app/layout';
+import Error404           from '@app/404';
 import Index              from './pages/home/index';
-import Panel              from './pages/home/panel';
+//import Panel              from './pages/home/panel';
 import Marca              from './pages/crud/marca/index';
 import Bodega             from './pages/crud/bodega/index';
 import Categoria          from './pages/crud/categoria/index';
@@ -21,7 +21,7 @@ import Presentacion       from './pages/crud/presentacion/index';
 import TipoDoc            from './pages/crud/tipo_documento/index';
 import U_Medida           from './pages/crud/u_medida/index';
 import Lote               from './pages/crud/lote/index';
-import InventarioInicial  from './pages/movimiento/inventario_inicial/index';
+//import InventarioInicial  from './pages/movimiento/inventario_inicial/index';
 import viteLogo           from '/vite.svg';
 
 function App() {
@@ -53,8 +53,6 @@ function App() {
               <Route path='/tablas/precio_productos' element={<PrecioProducto></PrecioProducto>}></Route>
               <Route path='/tablas/producto_proveedores' element={<ProductoProveedor></ProductoProveedor>}></Route>
               
-              <Route path='/panel' element={<Panel></Panel>}></Route>
-              <Route path='/panel/inventario_inicial' element={<InventarioInicial></InventarioInicial>}></Route>
               <Route path='*' element={<Error404></Error404>}></Route>
             </Routes>
           </Layout>

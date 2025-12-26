@@ -1,6 +1,6 @@
 // src/pages/crud/u_medida/edit.jsx
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
+import { useForm } from "@/hook/useHandler";
+import { AppBtnX } from "@form/btn";
 
 export default function ModalEdit({
     title,
@@ -10,13 +10,26 @@ export default function ModalEdit({
     handleEdit,
     inert
  }) {
-     const { data, setData, processing, errors } = useForm({
+     const { data, setData, processing, errors,setErrors } = useForm({
          nombre: value?.nombre || "",
          abreviado: value?.abreviado || "",
      });
     
      const onSubmit = (e) => {
-         e.preventDefault();
+        e.preventDefault();
+        const newErrors = {};
+      
+        if (!data.nombre?.trim())
+        newErrors.nombre = "El nombre es obligatorio";
+        if (!data.abreviado?.trim()) {
+        newErrors.abreviado = "La abreviatura es obligatoria";
+        } else if (data.abreviado.trim().length > 20) {
+          newErrors.abreviado = "La abreviatura no puede tener más de 50 caracteres";
+        }
+        if (Object.keys(newErrors).length > 0) {
+          setErrors(newErrors);
+          return;
+        }
          handleEdit(value.id, data);
      };
 
@@ -45,21 +58,28 @@ export default function ModalEdit({
                   onChange={(e) => setData("nombre", e.target.value)}
                   required
                 />
+                {errors.nombre && (
+                  <div className="error">{errors.nombre}</div>
+                )}
               </div>
             </div>
             <div className="grid gap-4 mb-4 grid-cols-2">
               <div className="col-span-2">
                 <label htmlFor="abreviado" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Abreviado</label>
                 <input
-                  type="text"
-                  name="abreviado"
                   id="abreviado"
+                  name="abreviado"
+                  type="text"
+                  maxLength={20}
                   className="input-modal"
                   placeholder={"Ponga el abreviado de " + title}
                   value={data.abreviado}
                   onChange={(e) => setData("abreviado", e.target.value)}
                   required
                 />
+                {errors.abreviado && (
+                  <div className="error">{errors.abreviado}</div>
+                )}
               </div>
             </div>
             <button type="submit" className="submit-modal">
