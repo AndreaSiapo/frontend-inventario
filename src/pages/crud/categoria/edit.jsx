@@ -1,8 +1,8 @@
 //edit.jsx
-import { useForm, useResource  } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
-import { getCategoriasFull } from "../../../api/categorias";
-import RadioTree from "../../../components/form/radioTree";
+import { useForm, useResource  } from "@/hook/useHandler";
+import { getCategoriasFull } from "@/api/categorias";
+import { AppBtnX }           from "@form/btn";
+import RadioTree             from "@form/radioTree";
 
 export default function ModalEdit({
     title,
@@ -12,17 +12,20 @@ export default function ModalEdit({
     handleEdit,
     inert
  }) {
-     const { data, setData, processing, errors } = useForm({
-         nombre: value?.nombre || "",
-         detalle: value?.detalle || "",
-         categoriaPadreId: value?.categoriaPadreId || "",
-     });
+    const { data, setData, processing, errors, setErrors } = useForm({
+      nombre: value?.nombre || "",
+      detalle: value?.detalle || "",
+      categoriaPadreId: value?.categoriaPadreId || "",
+    });
     
-     const onSubmit = (e) => {
-         e.preventDefault();
-         handleEdit(value.id, data);
-         console.log(value.id,data);
-     };
+    const onSubmit = (e) => {
+      e.preventDefault();
+      const newErrors = {};
+
+      if (!data.nombre?.trim()) 
+        newErrors.nombre = "El nombre es obligatorio.";
+        handleEdit(value.id, data);
+    };
 
     const { resource: categoriasFull }     = useResource(getCategoriasFull);
 
@@ -51,9 +54,6 @@ export default function ModalEdit({
                     onChange={(val) => setData("categoriaPadreId", val)}
                     rootLabel="(Sin categoría)"
                     />
-                    {errors.categoriaPadreId && (
-                      <div className="text-red-500 text-sm mt-1">{errors.categoriaPadreId}</div>
-                    )}
                   </div>
                 </div>
               <div className="">

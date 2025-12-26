@@ -1,9 +1,9 @@
 //Create.jsx
-import { useForm, useResource } from "../../../hook/useHandler";
-import { AppBtnX }              from "../../../components/form/btn";
-import { getCategoriasFull }    from "../../../api/categorias";
-import RadioTree                from "../../../components/form/radioTree";
-import { appRoutes }            from "../../../routes/appRoutes";
+import { getCategoriasFull }    from "@/api/categorias";
+import { useForm, useResource } from "@/hook/useHandler";
+import { AppBtnX }              from "@form/btn";
+import RadioTree                from "@form/radioTree";
+import { appRoutes }            from "@route";
 
 export default function ModalCreate( {
   modules,
@@ -25,11 +25,11 @@ export default function ModalCreate( {
       const newErrors = {};
 
       if (!data.nombre?.trim()) 
-        newErrors.nombre = "El nombre es obligatorio";
+        newErrors.nombre = "El nombre es obligatorio";/*
       if (!data.detalle?.trim()) 
         newErrors.detalle = "El detalle es obligatorio";
       if (!data.categoriaPadreId?.trim()) 
-        newErrors.categoriaPadreId = "Es necesario indicar donde se encuentra ubicada la categoría.";
+        newErrors.categoriaPadreId = "Es necesario indicar donde se encuentra ubicada la categoría."; */
 
       if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);

@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
 
 // Componentes
-import AppBreadcrumb        from "./../../../components/html/breadcrumb";
-import AppThTableOrder      from "./../../../components/html/thTableOrder";
-import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting}   from "./../../../components/html/btn";
-import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete}  from "./../../../components/form/btn";
-import Checkbox             from './../../../components/form/check';
+import AppBreadcrumb        from "@html/breadcrumb";
+import AppPagination        from "@html/pagination";
+import AppThTableOrder      from "@html/thTableOrder";
+import AppNotification, { useFlash } from "@html/notification";
+import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting}   from "@html/btn";
+import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete}  from "@form/btn";
+import Checkbox             from '@form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import {useIndexTable, useModalHandlers, useModuleNames, useResource} from "./../../../hook/useHandler";
-import AppNotification, { useFlash } from "./../../../components/html/notification";
-import AppPagination        from "./../../../components/html/pagination";
-//import AppSearchIndex       from "./../../../components/form/search_index";
-//import Layout               from "./../../../components/app/layout";
+import {useIndexTable, useModalHandlers, useModuleNames, useResource} from "@/hook/useHandler";
+//import AppSearchIndex       from "@form/search_index";
+//import Layout               from "@app/layout";
 
-import { appRoutes } from "../../../routes/appRoutes";
-import { getCategorias, getCategoria, createCategoria, updateCategoria, getColumns, getDefaultVisibility } from "../../../api/categorias";
+import { appRoutes } from "@route";
+import { getCategorias, getCategoria, createCategoria, updateCategoria, getColumns, getDefaultVisibility } from "@/api/categorias";
 
 const Index = () => {
   const columns = getColumns();
@@ -59,6 +59,20 @@ const Index = () => {
     onSuccess:  fetchCategorias
   });
   const inertValue = !visibility.isEditModalOpen ? "true" : undefined;
+  
+  function buildCategoriaPath(categoria, allCategorias) {
+    let path = [];
+    let current = categoria;
+
+    while (current?.categoriaPadreId) {
+      const parent = allCategorias.find(c => c.id === current.categoriaPadreId);
+      if (!parent) break;
+      path.push(parent.nombre);
+      current = parent;
+    }
+
+    return path.reverse().join(" / ");
+  }
   
   if (error) {
     return (
