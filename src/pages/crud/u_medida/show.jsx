@@ -35,12 +35,12 @@ export default function ModalShow({
                   <div className="text-gray-500 dark:text-gray-400">{value.abreviado}</div>
                 </div>
                 <div className="col-span-2 grid grid-cols-2">
-                  <div className="block mb-2 mr-2 text-sm font-medium">Updated At: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{value.updated_at==null ? "Error sin fecha": dayjs(value.updated_at).format('YYYY/MM/DD HH:mm:ss')}</div>
+                  <div className="block mb-2 mr-2 text-sm font-medium">Actualizado En: </div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.actualizadoEn==null ? "Error sin fecha": dayjs(value.actualizadoEn).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
                 <div className="col-span-2 grid grid-cols-2">
-                  <div className="block mb-2 mr-2 text-sm font-medium">Created At: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{value.created_at==null ? "Error sin fecha": dayjs(value.created_at).format('YYYY/MM/DD HH:mm:ss')}</div>
+                  <div className="block mb-2 mr-2 text-sm font-medium">Creado en: </div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.creadoEn==null ? "Error sin fecha": dayjs(value.creadoEn).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
               </div>
             </div>

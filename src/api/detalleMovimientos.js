@@ -94,9 +94,8 @@ export function deleteDetalleMovimiento(id) {
 export function getColumns() {
   return [
     { key: 'id',            label: 'ID' },
-    { key: 'id_movimiento', label: 'ID Movimiento' },
-    { key: 'movimiento',    label: 'Movimiento' },
-    { key: 'id_producto',   label: 'ID Producto' },
+    { key: 'movimientoId', label: 'ID Movimiento' },
+    { key: 'productoId',   label: 'ID Producto' },
     { key: 'producto',      label: 'Producto' },
     { key: 'detalle',       label: 'Detalle' },
     { key: 'cantidad',      label: 'Cantidad' },
@@ -111,9 +110,8 @@ export function getColumns() {
 export function getDefaultVisibility() {
   return {
     id:             false,
-    id_movimiento:  true,
-    movimiento:     false,
-    id_producto:    true,
+    movimientoId:   true,
+    productoId:     true,
     producto:       false,
     detalle:        true,
     cantidad:       true,

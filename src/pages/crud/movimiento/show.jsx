@@ -1,12 +1,21 @@
 // ModalShow.jsx
-import { AppBtnX } from "../../../components/form/btn";
+import { AppBtnX } from "@form/btn";
 import dayjs from 'dayjs';
+import { getDetalleMovimientos } from "@/api/detalleMovimientos";
+import { useForm, useResource } from "../../../hook/useHandler";
 
 export default function ModalShow({
   title,
   modules,
   value,
   handleClose }) {
+
+  const [detalleMovimiento, setDetalleMovimiento] = useState(null);
+  const [ loadingDetalleMovimiento, setLoadingDetalleMovimiento] = useState(false);
+
+  const { resource: detalleMovimientos, fetchResource: fetchDetalleMovimientos, error  } = useResource(getDetalleMovimientos);
+
+  const currentFilters = detalleMovimientos.filters;
 
   return (
     <>
@@ -49,11 +58,11 @@ export default function ModalShow({
                 </div>
                 <div className="col-span-2 grid grid-cols-2">
                   <div className="block mb-2 mr-2 text-sm font-medium">Updated At: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{dayjs(value.updated_at).format('YYYY/MM/DD HH:mm:ss')}</div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.actualizadoEn==null ? "Error sin fecha": dayjs(value.actualizadoEn).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
                 <div className="col-span-2 grid grid-cols-2">
                   <div className="block mb-2 mr-2 text-sm font-medium">Created At: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{dayjs(value.created_at).format('YYYY/MM/DD HH:mm:ss')}</div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.creadoEn==null ? "Error sin fecha": dayjs(value.creadoEn).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
               </div>
             </div>

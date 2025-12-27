@@ -1,12 +1,55 @@
 // ModalShow.jsx
-import { AppBtnX } from "../../../components/form/btn";
+import { AppBtnX } from "@form/btn";
 import dayjs from 'dayjs';
+import { useEffect, useState } from "react";
+import { getMarca }         from "@/api/marcas"
+import { getUnidadMedida }  from "@/api/umedidas"
+import { getCategoria }     from "@/api/categorias"
+import { getPresentacion }  from "@/api/presentaciones"
 
 export default function ModalShow({
   title,
   modules,
   value,
   handleClose }) {
+    const [marca, setMarca]         = useState(null);
+    const [medida, setMedida]       = useState(null);
+    const [categoria, setCategoria] = useState(null);
+    const [presentacion, setPresentacion]         = useState(null);
+    const [loadingMarca, setLoadingMarca]         = useState(false);
+    const [loadingMedida, setLoadingMedida]       = useState(false);
+    const [loadingCategoria, setLoadingCategoria] = useState(false);
+    const [loadingPresentacion, setLoadingPresentacion] = useState(false);
+
+    useEffect(() => {
+      if (value?.marcaId) {
+        setLoadingMarca(true);
+        getMarca(value.marcaId)
+          .then(res => setMarca(res.data ?? res))
+          .finally(() => setLoadingMarca(false));
+      }
+      
+      if (value?.medidaId) {
+        setLoadingMedida(true);
+        getUnidadMedida(value.medidaId)
+          .then(res => setMedida(res.data ?? res))
+          .finally(() => setLoadingMedida(false));
+      }
+
+      if (value?.categoriaId) {
+        setLoadingCategoria(true);
+        getCategoria(value.categoriaId)
+          .then(res => setCategoria(res.data ?? res))
+          .finally(() => setLoadingCategoria(false));
+      }
+
+      if (value?.presentacionId) {
+        setLoadingPresentacion(true);
+        getPresentacion(value.presentacionId)
+          .then(res => setPresentacion(res.data ?? res))
+          .finally(() => setLoadingPresentacion(false));
+      }
+    }, [value?.productoId, value?.presentacionId, value?.categoriaId, value?.medidaId, value?.marcaId]);
 
   return (
     <>
@@ -33,29 +76,40 @@ export default function ModalShow({
                 <div className="row-start-5">MIN - MAX</div>
                 <div className="row-start-5 col-span-2 text-gray-500 dark:text-gray-400">{value.minimo+" - "+value.maximo}</div>
                 <div className="row-start-6">Fecha</div>
-                <div className="row-start-6 col-span-2 text-gray-500 dark:text-gray-400">{dayjs(value.fecha).format('YYYY/MM/DD')}</div>
+                <div className="row-start-6 col-span-2 text-gray-500 dark:text-gray-400">{value.fecha==null ? "Error sin fecha": dayjs(value.fecha).format('YYYY/MM/DD')}</div>
                 <div className="row-start-7">Activo</div>
                 <div className="row-start-7 col-span-2 text-gray-500 dark:text-gray-400">{value?.activo? "Disponible" : "No Disponible"}</div>
                 <div className="row-start-8">Precio</div>
                 <div className="row-start-8 col-span-2 text-gray-500 dark:text-gray-400">S/. {value.precio}</div>
                 <div className="row-start-9">Medida</div>
-                <div className="row-start-9 col-span-2 text-gray-500 dark:text-gray-400">S/. {value.medidaId}</div>
+                <div className="row-start-9 col-span-2 text-gray-500 dark:text-gray-400">
+                    { loadingMedida
+                      ? "Cargando..."
+                      : medida?.nombre ?? "—"}</div>
                 <div className="row-start-10">Marca</div>
-                <div className="row-start-10 col-span-2 text-gray-500 dark:text-gray-400">{value.marcaId}</div>
+                <div className="row-start-10 col-span-2 text-gray-500 dark:text-gray-400">
+                    { loadingMarca
+                      ? "Cargando..."
+                      : marca?.nombre ?? "—"}</div>
                 <div className="row-start-11">Categoría</div>
-                <div className="row-start-11 col-span-2 text-gray-500 dark:text-gray-400">{value.categoriaID}</div>
+                <div className="row-start-11 col-span-2 text-gray-500 dark:text-gray-400">
+                    { loadingCategoria
+                      ? "Cargando..."
+                      : categoria?.nombre ?? "—"}</div>
                 <div className="row-start-12">Presentación</div>
-                <div className="row-start-12 col-span-2 text-gray-500 dark:text-gray-400">{value.presentacionId}</div>
+                <div className="row-start-12 col-span-2 text-gray-500 dark:text-gray-400">
+                    { loadingPresentacion
+                      ? "Cargando..."
+                      : presentacion?.nombre ?? "—"}</div>
               </div>
-                
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="grid grid-cols-2">
-                  <div className="block mb-2 mr-2 text-sm font-medium">Updated At: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{dayjs(value.updated_at).format('YYYY/MM/DD HH:mm:ss')}</div>
+                  <div className="block mb-2 mr-2 text-sm font-medium">Actualizado En: </div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.actualizadoEn==null ? "Error sin fecha": dayjs(value.actualizadoEn).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="block mb-2 mr-2 text-sm font-medium">Created At: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{dayjs(value.created_at).format('YYYY/MM/DD HH:mm:ss')}</div>
+                  <div className="block mb-2 mr-2 text-sm font-medium">Creado En: </div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.creadoEn==null ? "Error sin fecha": dayjs(value.creadoEn).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
               </div>
             </div>

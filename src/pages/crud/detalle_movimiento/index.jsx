@@ -11,7 +11,7 @@ import Checkbox             from './../../../components/form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import {useIndexTable, useModalHandlers, useModuleNames, useResource} from "./../../../hook/useHandler";
+import {useIndexTable, useModalHandlers, useModuleNames, useResource, useMoneda } from "./../../../hook/useHandler";
 import AppNotification, { useFlash } from "./../../../components/html/notification";
 import AppPagination        from "./../../../components/html/pagination";
 //import AppSearchIndex       from "./../../../components/form/search_index";
@@ -60,6 +60,8 @@ const Index = () => {
     updateItem: updateDetalleMovimiento,     // PUT /detalleMovimientos/:id
     onSuccess: fetchDetalleMovimientos
   });
+
+  const Moneda = useMoneda();
   
   if (error) {
     return (
@@ -119,20 +121,26 @@ const Index = () => {
                   </th>
                   {visibility.id &&
                   <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
-                  {visibility.codigo &&
-                  <AppThTableOrder handleSort={() => handleSort('codigo', currentFilters)} label="CODIGO" />}
-                  {visibility.nombre &&
-                  <AppThTableOrder handleSort={() => handleSort('nombre', currentFilters)} label="NOMBRE" />}
-                  {visibility.referencia &&
-                  <AppThTableOrder handleSort={() => handleSort('referencia', currentFilters)} label="REFERENCIA" />}
-                  {visibility.descripcion &&
-                  <AppThTableOrder handleSort={() => handleSort('descripcion', currentFilters)} label="DESCRIPCIÓN" />}
-                  {visibility.plazo &&
-                  <AppThTableOrder handleSort={() => handleSort('plazo', currentFilters)} label="PLAZO" />}
+                  {visibility.movimientoId &&
+                  <AppThTableOrder handleSort={() => handleSort('movimientoId', currentFilters)} label="MOVIMIENTO ID" />}
+                  {visibility.productoId &&
+                  <AppThTableOrder handleSort={() => handleSort('productoId', currentFilters)} label="PRODUCTO ID" />}
+                  {visibility.producto &&
+                  <AppThTableOrder handleSort={() => handleSort('producto', currentFilters)} label="PRODUCTO" />}
+                  {visibility.detalle &&
+                  <AppThTableOrder handleSort={() => handleSort('detalle', currentFilters)} label="DETALLE" />}
+                  {visibility.cantidad &&
+                  <AppThTableOrder handleSort={() => handleSort('cantidad', currentFilters)} label="CANTIDAD" />}
+                  {visibility.valor &&
+                  <AppThTableOrder handleSort={() => handleSort('valor', currentFilters)} label="VALOR" />}
+                  {visibility.subtotal &&
+                  <AppThTableOrder handleSort={() => handleSort('subtotal', currentFilters)} label="SUB TOTAL" />}
+                  {visibility.fecha &&
+                  <AppThTableOrder handleSort={() => handleSort('fecha', currentFilters)} label="FECHA" />}
                   {visibility.actualizadoEn &&
-                  <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)}label="actualizadoEn" />}
+                  <AppThTableOrder handleSort={() => handleSort('actualizadoEn', currentFilters)} label="ACTUALIZADO EN" />}
                   {visibility.creadoEn &&
-                  <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)}label="creadoEn" />}
+                  <AppThTableOrder handleSort={() => handleSort('creadoEn', currentFilters)} label="CREADO EN" />}
                   <th scope="col" className="p-4">ACTION </th>
                 </tr>
               </thead>
@@ -146,25 +154,37 @@ const Index = () => {
                   <td className="px-4 py-3 w-4">
                    {detalleMovimiento.id}
                   </td>}
-                  {visibility.codigo &&
+                  {visibility.movimientoId &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.codigo}
+                   {detalleMovimiento.movimientoId}
                   </td>}
-                  {visibility.nombre &&
+                  {visibility.productoId &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.nombre}
+                   {detalleMovimiento.productoId}
                   </td>}
-                  {visibility.referencia &&
+                  {visibility.producto &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.referencia}
+                   {detalleMovimiento.producto.nombre}
                   </td>}
-                  {visibility.descripcion &&
+                  {visibility.detalle &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.descripcion}
+                   {detalleMovimiento.detalle}
                   </td>}
-                  {visibility.plazo &&
+                  {visibility.cantidad &&
                   <td className="px-4 py-3 w-4">
-                   {detalleMovimiento.plazo}
+                   {detalleMovimiento.cantidad}
+                  </td>}
+                  {visibility.valor &&
+                  <td className="px-4 py-3 w-4">
+                   {Moneda(detalleMovimiento.valor)}
+                  </td>}
+                  {visibility.subtotal &&
+                  <td className="px-4 py-3 w-4">
+                   {Moneda.format(detalleMovimiento.subtotal)}
+                  </td>}
+                  {visibility.fecha &&
+                  <td className="px-4 py-3 w-4">
+                  {detalleMovimiento.fecha}
                   </td>}
                   {visibility.actualizadoEn &&
                   <td className="px-4 py-3 w-4">

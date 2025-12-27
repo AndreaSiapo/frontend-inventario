@@ -119,7 +119,7 @@ const Index = () => {
                     </th>
                     {visibility.id &&
                     <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
-                    {visibility.idProducto &&
+                    {visibility.productoId &&
                     <AppThTableOrder handleSort={() => handleSort('idProducto', currentFilters)} label="ID PRODUCTO" />}
                     {visibility.producto &&
                     <AppThTableOrder handleSort={() => handleSort('producto', currentFilters)} label="PRODUCTO" />}
@@ -156,9 +156,9 @@ const Index = () => {
                     <td className="px-4 py-3 w-4">
                     {lote.id}
                     </td>}
-                    {visibility.idProducto &&
+                    {visibility.productoId &&
                     <td className="px-4 py-3 w-4">
-                    {lote.idProducto}
+                    {lote.productoId}
                     </td>}
                     {visibility.producto &&
                     <td className="px-4 py-3 w-4">

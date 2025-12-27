@@ -11,7 +11,7 @@ import Checkbox             from './../../../components/form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import {useIndexTable, useModalHandlers, useModuleNames, useResource} from "./../../../hook/useHandler";
+import {useIndexTable, useModalHandlers, useModuleNames, useMoneda, useResource} from "./../../../hook/useHandler";
 import AppNotification, { useFlash } from "./../../../components/html/notification";
 import AppPagination        from "./../../../components/html/pagination";
 //import AppSearchIndex       from "./../../../components/form/search_index";
@@ -60,6 +60,7 @@ const Index = () => {
     updateItem: updatePrecioProducto,     // PUT /precioProductos/:id
     onSuccess: fetchPrecioProductos
   });
+    const Moneda = useMoneda();
   
   if (error) {
     return (
@@ -162,11 +163,11 @@ const Index = () => {
                   </td>}
                   {visibility.precioCompra &&
                   <td className="px-4 py-3 w-4">
-                   {precioProducto.precioCompra}
+                   {Moneda(precioProducto.precioCompra)}
                   </td>}
                   {visibility.precioVenta &&
                   <td className="px-4 py-3 w-4">
-                   {precioProducto.precioVenta}
+                   {Moneda(precioProducto.precioVenta)}
                   </td>}
                   {visibility.actualizadoEn &&
                   <td className="px-4 py-3 w-4">

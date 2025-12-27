@@ -112,7 +112,7 @@ export function getColumns() {
 export function getDefaultVisibility() {
   return {
     id:               false,
-    idProducto:       false,
+    productoId:       false,
     producto:         false,
     codigoLote:       true,
     codigoBar:       true,

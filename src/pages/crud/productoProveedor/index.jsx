@@ -119,12 +119,12 @@ const Index = () => {
                   </th>
                   {visibility.id &&
                   <AppThTableOrder handleSort={() => handleSort('id', currentFilters)} label="ID" />}
-                  {visibility.idProducto &&
-                  <AppThTableOrder handleSort={() => handleSort('idProducto', currentFilters)} label="CODIGO" />}
+                  {visibility.productoId &&
+                  <AppThTableOrder handleSort={() => handleSort('productoId', currentFilters)} label="CODIGO" />}
                   {visibility.producto &&
                   <AppThTableOrder handleSort={() => handleSort('producto', currentFilters)} label="NOMBRE" />}
-                  {visibility.idProveedor &&
-                  <AppThTableOrder handleSort={() => handleSort('idProveedor', currentFilters)} label="ID PROVEEDOR" />}
+                  {visibility.proveedorId &&
+                  <AppThTableOrder handleSort={() => handleSort('proveedorId', currentFilters)} label="ID PROVEEDOR" />}
                   {visibility.proveedor &&
                   <AppThTableOrder handleSort={() => handleSort('proveedor', currentFilters)} label="PROVEEDOR" />}
                   {visibility.estado &&
@@ -148,17 +148,17 @@ const Index = () => {
                   <td className="px-4 py-3 w-4">
                    {productoProveedor.id}
                   </td>}
-                  {visibility.idProducto &&
+                  {visibility.productoId &&
                   <td className="px-4 py-3 w-4">
-                   {productoProveedor.idProducto}
+                   {productoProveedor.productoId}
                   </td>}
                   {visibility.producto &&
                   <td className="px-4 py-3 w-4">
                    {productoProveedor.producto}
                   </td>}
-                  {visibility.idProveedor &&
+                  {visibility.proveedorId &&
                   <td className="px-4 py-3 w-4">
-                   {productoProveedor.idProveedor}
+                   {productoProveedor.proveedorId}
                   </td>}
                   {visibility.proveedor &&
                   <td className="px-4 py-3 w-4">

@@ -94,9 +94,9 @@ export function deleteProductoProveedor(id) {
 export function getColumns() {
   return [
     { key: 'id',          label: 'ID' },
-    { key: 'idProducto',  label: 'ID Producto' },
+    { key: 'productoId',  label: 'ID Producto' },
     { key: 'producto',    label: 'Producto' },
-    { key: 'idProveedor', label: 'ID Proveedor' },
+    { key: 'proveedorId', label: 'ID Proveedor' },
     { key: 'proveedor',   label: 'Proveedor' },
     { key: 'estado',      label: 'Estado' },
     { key: 'observacion', label: 'Observacion' },
@@ -108,9 +108,9 @@ export function getColumns() {
 export function getDefaultVisibility() {
   return {
     id:            false,
-    idProducto:    true,
+    productoId:    true,
     producto:      true,
-    idProveedor:   false,
+    proveedorId:   false,
     proveedor:     false,
     estado:        false,
     observacion:   false,
