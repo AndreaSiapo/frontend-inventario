@@ -11,7 +11,7 @@ import Checkbox             from '@form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import {useIndexTable, useModalHandlers, useModuleNames, useResource, useMoneda} from "./@/hook/useHandler";
+import {useIndexTable, useModalHandlers, useModuleNames, useResource, useMoneda} from "@/hook/useHandler";
 //import AppSearchIndex       from "@form/search_index";
 //import Layout               from "@app/layout";
 

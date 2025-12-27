@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo }         from "react";
 import { AppBtnCodeBarDownload, AppBtnCodeBar } from "@html/btn";
 import { AppBtnX }                from "@form/btn";
 import CheckboxBall               from "@form/check2";
-import IconVRight                 from "@icons/actions/v";
+import { IconVRight }             from "@icons/actions/v";
 import { useForm, useResource }   from "@/hook/useHandler";
 import { getProductosFull }       from "@/api/productos";
 import { appRoutes }              from "@route";

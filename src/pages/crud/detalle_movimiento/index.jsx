@@ -17,7 +17,7 @@ import AppPagination        from "@html/pagination";
 //import AppSearchIndex       from "@form/search_index";
 //import Layout               from "@app/layout";
 
-import { appRoutes } from "@routes";
+import { appRoutes } from "@route";
 import { getDetalleMovimientos, getDetalleMovimiento, createDetalleMovimiento, updateDetalleMovimiento, getColumns, getDefaultVisibility } from "../../../api/detalleMovimientos";
 
 const Index = () => {

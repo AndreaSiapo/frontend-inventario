@@ -4,7 +4,7 @@ import { AppBtnCodeBarDownload, AppBtnCodeBar } from "@html/btn";
 import { useForm, useResource } from "@/hook/useHandler";
 import { AppBtnX }            from "@form/btn";
 import CheckboxBall           from "@form/check2";
-import IconVRight             from "@icons/actions/v";
+import { IconVRight }            from "@icons/actions/v";
 import { getMarcasFull }          from "@/api/marcas";
 import { getUnidadesMedidaFull }  from "@/api/umedidas";
 import { getCategoriasFull }      from "@/api/categorias";
