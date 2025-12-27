@@ -1,12 +1,12 @@
 //Create.jsx
 import Barcode from "react-barcode";
 import { useEffect, useState }  from "react";
-import { useForm, useResource } from "../../../hook/useHandler";
-import { AppBtnX }              from "../../../components/form/btn";
-import { getBodegasFull }       from "../../../api/bodegas";
-import { getLotesFull }         from "../../../api/lotes";
-import { getProductosFull }     from "../../../api/productos";
-import { appRoutes }            from "../../../routes/appRoutes";
+import { AppBtnX }              from "@form/btn";
+import { useForm, useResource } from "@/hook/useHandler";
+import { getBodegasFull }       from "@/api/bodegas";
+import { getLotesFull }         from "@/api/lotes";
+import { getProductosFull }     from "@/api/productos";
+import { appRoutes }            from "@route";
 
 export default function ModalCreate( {
   modules,

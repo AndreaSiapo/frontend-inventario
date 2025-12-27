@@ -2,7 +2,7 @@
 import { AppBtnX } from "@form/btn";
 import dayjs from 'dayjs';
 import { getDetalleMovimientos } from "@/api/detalleMovimientos";
-import { useForm, useResource } from "../../../hook/useHandler";
+import { useForm, useResource } from "@/hook/useHandler";
 
 export default function ModalShow({
   title,

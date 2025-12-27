@@ -1,15 +1,15 @@
 //Create.jsx
 import Barcode                   from "react-barcode";
 import { useEffect, useState }   from "react";
-import { AppBtnX }               from "../../../components/form/btn";
-import IconInISO                 from "../../../components/icons/extra/in";
-import IconOutISO                 from "../../../components/icons/extra/out";
-import { useForm, useResource  } from "../../../hook/useHandler";
-import { appRoutes }             from "../../../routes/appRoutes";
-import { getTipoDocumentosFull } from "../../../api/tipoDocumentos";
-import { getBodegasFull }        from "../../../api/bodegas";
-import { getDestinatariosFull }  from "../../../api/destinatarios"
-import { getProveedoresFull }    from "../../../api/proveedores"
+import { AppBtnX }               from "@form/btn";
+import IconInISO                 from "@icons/extra/in";
+import IconOutISO                 from "@icons/extra/out";
+import { useForm, useResource  } from "@/hook/useHandler";
+import { appRoutes }             from "@/routes/appRoutes";
+import { getTipoDocumentosFull } from "@/api/tipoDocumentos";
+import { getBodegasFull }        from "@/api/bodegas";
+import { getDestinatariosFull }  from "@/api/destinatarios"
+import { getProveedoresFull }    from "@/api/proveedores"
 export default function ModalCreate( {
   modules,
   handleClose,

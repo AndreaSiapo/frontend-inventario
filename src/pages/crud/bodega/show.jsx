@@ -35,24 +35,34 @@ export default function ModalShow({
                   <div className="text-gray-500 dark:text-gray-400">{value.nombre}</div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="block mb-2 mr-2 text-sm font-medium">Referencia: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{value.referencia}</div>
+                  <div className="block mb-2 mr-2 text-sm font-medium">Detalle: </div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.detalle}</div>
                 </div>
                 <div className="grid grid-cols-2">
-                  <div className="block mb-2 mr-2 text-sm font-medium">Plazo: </div>
-                  <div className="text-gray-500 dark:text-gray-400">{value.plazo}</div>
+                  <div className="block mb-2 mr-2 text-sm font-medium">Ubicacion: </div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.ubicacion}</div>
                 </div>
                 <div className="grid grid-cols-2 col-span-2">
-                  <div className="block mb-2 mr-2 text-sm font-medium">Descripcion: </div>
+                  <div className="block mb-2 mr-2 text-sm font-medium">Referencia: </div>
                   <br></br>
-                  <div className="text-gray-500 dark:text-gray-400">{value.descripcion}</div>
+                  <div className="text-gray-500 dark:text-gray-400">{value.referencia}</div>
+                </div>
+                <div className="grid grid-cols-2 col-span-2">
+                  <div className="block mb-2 mr-2 text-sm font-medium">Capacidad: </div>
+                  <br></br>
+                  <div className="text-gray-500 dark:text-gray-400">{value.capacidad}</div>
+                </div>
+                <div className="grid grid-cols-2 col-span-2">
+                  <div className="block mb-2 mr-2 text-sm font-medium">Tamaño: </div>
+                  <br></br>
+                  <div className="text-gray-500 dark:text-gray-400">{value.tamano}</div>
                 </div>
                 <div className="col-span-2 grid grid-cols-2">
-                  <div className="block mb-2 mr-2 text-sm font-medium">Updated At: </div>
+                  <div className="block mb-2 mr-2 text-sm font-medium">Actuaizado En: </div>
                   <div className="text-gray-500 dark:text-gray-400">{value.actualizadoEn==null ? "Error sin fecha": dayjs(value.actualizadoEn).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
                 <div className="col-span-2 grid grid-cols-2">
-                  <div className="block mb-2 mr-2 text-sm font-medium">Created At: </div>
+                  <div className="block mb-2 mr-2 text-sm font-medium">Creado En: </div>
                   <div className="text-gray-500 dark:text-gray-400">{value.creadoEn==null ? "Error sin fecha": dayjs(value.creadoEn).format('YYYY/MM/DD HH:mm:ss')}</div>
                 </div>
               </div>

@@ -1,8 +1,8 @@
 //Create.jsx
-import { useForm }   from "../../../hook/useHandler";
-import { AppBtnCodeBarDownload, AppBtnCodeBar } from "../../../components/html/btn";
-import { AppBtnX }   from "../../../components/form/btn";
-import { appRoutes } from "../../../routes/appRoutes";
+import { useForm }   from "@/hook/useHandler";
+import { AppBtnCodeBarDownload, AppBtnCodeBar } from "@html/btn";
+import { AppBtnX }   from "@form/btn";
+import { appRoutes } from "@route";
 
 export default function ModalCreate( {
   modules,

@@ -1,8 +1,8 @@
 //edit.jsx
 import Barcode from "react-barcode";
 import { useEffect, useState } from "react";
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
+import { useForm } from "@/hook/useHandler";
+import { AppBtnX } from "@form/btn";
 
 export default function ModalEdit({
     title,

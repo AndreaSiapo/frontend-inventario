@@ -1,11 +1,11 @@
 //Create.jsx
 import { useEffect, useState, useMemo }         from "react";
-import { AppBtnCodeBarDownload, AppBtnCodeBar } from "../../../components/html/btn";
 import Barcode       from "react-barcode";
-import { useForm }   from "../../../hook/useHandler";
-import { AppBtnX }   from "../../../components/form/btn";
-import HabitacionBox from "../../../components/form/HabitacionBox";
-import { appRoutes } from "../../../routes/appRoutes";
+import { AppBtnCodeBarDownload, AppBtnCodeBar } from "@html/btn";
+import { useForm }   from "@/hook/useHandler";
+import { AppBtnX }   from "@form/btn";
+import HabitacionBox from "@form/HabitacionBox";
+import { appRoutes } from "@route";
 
 export default function ModalCreate( {
   modules,

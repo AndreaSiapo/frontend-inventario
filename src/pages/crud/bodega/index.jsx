@@ -2,22 +2,22 @@
 import React, { useState, useEffect } from "react";
 
 // Componentes
-import AppBreadcrumb        from "./../../../components/html/breadcrumb";
-import AppThTableOrder      from "./../../../components/html/thTableOrder";
-import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting, AppBtnCodeBar, AppBtnCodeBarDownload} from "./../../../components/html/btn";
-import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete, AppBtnX} from "./../../../components/form/btn";
-import Checkbox             from './../../../components/form/check';
+import AppBreadcrumb        from "@html/breadcrumb";
+import AppNotification, { useFlash } from "@html/notification";
+import AppPagination        from "@html/pagination";
+import AppThTableOrder      from "@html/thTableOrder";
+import {AppBtnActions, AppBtnInfoCount, AppBtnTableSetting, AppBtnCodeBar, AppBtnCodeBarDownload} from "@html/btn";
+import {AppBtnCreate, AppBtnShowM, AppBtnEdit, AppBtnDelete, AppBtnX} from "@form/btn";
+import Checkbox             from '@form/check';
 import ModalEdit            from "./edit";
 import ModalShow            from "./show";
 import ModalCreate          from "./create";
-import {useIndexTable, useModalHandlers, useModuleNames, useResource} from "./../../../hook/useHandler";
-import AppNotification, { useFlash } from "./../../../components/html/notification";
-import AppPagination        from "./../../../components/html/pagination";
-//import AppSearchIndex       from "./../../../components/form/search_index";
-//import Layout               from "./../../../components/app/layout";
+import {useIndexTable, useModalHandlers, useModuleNames, useResource} from "@/hook/useHandler";
+//import AppSearchIndex       from "@form/search_index";
+//import Layout               from "@app/layout";
 
-import { appRoutes } from "../../../routes/appRoutes";
-import { getBodegas, getBodega, createBodega, updateBodega, getColumns, getDefaultVisibility } from "../../../api/bodegas";
+import { appRoutes } from "@route";
+import { getBodegas, getBodega, createBodega, updateBodega, getColumns, getDefaultVisibility } from "@/api/bodegas";
 
 const Index = () => {
   const columns = getColumns();

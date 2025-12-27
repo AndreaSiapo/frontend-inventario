@@ -59,7 +59,7 @@ export default function ModalEdit({
           {/* Modal header */}
           <div className="modal-header">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Editar {title}: </h3>
-            <AppBtnX $route={modules+'.index'} handleClose={handleClose} />
+            <AppBtnX $route={appRoutes.precioProducto} handleClose={handleClose} />
           </div>
           {/* Modal body */}
           <form className="p-4 md:p-5" onSubmit={onSubmit}>
