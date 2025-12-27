@@ -1,12 +1,11 @@
 //edit.jsx
 import Barcode from "react-barcode";
 import { useEffect, useState } from "react";
-import { useForm, useResource } from "../../../hook/useHandler";
-import { useForm } from "@/hook/useHandler";
+import { useForm, useResource } from "@/hook/useHandler";
 import { AppBtnX } from "@form/btn";
-import { getProductoProveedoresFull }     from "../../../api/productoProveedores"
-import { getProductosFull }     from "../../../api/productos"
-import { getProveedoresFull }     from "../../../api/proveedores"
+import { getProductosFull }           from "@/api/productos"
+import { getProveedoresFull }         from "@/api/proveedores"
+import { getProductoProveedoresFull } from "@/api/productoProveedores"
 
 export default function ModalEdit({
     title,
