@@ -1,8 +1,8 @@
 //edit.jsx
 import { useEffect, useState } from "react";
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
-import { AppBtnCodeBarDownload, AppBtnCodeBar } from "../../../components/html/btn";
+import { useForm } from "@/hook/useHandler";
+import { AppBtnX } from "@form/btn";
+import { AppBtnCodeBarDownload, AppBtnCodeBar } from "@html/btn";
 
 export default function ModalEdit({
     title,

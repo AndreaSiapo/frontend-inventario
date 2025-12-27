@@ -1,12 +1,12 @@
 //Create.jsx
 import Barcode                  from "react-barcode";
 import { useEffect, useState }  from "react";
-import { useForm, useResource } from "../../../hook/useHandler";
-import { AppBtnX }              from "../../../components/form/btn";
-import CheckboxBall             from "../../../components/form/check2";
-import { appRoutes }            from "../../../routes/appRoutes";
-import { getProductosFull }     from "../../../api/productos"
-import { getProveedoresFull }   from "../../../api/proveedores"
+import { useForm, useResource } from "@/hook/useHandler";
+import { AppBtnX }              from "@form/btn";
+import CheckboxBall             from "@form/check2";
+import { appRoutes }            from "@route";
+import { getProductosFull }     from "@/api/productos"
+import { getProveedoresFull }   from "@/api/proveedores"
 
 
 export default function ModalCreate( {
@@ -25,8 +25,8 @@ export default function ModalCreate( {
       setIsDark(document.documentElement.classList.contains("dark"));
     }, []);
     
-    const { data, setData, post, processing, errors, reset } = useForm({
-        idProducto:    "",
+    const { data, setData, post, processing, errors, setErrors, reset } = useForm({
+        productoId:    "",
         idProveedor:   "",
         estado:        "",
         observacion:   "",
@@ -36,8 +36,8 @@ export default function ModalCreate( {
       e.preventDefault();
       const newErrors = {};
 
-      if (!data.idProducto?.trim()) 
-        newErrors.idProducto = "El producto es obligatorio";
+      if (!data.productoId?.trim()) 
+        newErrors.productoId = "El producto es obligatorio";
       if (!data.idProveedor?.trim()) 
         newErrors.idProveedor = "El proveedor es obligatorio";
       if (!data.estado?.trim()) 
@@ -88,11 +88,11 @@ export default function ModalCreate( {
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="idProducto" className="block text-sm font-medium text-gray-900 dark:text-white">Producto</label>
-                    <select id="idProducto" name="idProducto"
-                      value={data.idProducto ?? ""}
-                      onChange={(e) => setData("idProducto", e.target.value)}
-                      className={'input-modal '+classInput+`${errors.idProducto && ' ring-red-500 border-red-200'}`}
+                    <label htmlFor="productoId" className="block text-sm font-medium text-gray-900 dark:text-white">Producto</label>
+                    <select id="productoId" name="productoId"
+                      value={data.productoId ?? ""}
+                      onChange={(e) => setData("productoId", e.target.value)}
+                      className={'input-modal '+classInput+`${errors.productoId && ' ring-red-500 border-red-200'}`}
                     >
                       <option value="">Seleccione un producto</option>
                       {productos?.data?.map((producto) => (
@@ -101,8 +101,8 @@ export default function ModalCreate( {
                         </option>
                       ))}
                     </select>
-                  {errors.idProductoProveedor && (
-                    <div className="error">{errors.idProducto}</div>
+                  {errors.productoIdProveedor && (
+                    <div className="error">{errors.productoId}</div>
                   )}
                   </div>
                 </div>

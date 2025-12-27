@@ -71,7 +71,7 @@ export default function ModalEdit({
                   />
                 </div>
                 {errors.codigo && (
-                  <div className="text-red-500 text-sm mt-1">{errors.codigo}</div>
+                  <div className="error">{errors.codigo}</div>
                 )}
               </div>
               <div className="flex flex-col">
@@ -88,7 +88,7 @@ export default function ModalEdit({
                     required
                   />
                   {errors.nombre && (
-                    <div className="text-red-500 text-sm mt-1">{errors.nombre}</div>
+                    <div className="error">{errors.nombre}</div>
                   )}
                 </div>
               </div>
@@ -106,7 +106,7 @@ export default function ModalEdit({
                     required
                   />
                   {errors.abreviado && (
-                  <div className="text-red-500 text-sm mt-1">{errors.abreviado}</div>
+                  <div className="error">{errors.abreviado}</div>
                   )}
                 </div>
               </div>
@@ -124,7 +124,7 @@ export default function ModalEdit({
                     </li>
                   </ul>
                   {errors.naturaleza && (
-                    <div className="text-red-500 text-sm mt-1">{errors.naturaleza}</div>
+                    <div className="error">{errors.naturaleza}</div>
                   )}
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default function ModalEdit({
                 className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
               />
             {errors.descripcion && (
-              <div className="text-red-500 text-sm mt-1">{errors.descripcion}</div>
+              <div className="error">{errors.descripcion}</div>
               )}
             </div>
             <button type="submit" className="submit-modal mt-4">

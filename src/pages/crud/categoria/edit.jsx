@@ -13,8 +13,8 @@ export default function ModalEdit({
     inert
  }) {
     const { data, setData, processing, errors, setErrors } = useForm({
-      nombre: value?.nombre || "",
-      detalle: value?.detalle || "",
+      nombre:           value?.nombre || "",
+      detalle:          value?.detalle || "",
       categoriaPadreId: value?.categoriaPadreId || "",
     });
     

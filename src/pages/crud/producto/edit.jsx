@@ -1,14 +1,14 @@
 //edit.jsx
 import { useEffect, useState, useMemo } from "react";
-import { AppBtnCodeBarDownload, AppBtnCodeBar } from "../../../components/html/btn";
-import { useForm, useResource } from "../../../hook/useHandler";
-import { AppBtnX }            from "../../../components/form/btn";
-import CheckboxBall           from "../../../components/form/check2";
-import IconVRight             from "../../../components/icons/actions/v-right";
-import { getMarcasFull }          from "../../../api/marcas";
-import { getUnidadesMedidaFull }  from "../../../api/umedidas";
-import { getCategoriasFull }      from "../../../api/categorias";
-import { getPresentacionesFull }  from "../../../api/presentaciones";
+import { AppBtnCodeBarDownload, AppBtnCodeBar } from "@html/btn";
+import { useForm, useResource } from "@/hook/useHandler";
+import { AppBtnX }            from "@form/btn";
+import CheckboxBall           from "@form/check2";
+import IconVRight             from "@icons/actions/v-right";
+import { getMarcasFull }          from "@/api/marcas";
+import { getUnidadesMedidaFull }  from "@/api/umedidas";
+import { getCategoriasFull }      from "@/api/categorias";
+import { getPresentacionesFull }  from "@/api/presentaciones";
 
 export default function ModalEdit({
     title,

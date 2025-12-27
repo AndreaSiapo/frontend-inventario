@@ -22,7 +22,7 @@ export default function ModalCreate( {
     const [isDark, setIsDark] = useState(false);
     
     const { data, setData, post, processing, errors, setErrors, reset } = useForm({
-        idProductoProveedor: "",
+        productoProveedorId: "",
         fechaDesde:     "",
         fechaHasta:     "",
         precioCompra:   "",
@@ -33,8 +33,8 @@ export default function ModalCreate( {
       e.preventDefault();
       const newErrors = {};
 
-      if (!data.idProductoProveedor?.trim()) 
-        newErrors.idProductoProveedor = "El ProductoProveedor es obligatorio";
+      if (!data.productoProveedorId?.trim()) 
+        newErrors.productoProveedorId = "El ProductoProveedor es obligatorio";
       if (!data.fechaDesde?.trim()) 
         newErrors.fechaDesde = "La fecha desde es obligatoria";
       if (!data.fechaHasta?.trim()) 
@@ -104,8 +104,8 @@ export default function ModalCreate( {
                         </option>
                       ))}
                     </select>
-                  {errors.idProductoProveedor && (
-                    <div className="error">{errors.idProductoProveedor}</div>
+                  {errors.productoProveedorId && (
+                    <div className="error">{errors.productoProveedorId}</div>
                   )}
                   </div>
                 </div>

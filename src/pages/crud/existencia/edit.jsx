@@ -1,8 +1,9 @@
 //edit.jsx
-import Barcode from "react-barcode";
+import Barcode       from "react-barcode";
 import { useEffect, useState } from "react";
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
+import { useForm }   from "../../../hook/useHandler";
+import { AppBtnX }   from "../../../components/form/btn";
+import { appRoutes } from "../../../routes/appRoutes";
 
 export default function ModalEdit({
     title,
@@ -19,16 +20,45 @@ export default function ModalEdit({
     }, []);
     
      const { data, setData, processing, errors } = useForm({
-         codigo: value?.codigo || "",
-         nombre: value?.nombre || "",
-         referencia: value?.referencia || "",
-         descripcion: value?.descripcion || "",
-         plazo: value?.plazo || ""
+        bodegaId:         value?.bodegaId       || "",
+        loteId:           value?.loteId         || "",
+        productoId:       value?.productoId     || "",
+        stockMinimo:      value?.stockMinimo    || "",
+        stockMaximo:      value?.stockMaximo    || "",
+        costoPromedio:    value?.costoPromedio  || "",
+        fechaUltimoMovimiento:  value?.fechaUltimoMovimiento || "",
+        cantidadActual:   value?.cantidadActual || "",
      });
     
      const onSubmit = (e) => {
-         e.preventDefault();
-         handleEdit(value.id, data);
+        e.preventDefault();
+        const newErrors = {};
+        const min = data.stockMinimo !== "" ? Number(data.stockMinimo) : null;
+        const max = data.stockMaximo !== "" ? Number(data.stockMaximo) : null;
+
+        if (!data.bodegaId?.trim()) 
+          newErrors.bodegaId = "La Bodega es obligatoria.";
+        if (!data.loteId?.trim())
+          newErrors.loteId = "El lote es obligatorio.";
+        if (!data.productoId?.trim())
+          newErrors.productoId = "El producto es obligatorio.";
+        if (min !== null && max !== null) {
+          if (max < min) {
+            newErrors.maximo = "El máximo debe ser mayor que el mínimo";
+          }
+        }
+        if (!data.costoPromedio?.trim())
+          newErrors.costoPromedio = "El Costo Promedio es obligatorio.";
+        if (!data.fechaUltimoMovimiento?.trim())
+          newErrors.fechaUltimoMovimiento = "La Fecha del Último Movimiento es obligatoria.";
+        if (!data.cantidadActual?.trim())
+          newErrors.cantidadActual = "La Cantidad Actual es obligatoria.";
+
+        if (Object.keys(newErrors).length > 0) {
+          setErrors(newErrors);
+          return;
+        }      
+        handleEdit(value.id, data);
      };
 
   return (
@@ -39,98 +69,157 @@ export default function ModalEdit({
           {/* Modal header */}
           <div className="modal-header">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Editar {title}: </h3>
-            <AppBtnX $route={modules+'.index'} handleClose={handleClose} />
+            <AppBtnX $route={appRoutes.existencia} handleClose={handleClose} />
           </div>
           {/* Modal body */}
           <form className="p-4 md:p-5" onSubmit={onSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {data.codigo && (
-                <div className="mt-2 p-2 border rounded bg-white dark:bg-sky-900 overflow-auto col-span-2 flex justify-center text-gray-900 dark:text-white">
-                  <Barcode
-                    value={data.codigo}
-                    background="transparent"
-                    lineColor={isDark ? "#fff" : "#000"}      // puedes cambiarlo si usas modo oscuro
-                    textColor={isDark ? "#fff" : "#000"} 
-                    height={50}
-                    width={2}
-                    displayValue={true}   // muestra el texto debajo
-                    fontSize={14}
-                  />
-                </div>
-              )}
               <div className="flex flex-col">
                 <div className="col-span-2">
-                  <label htmlFor="codigo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Código</label>
-                  <input
-                    type="text"
-                    name="codigo"
-                    id="codigo"
-                    className="input-modal"
-                    placeholder={"Ponga el codigo de " + title}
-                    value={data.codigo}
-                    onChange={(e) => setData("codigo", e.target.value)}
-                    required
-                  />
+                  <label htmlFor="productoId" className="block text-sm font-medium text-gray-900 dark:text-white">Producto</label>
+                  <select id="productoId" name="productoId"
+                    value={data.productoId ?? ""}
+                    onChange={(e) => setData("productoId", e.target.value)}
+                    className={'input-modal '+classInput+`${errors.productoId && ' ring-red-500 border-red-200'}`}
+                  >
+                    <option value="">Seleccione un producto</option>
+                    {productos?.data?.map((producto) => (
+                      <option key={producto.id} value={producto.id}>
+                        {producto.nombre}
+                      </option>
+                    ))}
+                  </select>
+                {errors.productoId && (
+                  <div className="error">{errors.productoId}</div>
+                )}
                 </div>
               </div>
               <div className="flex flex-col">
                 <div className="col-span-2">
-                  <label htmlFor="nombre" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                  <input
-                    type="text"
-                    name="nombre"
-                    id="nombre"
-                    className="input-modal"
-                    placeholder={"Ponga el nombre de " + title}
-                    value={data.nombre}
-                    onChange={(e) => setData("nombre", e.target.value)}
-                    required
-                  />
+                  <label htmlFor="bodegaId" className="block text-sm font-medium text-gray-900 dark:text-white">Bodega</label>
+                  <select id="bodegaId" name="bodegaId"
+                    value={data.bodegaId ?? ""}
+                    onChange={(e) => setData("bodegaId", e.target.value)}
+                    className={'input-modal '+classInput+`${errors.bodegaId && ' ring-red-500 border-red-200'}`}
+                  >
+                    <option value="">Seleccione una bodega</option>
+                    {bodegas?.data?.map((bodega) => (
+                      <option key={bodega.id} value={bodega.id}>
+                        {bodega.nombre}
+                      </option>
+                    ))}
+                  </select>
+                {errors.bodegaId && (
+                  <div className="error">{errors.bodegaId}</div>
+                )}
                 </div>
               </div>
               <div className="flex flex-col">
                 <div className="col-span-2">
-                  <label htmlFor="referencia" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Referencia</label>
-                  <input
-                    type="text"
-                    name="referencia"
-                    id="referencia"
-                    className="input-modal"
-                    placeholder={"Referencias"}
-                    value={data.referencia}
-                    onChange={(e) => setData("referencia", e.target.value)}
-                    required
-                  />
+                  <label htmlFor="loteId" className="block text-sm font-medium text-gray-900 dark:text-white">lote</label>
+                  <select id="loteId" name="loteId"
+                    value={data.loteId ?? ""}
+                    onChange={(e) => setData("loteId", e.target.value)}
+                    className={'input-modal '+classInput+`${errors.loteId && ' ring-red-500 border-red-200'}`}
+                  >
+                    <option value="">Seleccione un lote</option>
+                    {lotes?.data?.map((lote) => (
+                      <option key={lote.id} value={lote.id}>
+                        {lote.nombre}
+                      </option>
+                    ))}
+                  </select>
+                {errors.loteId && (
+                  <div className="error">{errors.loteId}</div>
+                )}
                 </div>
               </div>
               <div className="flex flex-col">
                 <div className="col-span-2">
-                  <label htmlFor="plazo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Plazo</label>
-                  <input
-                    type="text"
-                    name="plazo"
-                    id="plazo"
-                    className="input-modal"
-                    placeholder={"Plazos de entrega estimados del Proveedor"}
-                    value={data.plazo}
-                    onChange={(e) => setData("plazo", e.target.value)}
-                    required
-                  />
+                  <label htmlFor="stockMinimo" className="block text-label">Stock MIN - MAX</label>
+                  <div className="col-span-2 flex gap-2">
+                    <input
+                      id="stockMinimo"
+                      name="stockMinimo"
+                      type="number"
+                      placeholder="MIN"
+                      value={data.stockMinimo ?? ""}
+                      autoComplete="stockMinimo"
+                      onChange={(e) => setData("stockMinimo", e.target.value === "" ? "" : e.target.value)}
+                      className={'input-modal w-20 '+classInput+`${errors.stockMinimo && ' ring-red-500 border-red-200'}`}
+                    />
+                    <label htmlFor="minimo" className="block text-sm text-gray-900 dark:text-gray-400"> - </label>
+                    <input
+                      id="stockMaximo"
+                      name="stockMaximo"
+                      type="number"
+                      placeholder="MAX"
+                      value={data.stockMaximo ?? ""}
+                      autoComplete="stockMaximo"
+                      onChange={(e) => setData("stockMaximo", e.target.value === "" ? "" : e.target.value)}
+                      className={'input-modal w-20 '+classInput+`${errors.maximo && ' ring-red-500 border-red-200'}`}
+                    />
+                  </div>
+                  <div>
+                  {errors.stockMinimo && (
+                    <div className="error">{errors.stockMinimo}</div>
+                  )}
+                  {errors.stockMaximo && (
+                    <div className="error">{errors.stockMaximo}</div>
+                  )}
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col mt-2">
-              <div className="col-span-2">
-                <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
-                <textarea
-                  name="descripcion"
-                  id="descripcion"
-                  className="input-modal"
-                  placeholder={"Descripcion"}
-                  value={data.descripcion}
-                  onChange={(e) => setData("descripcion", e.target.value)}
-                  required
-                />
+              <div className="flex flex-col">
+                <div className="col-span-2">
+                  <label htmlFor="costoPromedio" className="block text-sm font-medium text-gray-900 dark:text-white">costoPromedio</label>
+                  <input
+                    id="costoPromedio"
+                    name="costoPromedio"
+                    type="number"
+                    value={data.costoPromedio}
+                    autoComplete="costoPromedio"
+                    onChange={(e) => setData("costoPromedio", e.target.value)}
+                    className={'input-modal '+classInput+`${errors.costoPromedio && ' ring-red-500 border-red-200'}`}
+                  />
+                {errors.costoPromedio && (
+                  <div className="error">{errors.costoPromedio}</div>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col">
+                <div className="col-span-2">
+                  <label htmlFor="fechaUltimoMovimiento" className="block text-sm font-medium text-gray-900 dark:text-white">Ultimo Movimiento</label>
+                  <input
+                    id="fechaUltimoMovimiento"
+                    name="fechaUltimoMovimiento"
+                    type="date"
+                    value={data.fechaUltimoMovimiento}
+                    autoComplete="fechaUltimoMovimiento"
+                    onChange={(e) => setData("fechaUltimoMovimiento", e.target.value)}
+                    className={'input-modal '+classInput+`${errors.fechaUltimoMovimiento && ' ring-red-500 border-red-200'}`}
+                  />
+                {errors.fechaUltimoMovimiento && (
+                  <div className="error">{errors.fechaUltimoMovimiento}</div>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col col-span-2">
+                <div className="col-span-2">
+                  <label htmlFor="cantidadActual" className="block text-sm font-medium text-gray-900 dark:text-white">Cantidad Actual</label>
+                  <input
+                    id="cantidadActual"
+                    name="cantidadActual"
+                    type="number"
+                    value={data.cantidadActual}
+                    autoComplete="v"
+                    onChange={(e) => setData("cantidadActual", e.target.value)}
+                    className={'input-modal '+classInput+`${errors.cantidadActual && ' ring-red-500 border-red-200'}`}
+                  />
+                {errors.cantidadActual && (
+                  <div className="error">{errors.cantidadActual}</div>
+                  )}
+                </div>
               </div>
             </div>
             <button type="submit" className="submit-modal mt-4">

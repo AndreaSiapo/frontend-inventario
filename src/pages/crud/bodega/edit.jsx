@@ -1,8 +1,8 @@
 //edit.jsx
 import Barcode from "react-barcode";
 import { useEffect, useState } from "react";
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
+import { useForm } from "@/hook/useHandler";
+import { AppBtnX } from "@form/btn";
 
 export default function ModalEdit({
     title,
@@ -18,7 +18,7 @@ export default function ModalEdit({
       setIsDark(document.documentElement.classList.contains("dark"));
     }, []);
     
-     const { data, setData, processing, errors } = useForm({
+     const { data, setData, processing, errors, setErrors } = useForm({
          codigo:     value?.codigo     || "",
          nombre:     value?.nombre     || "",
          detalle:    value?.detalle    || "",
@@ -34,10 +34,31 @@ export default function ModalEdit({
         largo: 3,
     });
     
-     const onSubmit = (e) => {
-         e.preventDefault();
-         handleEdit(value.id, data);
-     };
+    const onSubmit = (e) => {
+      e.preventDefault();
+      const newErrors = {};
+
+      if (!data.codigo?.trim())
+      newErrors.codigo = "El codigo es obligatorio.";
+      if (!data.nombre?.trim())
+      newErrors.nombre = "El nombre es obligatorio.";
+      if (!data.detalle?.trim())
+      newErrors.detalle = "El detalle es obligatorio.";
+      if (!data.ubicacion?.trim())
+      newErrors.ubicacion = "El ubicacion es obligatorio.";
+      if (!data.referencia?.trim())
+      newErrors.referencia = "La referencia es obligatoria.";/*
+      if (!data.capacidad?.trim())
+      newErrors.capacidad = "La capacidad es obligatoria.";
+      if (!data.tamano?.trim())
+      newErrors.tamano = "El tamano es obligatorio.";*/
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
+      handleEdit(value.id, data);
+    };
 
   return (
     <div id="crud-modal" inert={inert} tabIndex="-1" className="crud-modal">

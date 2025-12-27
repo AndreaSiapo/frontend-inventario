@@ -18,17 +18,32 @@ export default function ModalEdit({
       setIsDark(document.documentElement.classList.contains("dark"));
     }, []);
     
-     const { data, setData, processing, errors } = useForm({
+     const { data, setData, processing, errors, setErrors } = useForm({
          codigo: value?.codigo || "",
          nombre: value?.nombre || "",
-         referencia: value?.referencia || "",
          descripcion: value?.descripcion || "",
          plazo: value?.plazo || ""
      });
     
-     const onSubmit = (e) => {
-         e.preventDefault();
-         handleEdit(value.id, data);
+    const onSubmit = (e) => {
+      e.preventDefault();
+      const newErrors = {};
+
+      if (!data.codigo?.trim()) 
+        newErrors.codigo = "El codigo es obligatorio";
+      if (!data.nombre?.trim()) 
+        newErrors.nombre = "El nombre es obligatorio"; /*
+      if (!data.descripcion?.trim()) 
+        newErrors.descripcion = "La descripcion es necesaria.";
+      if (!data.plazo?.trim()) 
+        newErrors.plazo = "El plazo es necesario.";*/
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
+      
+      handleEdit(value.id, data);
      };
 
   return (
@@ -65,12 +80,15 @@ export default function ModalEdit({
                     type="text"
                     name="codigo"
                     id="codigo"
-                    className="input-modal"
+                    className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
                     placeholder={"Ponga el codigo de " + title}
                     value={data.codigo}
                     onChange={(e) => setData("codigo", e.target.value)}
                     required
                   />
+                {errors.codigo && (
+                  <div className="error">{errors.codigo}</div>
+                )}
                 </div>
               </div>
               <div className="flex flex-col">
@@ -80,27 +98,15 @@ export default function ModalEdit({
                     type="text"
                     name="nombre"
                     id="nombre"
-                    className="input-modal"
+                    className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
                     placeholder={"Ponga el nombre de " + title}
                     value={data.nombre}
                     onChange={(e) => setData("nombre", e.target.value)}
                     required
                   />
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <div className="col-span-2">
-                  <label htmlFor="referencia" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Referencia</label>
-                  <input
-                    type="text"
-                    name="referencia"
-                    id="referencia"
-                    className="input-modal"
-                    placeholder={"Referencias"}
-                    value={data.referencia}
-                    onChange={(e) => setData("referencia", e.target.value)}
-                    required
-                  />
+                {errors.nombre && (
+                  <div className="error">{errors.nombre}</div>
+                )}
                 </div>
               </div>
               <div className="flex flex-col">
@@ -110,28 +116,30 @@ export default function ModalEdit({
                     type="text"
                     name="plazo"
                     id="plazo"
-                    className="input-modal"
+                    className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
                     placeholder={"Plazos de entrega estimados del Proveedor"}
                     value={data.plazo}
                     onChange={(e) => setData("plazo", e.target.value)}
-                    required
                   />
+                {errors.plazo && (
+                  <div className="error">{errors.plazo}</div>
+                  )}
                 </div>
               </div>
             </div>
-            <div className="flex flex-col mt-2">
-              <div className="col-span-2">
-                <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
-                <textarea
-                  name="descripcion"
-                  id="descripcion"
-                  className="input-modal"
-                  placeholder={"Descripcion"}
-                  value={data.descripcion}
-                  onChange={(e) => setData("descripcion", e.target.value)}
-                  required
-                />
-              </div>
+            <div className="flex flex-col col-span-2">
+              <label htmlFor="descripcion" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripcion</label>
+              <textarea
+                name="descripcion"
+                id="descripcion"
+                placeholder={"Descripcion"}
+                value={data.descripcion}
+                onChange={(e) => setData("descripcion", e.target.value)}
+                className={'input-modal '+classInput+`${errors.descripcion && ' ring-red-500 border-red-200'}`}
+              />
+              {errors.descripcion && (
+                <div className="error">{errors.descripcion}</div>
+              )}
             </div>
             <button type="submit" className="submit-modal mt-4">
               Editar {title.toLowerCase()}

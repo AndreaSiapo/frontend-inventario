@@ -94,7 +94,7 @@ export function deleteLote(id) {
 export function getColumns() {
   return [
     { key: 'id',               label: 'ID' },
-    { key: 'idProducto',       label: 'ID Producto' },
+    { key: 'productoId',       label: 'ID Producto' },
     { key: 'producto',         label: 'Producto' },
     { key: 'codigoLote',       label: 'Codigo de Lote' },
     { key: 'codigoBar',        label: 'Codigo de Barras' },
@@ -115,7 +115,7 @@ export function getDefaultVisibility() {
     productoId:       false,
     producto:         false,
     codigoLote:       true,
-    codigoBar:       true,
+    codigoBar:        true,
     fechaVencimiento: true,
     cantidadInicial:  true,
     cantidadActual:   true,

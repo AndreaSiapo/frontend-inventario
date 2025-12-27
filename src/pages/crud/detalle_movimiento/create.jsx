@@ -1,8 +1,9 @@
 //Create.jsx
-import Barcode from "react-barcode";
+import Barcode                 from "react-barcode";
 import { useEffect, useState } from "react";
-import { useForm } from "../../../hook/useHandler";
-import { AppBtnX } from "../../../components/form/btn";
+import { useForm }             from "../../../hook/useHandler";
+import { AppBtnX }             from "../../../components/form/btn";
+import { appRoutes }           from "../../../routes/appRoutes";
 
 
 export default function ModalCreate( {
@@ -19,9 +20,9 @@ export default function ModalCreate( {
       setIsDark(document.documentElement.classList.contains("dark"));
     }, []);
     
-    const { data, setData, post, processing, errors, reset } = useForm({
-        id_movimiento:  "",
-        id_producto:    "",
+    const { data, setData, post, processing, errors, setErrors, reset } = useForm({
+        movimientoId:  "",
+        productoId:    "",
         detalle:        "",
         cantidad:       "",
         valor:          "",
@@ -33,10 +34,10 @@ export default function ModalCreate( {
       e.preventDefault();
       const newErrors = {};
 
-      if (!data.id_movimiento?.trim()) 
-        newErrors.id_movimiento = "El movimiento es obligatorio";
-      if (!data.id_producto?.trim()) 
-        newErrors.id_producto = "El producto es obligatorio";
+      if (!data.movimientoId?.trim()) 
+        newErrors.movimientoId = "El movimiento es obligatorio";
+      if (!data.productoId?.trim()) 
+        newErrors.productoId = "El producto es obligatorio";
       if (!data.detalle?.trim()) 
         newErrors.detalle = "El detalle es obligatorio";
       if (!data.cantidad?.trim()) 
@@ -63,38 +64,38 @@ export default function ModalCreate( {
             {/* Modal header */}
             <div className="modal-header">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white"> Crear {title}: </h3>
-              <AppBtnX $route={'/tablas/presentaciones'} handleClose={handleClose} />
+              <AppBtnX $route={appRoutes.detalleMovimiento} handleClose={handleClose} />
             </div>
           {/* Modal body */}
             <form onSubmit={handleSubmit} className="p-4 md:p-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="id_movimiento" className="block text-sm font-medium text-gray-900 dark:text-white">ID Movimiento</label>
-                    <input id="id_movimiento" name="id_movimiento" type="text"
+                    <label htmlFor="movimientoId" className="block text-sm font-medium text-gray-900 dark:text-white">ID Movimiento</label>
+                    <input id="movimientoId" name="movimientoId" type="text"
                       placeholder="ID del Movimiento"
-                      value={data.id_movimiento}
-                      autoComplete="id_movimiento"
-                      onChange={(e) => setData("id_movimiento", e.target.value)}
-                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.id_movimiento && ' ring-red-500 border-red-200'}`}
+                      value={data.movimientoId}
+                      autoComplete="movimientoId"
+                      onChange={(e) => setData("movimientoId", e.target.value)}
+                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.movimientoId && ' ring-red-500 border-red-200'}`}
                     />
-                  {errors.id_movimiento && (
-                    <div className="text-red-500 text-sm mt-1">{errors.id_movimiento}</div>
+                  {errors.movimientoId && (
+                    <div className="error">{errors.movimientoId}</div>
                   )}
                   </div>
                 </div>
                 <div className="flex flex-col">
                   <div className="col-span-2">
-                    <label htmlFor="id_producto" className="block text-sm font-medium text-gray-900 dark:text-white">ID Producto</label>
-                    <input id="id_producto" name="id_producto" type="text"
+                    <label htmlFor="productoId" className="block text-sm font-medium text-gray-900 dark:text-white">ID Producto</label>
+                    <input id="productoId" name="productoId" type="text"
                       placeholder="ID del Producto"
-                      value={data.id_producto}
-                      autoComplete="id_producto"
-                      onChange={(e) => setData("id_producto", e.target.value)}
-                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.id_producto && ' ring-red-500 border-red-200'}`}
+                      value={data.productoId}
+                      autoComplete="productoId"
+                      onChange={(e) => setData("productoId", e.target.value)}
+                      className={'input-modal focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'+`${errors.productoId && ' ring-red-500 border-red-200'}`}
                     />
-                  {errors.id_producto && (
-                    <div className="text-red-500 text-sm mt-1">{errors.id_producto}</div>
+                  {errors.productoId && (
+                    <div className="error">{errors.productoId}</div>
                   )}
                   </div>
                 </div>
@@ -111,7 +112,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.detalle && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.detalle && (
-                    <div className="text-red-500 text-sm mt-1">{errors.detalle}</div>
+                    <div className="error">{errors.detalle}</div>
                     )}
                   </div>
                 </div>
@@ -129,7 +130,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.cantidad && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.cantidad && (
-                    <div className="text-red-500 text-sm mt-1">{errors.cantidad}</div>
+                    <div className="error">{errors.cantidad}</div>
                     )}
                   </div>
                 </div>
@@ -147,7 +148,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.valor && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.valor && (
-                    <div className="text-red-500 text-sm mt-1">{errors.valor}</div>
+                    <div className="error">{errors.valor}</div>
                     )}
                   </div>
                 </div>
@@ -165,7 +166,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.subtotal && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.subtotal && (
-                    <div className="text-red-500 text-sm mt-1">{errors.subtotal}</div>
+                    <div className="error">{errors.subtotal}</div>
                     )}
                   </div>
                 </div>
@@ -183,7 +184,7 @@ export default function ModalCreate( {
                       className={'input-modal '+classInput+`${errors.fecha && ' ring-red-500 border-red-200'}`}
                     />
                   {errors.fecha && (
-                    <div className="text-red-500 text-sm mt-1">{errors.fecha}</div>
+                    <div className="error">{errors.fecha}</div>
                   )}
                   </div>
                 </div>
